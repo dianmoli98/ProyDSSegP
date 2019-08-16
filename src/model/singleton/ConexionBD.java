@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import model.Local.Usuario;
 /**
  *
  * @author Jocellyn Luna
@@ -32,23 +33,35 @@ public class ConexionBD {
     public static ConexionBD getInstance(){
         return conexion;
     }
-    
-    public Connection conectarMySQL(String user, String password) throws SQLException {
-        Connection conn = null;
+
+    public void setLogIn(String user,String pass) {
         this.user = user;
-        this.pass = password;
+        this.pass = pass;
+    }
+
+    public static ConexionBD getConexion() {
+        return conexion;
+    }
+
+    public static void setConexion(ConexionBD conexion) {
+        ConexionBD.conexion = conexion;
+    }
+    
+    
+    public Connection conectarMySQL() throws SQLException {
+        Connection conn = null;
 
         try {
             Class.forName(DRIVER);
-            conn = DriverManager.getConnection(URL, user, password);
+            conn = DriverManager.getConnection(URL, user, pass);
         } catch (ClassNotFoundException | SQLException e) {
-            throw new SQLException("Usuario o Contraseña incorrecto.");
+            throw new SQLException("Usuario o Contraseña equivocados.");
         }
 
         return conn;
     }
 
-    private ResultSet seleccionarDatos(String query, Connection conn) throws SQLException {
+    public ResultSet seleccionarDatos(String query, Connection conn) throws SQLException {
         if (conn == null) {
             throw new SQLException("Conexión con la base de datos fallida.\n Compruebe autentificación o"
                     + "Driver de conexión.");
@@ -71,24 +84,11 @@ public class ConexionBD {
         return rs;
     }
 
-    private void cerrarConexion(Connection conn) throws SQLException {
+    public void cerrarConexion(Connection conn) throws SQLException {
         try {
             conn.close();
         } catch (SQLException ex) {
             throw new SQLException("Fallo al cerrar conexión a base de datos");
         }
-    }
-
-    public void hacerQuery(String query) throws SQLException {
-        if(pass == null || user == null){
-            throw new SQLException("Conexión fallida.");
-        }
-        Connection conn = conectarMySQL(user, pass);
-        if (conn == null) {
-            throw new SQLException("Conexión fallida.");
-        }
-
-        CallableStatement cl = conn.prepareCall(query);
-        cl.execute();
     }
 }
