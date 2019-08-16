@@ -13,7 +13,7 @@ import java.util.LinkedList;
  */
 public class Matriz {
     private String direccion;
-    private LinkedList<Stock> sotcks;
+    private LinkedList<Stock> stocks;
 
     public String getDireccion() {
         return direccion;

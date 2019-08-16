@@ -5,10 +5,15 @@
  */
 package model.Local;
 
+import java.util.Date;
+
 /**
  *
  * @author josie
  */
 class Cotizacion {
-    
+    protected String numeracion;
+    protected Cliente cliente;
+    protected String detalle;
+    protected Date fecha;
 }

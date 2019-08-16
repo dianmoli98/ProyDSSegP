@@ -6,7 +6,6 @@
 package model.Bodega;
 
 import java.util.LinkedList;
-import model.Bodega.Ruta;
 import model.Inventario.Matriz;
 import model.Local.Persona;
 

@@ -9,8 +9,6 @@ import Emergentes.Emergentes;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Local.Usuario;
 import model.singleton.ConexionBD;
 
@@ -20,13 +18,14 @@ import model.singleton.ConexionBD;
  */
 public class CtrlMaster {
     
-    public static Connection validarLogin(String usuario, String password){
+    public static Connection validarLogin(String usuario, String password) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         bd.setLogIn(usuario, password);
         Connection conn;
         conn = bd.conectarMySQL();
-        if(conn==null) Emergentes.mostrarDialogo("La base de datos no se encuentra disponible", "Error de conexión", "Error");
-        
+        if(conn==null){
+            throw new SQLException("La base de datos no se encuentra disponible");
+        }
         return conn;
     }
     
