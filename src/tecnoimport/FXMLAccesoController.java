@@ -5,8 +5,14 @@
  */
 package tecnoimport;
 
+import Controller.CtrlMaster;
+import Emergentes.Emergentes;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +27,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import model.Local.Usuario;
 import static tecnoimport.TecnoImport.ventincio;
 
 /**
@@ -50,14 +57,30 @@ public class FXMLAccesoController implements Initializable {
     }    
 
     @FXML
-    private void handleButtonAction(ActionEvent event) {
+    private void Login(ActionEvent event) {
+        
           try {
+              String usuario=txtusuario.getText();
+              String contrasena=txtcontra.getText();
+              String sql1 = "use TecnoImport";
+              String sql2 = "select * from Usuario where cedula = '" + usuario + "'";
+                try {
+                    Connection conn=CtrlMaster.validarLogin(usuario, contrasena);
+                    PreparedStatement ps1 = conn.prepareStatement(sql1);
+                    ps1.execute();
+                    PreparedStatement ps2 = conn.prepareStatement(sql2);
+                    ResultSet resultSet = ps2.executeQuery(sql2);
+                    Usuario user=CtrlMaster.buscarUsuario(usuario, contrasena);
+                    System.out.println("Usuario encontrado exitosamente");
+                  } catch (SQLException ex) {
+                  Logger.getLogger(FXMLAccesoController.class.getName()).log(Level.SEVERE, null, ex);
+              }
             Parent root = FXMLLoader.load(getClass().getResource("/tecnoimport/FXMLVistaPrincipal.fxml"));
             Scene scene = new Scene(root);
             ventincio.setScene(scene);
             ventincio.show();
-            ((Node)(event.getSource())).getScene().getWindow().hide();}
-        catch (IOException ex) {
+            ((Node)(event.getSource())).getScene().getWindow().hide();
+          }catch (IOException ex) {
             Logger.getLogger(FXMLAccesoController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

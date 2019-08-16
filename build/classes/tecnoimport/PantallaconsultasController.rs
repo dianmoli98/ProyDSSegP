@@ -1,1 +1,0 @@
-tecnoimport.Pantallasfxml.PantallaconsultasController

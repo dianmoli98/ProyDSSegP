@@ -10,9 +10,9 @@ package model.Local;
  * @author josie
  */
 public class Usuario extends Persona{
-    protected String user;
-    protected String password;
-    protected boolean isAdmin;
+    private String user;
+    private String password;
+    private boolean isAdmin;
 
     public Usuario(String user, String password, boolean isAdmin, String nombre, String apellido, String id) {
         super(nombre, apellido, id);

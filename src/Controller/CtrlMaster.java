@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import Emergentes.Emergentes;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,39 +20,38 @@ import model.singleton.ConexionBD;
  */
 public class CtrlMaster {
     
-    public boolean validarLogin(String usuario, String password){
+    public static Connection validarLogin(String usuario, String password){
         ConexionBD bd = ConexionBD.getInstance();
         bd.setLogIn(usuario, password);
+        Connection conn;
+        conn = bd.conectarMySQL();
+        if(conn==null) Emergentes.mostrarDialogo("La base de datos no se encuentra disponible", "Error de conexión", "Error");
         
-        try {
-            Connection conn = bd.conectarMySQL();
-            bd.cerrarConexion(conn);
-        } catch (SQLException ex) {
-           return false;
-        }
-        return true;
+        return conn;
     }
     
-    public Usuario buscarUsuario(String username, String password) throws SQLException{
-        if(!validarLogin(username, password)){
+    public static Usuario buscarUsuario(String username, String password) throws SQLException{
+        Usuario usuario;
+        if(validarLogin(username,password)==null){
            throw new SQLException("El usuario o contraseña es incorrecto.");
         }
+        ResultSet rs=buscarTipoUsuario();
+        usuario=new Usuario(rs.getString("usuario"),rs.getString("clave"),
+                rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
         
-        
+        return usuario;
     }
     
-    private ResultSet buscarTipoUsuario(String username, String password) throws SQLException {
+    private static ResultSet buscarTipoUsuario() throws SQLException {
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
-        String query = "SELECT * FROM `usuario` u Where usuario = '" + username+"'";
+        String query = "SELECT * FROM Usuario JOIN Persona ON Usuario.cedula= Persona.cedula Where usuario =\""+bd.getUser()+"\";";
 
         ResultSet rs = bd.seleccionarDatos(query, conn);
 
         if (rs == null || rs.isClosed() || !rs.next()) {
             throw new SQLException("Usuario no encontrado.\nInténtelo más tarde. ");
         }
-        int tipo = rs.getInt("tipo");
-        bd.cerrarConexion(conn);
         return rs;
     }
 }

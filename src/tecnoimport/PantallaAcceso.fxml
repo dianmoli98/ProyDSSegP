@@ -38,7 +38,7 @@
             <Font name="Bell MT" size="22.0" />
          </font>
       </Label>
-        <Button fx:id="button" cacheShape="false" graphicTextGap="0.0" layoutX="514.0" layoutY="285.0" onAction="#handleButtonAction" prefHeight="17.0" prefWidth="38.0" textOverrun="LEADING_ELLIPSIS">
+        <Button fx:id="button" cacheShape="false" graphicTextGap="0.0" layoutX="514.0" layoutY="285.0" onAction="#Login" prefHeight="17.0" prefWidth="38.0" textOverrun="LEADING_ELLIPSIS">
          <textFill>
             <LinearGradient endX="1.0" endY="1.0">
                <stops>

@@ -1,11 +1,14 @@
 package model.singleton;
 
+import Emergentes.Emergentes;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Local.Usuario;
 /**
  *
@@ -14,14 +17,14 @@ import model.Local.Usuario;
 public class ConexionBD {
 
     // Librería de MySQL
-    private final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    private final String DRIVER = "com.mysql.jdbc.Driver";
     // Datos de la BD
-    private final String DB = "TecnoImport";
-    private final String HOST = "127.0.0.1";
+    private final String DB = "tecnoimport";
+    private final String HOST = "localhost";
+    //   private static final String HOST = "192.168.43.149";
     private final String PUERTO = "3306";
 
-    private final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + DB
-            + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + DB+"?useSSL=false";
     
     private String user;
     private String pass;
@@ -48,16 +51,17 @@ public class ConexionBD {
     }
     
     
-    public Connection conectarMySQL() throws SQLException {
-        Connection conn = null;
-
+    public Connection conectarMySQL() {
+        Connection conn=null;
         try {
             Class.forName(DRIVER);
-            conn = DriverManager.getConnection(URL, user, pass);
-        } catch (ClassNotFoundException | SQLException e) {
-            throw new SQLException("Usuario o Contraseña equivocados.");
+            conn = DriverManager.getConnection(URL, user,pass); 
+            return conn;
+        } catch (ClassNotFoundException ex) {
+            Emergentes.mostrarDialogo("No conectada", "Error de Base de Datos", "Error");
+        } catch (SQLException ex) { 
+            Emergentes.mostrarDialogo("Su usuario no ha sido conectado correctamente", "Error de Usuario", "Error");
         }
-
         return conn;
     }
 
@@ -91,4 +95,13 @@ public class ConexionBD {
             throw new SQLException("Fallo al cerrar conexión a base de datos");
         }
     }
+
+    public String getUser() {
+        return user;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+    
 }
