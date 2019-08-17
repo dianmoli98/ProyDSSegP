@@ -53,4 +53,12 @@ public class CtrlMaster {
         }
         return rs;
     }
+    
+    public static ResultSet llenarTablaProductos() throws SQLException {
+        ConexionBD bd = ConexionBD.getInstance();
+        Connection conn = bd.conectarMySQL();
+        String query = "select * from producto";
+        ResultSet rs = bd.seleccionarDatos(query, conn);
+        return rs;
+    }
 }

@@ -5,12 +5,20 @@
  */
 package tecnoimport;
 
+import Controller.CtrlMaster;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -18,8 +26,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import model.Inventario.Producto;
 
 /**
  * FXML Controller class
@@ -29,19 +39,17 @@ import javafx.scene.input.MouseEvent;
 public class FXMLVistaTProductoController implements Initializable {
 
     @FXML
-    private TableView<?> tablaProductos;
+    private TableView<Producto> tablaProductos;
     @FXML
-    private TableColumn<?, ?> Producto_ID;
+    private TableColumn<Producto,String> id_producto;
     @FXML
-    private TableColumn<?, ?> nombre;
+     private TableColumn<Producto,String> nombre;
     @FXML
-    private TableColumn<?, ?> descripcion;
+     private TableColumn<Producto,String> descripcion;
     @FXML
-    private TableColumn<?, ?> stock;
+     private TableColumn<Producto,String>precio_Venta;
     @FXML
-    private TableColumn<?, ?> precio_Venta;
-    @FXML
-    private TableColumn<?, ?> ccategoria;
+     private TableColumn<Producto,String> ccategoria;
     @FXML
     private TextField busqueda;
     @FXML
@@ -69,8 +77,44 @@ public class FXMLVistaTProductoController implements Initializable {
     Calendar calendar= GregorianCalendar.getInstance();
     Date date=Calendar.getInstance().getTime();
     SimpleDateFormat sdf=new SimpleDateFormat("     dd/MM/yyyy");
-    fecha.setText(sdf.format(date));}
+    fecha.setText(sdf.format(date));
+        try {
+            llenar();
+        } catch (SQLException ex) {
+            Logger.getLogger(FXMLVistaTProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
+    public void llenar() throws SQLException{
+            ResultSet rs = CtrlMaster.llenarTablaProductos();
+            id_producto.setCellValueFactory(new PropertyValueFactory<>("id_producto"));
+            nombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+            descripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+            precio_Venta.setCellValueFactory(new PropertyValueFactory<>("precio"));
+            ccategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
+            tablaProductos.setVisible(true);
+        try {
+            ObservableList<Producto> datos = FXCollections.observableArrayList();
+            while (rs.next()) {
+                if (!rs.getString("id_producto").equalsIgnoreCase("0")) {
+                    String id_producto1 = rs.getString("id_producto");
+                    String nombre1 = rs.getString("nombre");
+                    String descri = rs.getString("descripcion");
+                    String precio1 = rs.getString("precio");
+                    String categoria1 = rs.getString("categoria");
+                    Producto p1 = new Producto(Integer.parseInt(id_producto1),nombre1,descri,Double.parseDouble(precio1),categoria1);
+                    datos.add(p1);
+                }
+            }
+            
+            tablaProductos.setItems(datos);
+            tablaProductos.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        } catch (SQLException ex) {
+            Logger.getLogger(FXMLVistaTProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     }
+    
+        
     @FXML
     private void Inicio(MouseEvent event) {
     }
