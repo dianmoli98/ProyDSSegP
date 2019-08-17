@@ -34,6 +34,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import model.Inventario.Producto;
+import model.Local.Usuario;
 import model.singleton.ConexionBD;
 
 /**
@@ -83,6 +84,9 @@ public class FXMLVistaTProductoController implements Initializable {
     Date date=Calendar.getInstance().getTime();
     SimpleDateFormat sdf=new SimpleDateFormat("     dd/MM/yyyy");
     fecha.setText(sdf.format(date));
+    Usuario user = CtrlMaster.getUser();
+    nomE.setText(user.getNombre() + " " + user.getApellido());
+    ocultar();
     setCenter();
         try {
             llenar();
@@ -104,6 +108,13 @@ public class FXMLVistaTProductoController implements Initializable {
             tablaProductos.setVisible(true);
             celdas(conn,rs);
      }
+    
+    private void ocultar(){
+         txtnombre.setVisible(false);
+         txtmarca.setVisible(false);
+         txtstock.setVisible(false);
+         txtprecio.setVisible(false);
+    }
     
         public void setCenter(){
         busqueda.setPromptText("Ingrese su búsqueda");

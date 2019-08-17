@@ -9,22 +9,27 @@ import Controller.CtrlGerente;
 import Controller.CtrlJefeBodega;
 import Controller.CtrlMaster;
 import Controller.CtrlVendedor;
+import Emergentes.Emergentes;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import static javax.swing.JOptionPane.showMessageDialog;
 import model.Bodega.Jefe_Bodega;
 import model.Local.Gerente;
 import model.Local.Usuario;
@@ -93,8 +98,15 @@ public class FXMLVistaTController implements Initializable {
     }
 
     @FXML
-    private void CerrarSesion(MouseEvent event) {
-        System.exit(0);
+    private void CerrarSesion(MouseEvent event) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Diálogo de confirmación");
+        alert.setContentText ("¿Está seguro que desea cerrar sesión?");
+        Optional <ButtonType> result = alert.showAndWait ();
+        if (result.get () == ButtonType.OK){   
+        System.exit(0);}
+        else{}
+        
     }
     
     
