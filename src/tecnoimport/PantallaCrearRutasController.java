@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
@@ -40,4 +41,7 @@ public class PantallaCrearRutasController implements Initializable {
         // TODO
     }    
     
+    @FXML
+    private void regreso(MouseEvent event) {
+    }
 }

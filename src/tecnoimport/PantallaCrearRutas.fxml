@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -37,5 +38,14 @@
             <Image url="@../recursos/avanzar.png" />
          </image>
       </ImageView>
+      <Button defaultButton="true" layoutX="-2.0" layoutY="-1.0" mnemonicParsing="false" onMouseClicked="#regreso" prefHeight="50.0" prefWidth="124.0" text="Volver">
+         <graphic>
+            <ImageView fx:id="regreso" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#regreso">
+               <image>
+                  <Image url="@../recursos/volver.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

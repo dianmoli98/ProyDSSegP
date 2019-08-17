@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -10,9 +11,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="549.0" prefWidth="646.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tecnoimport.FXMLVistaTProductoController">
+<AnchorPane id="AnchorPane" prefHeight="535.0" prefWidth="646.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tecnoimport.FXMLVistaTProductoController">
     <children>
-      <ImageView fitHeight="545.0" fitWidth="645.0" opacity="0.62">
+      <ImageView fitHeight="538.0" fitWidth="645.0" opacity="0.62">
          <image>
             <Image url="@../recursos/ff.jpg" />
          </image>
@@ -33,39 +34,43 @@
          </image>
       </ImageView>
       <ComboBox fx:id="comboxbus" layoutX="96.0" layoutY="140.0" onMouseClicked="#Inicio" prefHeight="35.0" prefWidth="124.0" />
-      <ImageView fx:id="regreso" fitHeight="60.0" fitWidth="60.0" layoutX="556.0" layoutY="40.0" onMouseClicked="#regreso">
-         <image>
-            <Image url="@../recursos/inicio.png" />
-         </image>
-      </ImageView>
       <TextField fx:id="txtnombre" layoutX="30.0" layoutY="498.0" prefHeight="25.0" prefWidth="167.0" promptText="Nombre" />
       <TextField fx:id="txtmarca" layoutX="214.0" layoutY="498.0" prefHeight="25.0" prefWidth="113.0" promptText="Marca" />
       <TextField fx:id="txtstock" layoutX="348.0" layoutY="498.0" prefHeight="25.0" prefWidth="113.0" promptText="Stock" />
       <TextField fx:id="txtprecio" layoutX="487.0" layoutY="498.0" prefHeight="25.0" prefWidth="113.0" promptText="Precio_Venta" />
-      <Label fx:id="fecha" alignment="TOP_RIGHT" layoutX="405.0" layoutY="41.0" prefHeight="17.0" prefWidth="143.0">
+      <Label fx:id="fecha" alignment="TOP_RIGHT" layoutX="481.0" layoutY="42.0" prefHeight="17.0" prefWidth="143.0">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label id="nomE" fx:id="nomE" alignment="TOP_RIGHT" contentDisplay="RIGHT" ellipsisString="" layoutX="405.0" layoutY="70.0" prefHeight="27.0" prefWidth="143.0" text="nombre">
+      <Label id="nomE" fx:id="nomE" alignment="TOP_RIGHT" contentDisplay="RIGHT" ellipsisString="" layoutX="448.0" layoutY="72.0" prefHeight="27.0" prefWidth="182.0" text="nombre">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <ImageView fitHeight="177.0" fitWidth="199.0" layoutX="147.0" layoutY="-20.0">
+      <ImageView fitHeight="177.0" fitWidth="199.0" layoutX="206.0" layoutY="-20.0">
          <image>
             <Image url="@../recursos/foto.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="insertar" fitHeight="43.0" fitWidth="52.0" layoutX="477.0" layoutY="140.0" onMouseClicked="#Modificar">
+      <ImageView fx:id="insertar" fitHeight="60.0" fitWidth="60.0" layoutX="473.0" layoutY="123.0" onMouseClicked="#Modificar">
          <image>
             <Image url="@../../../diseño/src/recursos/Untitled-1.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="borrartodo" fitHeight="43.0" fitWidth="44.0" layoutX="544.0" layoutY="140.0" onMouseClicked="#Eliminar">
+      <ImageView fx:id="borrartodo" fitHeight="50.0" fitWidth="52.0" layoutX="543.0" layoutY="129.0" onMouseClicked="#Eliminar">
          <image>
             <Image url="@../../../diseño/src/recursos/basura.png" />
          </image>
       </ImageView>
+      <Button defaultButton="true" layoutX="-2.0" mnemonicParsing="false" onMouseClicked="#regreso" prefHeight="50.0" prefWidth="124.0" text="Volver">
+         <graphic>
+            <ImageView fx:id="regreso" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#regreso">
+               <image>
+                  <Image url="@../recursos/volver.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
     </children>
 </AnchorPane>
