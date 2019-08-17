@@ -20,4 +20,8 @@ public class Usuario extends Persona{
         this.password = password;
         this.isAdmin = isAdmin;
     }
+
+    public boolean isIsAdmin() {
+        return isAdmin;
+    }
 }

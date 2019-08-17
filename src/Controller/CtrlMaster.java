@@ -8,6 +8,7 @@ package Controller;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import model.Bodega.Jefe_Bodega;
 import model.Local.Gerente;
 import model.Local.Usuario;
 import model.Local.Vendedor;
@@ -18,20 +19,17 @@ import model.singleton.ConexionBD;
  * @author josie
  */
 public class CtrlMaster {
+    private static Usuario userLogin = null; 
     
-    public static Connection validarLogin(String usuario, String password) throws SQLException{
+    private static Connection validarLogin(String usuario, String password) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         bd.setLogIn(usuario, password);
         Connection conn;
         conn = bd.conectarMySQL();
-        if(conn==null){
-            throw new SQLException("La base de datos no se encuentra disponible");
-        }
         return conn;
     }
     
-    public static Usuario buscarUsuario(String username, String password) throws SQLException{
-        Usuario usuario = null;
+    public static void buscarUsuario(String username, String password) throws SQLException{
         if(validarLogin(username,password)==null){
            throw new SQLException("El usuario o contraseña es incorrecto.");
         }
@@ -40,21 +38,20 @@ public class CtrlMaster {
         switch(tipo){
             case 1:
                 System.out.println("vendedor");
-                usuario=new Vendedor(rs.getString("usuario"),rs.getString("clave"),
+                userLogin = new Vendedor(rs.getString("usuario"),rs.getString("clave"),
                 rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
                 break;
             case 2:
-                System.out.println("jefe");
+                System.out.println("Jefe");
+                userLogin = new Jefe_Bodega(rs.getString("usuario"),rs.getString("clave"),
+                rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
                 break;
             case 3:
                 System.out.println("gerente");
-                usuario=new Gerente(rs.getString("usuario"),rs.getString("clave"),
+                userLogin = new Gerente(rs.getString("usuario"),rs.getString("clave"),
                 rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
                 break;
         }
-        //usuario=new Usuario(rs.getString("usuario"),rs.getString("clave"),rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
-        
-        return usuario;
     }
     
     private static ResultSet buscarTipoUsuario() throws SQLException {
@@ -68,6 +65,10 @@ public class CtrlMaster {
             throw new SQLException("Usuario no encontrado.\nInténtelo más tarde. ");
         }
         return rs;
+    }
+    
+    public static Usuario getUser(){
+        return userLogin;
     }
 
     

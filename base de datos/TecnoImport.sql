@@ -200,7 +200,7 @@ DROP TABLE IF EXISTS DetalleCompra;
     SELECT Usuario.* FROM Usuario;
     
 #trigger que permita crear el usuario una vez que se ingresa un usuario a la tabla Usuario
-DELIMITER ||
+/*DELIMITER ||
 CREATE TRIGGER crear_user AFTER INSERT ON Usuario
  FOR EACH ROW
  BEGIN
@@ -211,7 +211,7 @@ CREATE TRIGGER crear_user AFTER INSERT ON Usuario
 	flush privileges;
 END ||
 DELIMITER ;
-
+*/
 create user 'jfmorale'@'%' identified by '0950165811';
 grant all privileges on *.* to 'jfmorale'@'%' with grant option;
 flush privileges;
