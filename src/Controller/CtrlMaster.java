@@ -5,11 +5,12 @@
  */
 package Controller;
 
-import Emergentes.Emergentes;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import model.Local.Gerente;
 import model.Local.Usuario;
+import model.Local.Vendedor;
 import model.singleton.ConexionBD;
 
 /**
@@ -30,13 +31,28 @@ public class CtrlMaster {
     }
     
     public static Usuario buscarUsuario(String username, String password) throws SQLException{
-        Usuario usuario;
+        Usuario usuario = null;
         if(validarLogin(username,password)==null){
            throw new SQLException("El usuario o contraseña es incorrecto.");
         }
         ResultSet rs=buscarTipoUsuario();
-        usuario=new Usuario(rs.getString("usuario"),rs.getString("clave"),
+        int tipo = rs.getInt("TipoUsuario");
+        switch(tipo){
+            case 1:
+                System.out.println("vendedor");
+                usuario=new Vendedor(rs.getString("usuario"),rs.getString("clave"),
                 rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
+                break;
+            case 2:
+                System.out.println("jefe");
+                break;
+            case 3:
+                System.out.println("gerente");
+                usuario=new Gerente(rs.getString("usuario"),rs.getString("clave"),
+                rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
+                break;
+        }
+        //usuario=new Usuario(rs.getString("usuario"),rs.getString("clave"),rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
         
         return usuario;
     }
@@ -52,5 +68,9 @@ public class CtrlMaster {
             throw new SQLException("Usuario no encontrado.\nInténtelo más tarde. ");
         }
         return rs;
+    }
+
+    public static String cambiarPantalla(){
+        return null;
     }
 }
