@@ -24,7 +24,8 @@ public class ConexionBD {
     //   private static final String HOST = "192.168.43.149";
     private final String PUERTO = "3306";
 
-    private final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + DB+"?useSSL=false";
+    private final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + DB
+            + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";;
     
     private String user;
     private String pass;
@@ -51,18 +52,16 @@ public class ConexionBD {
     }
     
     
-    public Connection conectarMySQL() {
-        Connection conn=null;
+    public Connection conectarMySQL() throws SQLException {
+        Connection conn;
         try {
             Class.forName(DRIVER);
+            System.out.println("dirver?");
             conn = DriverManager.getConnection(URL, user,pass); 
             return conn;
         } catch (ClassNotFoundException ex) {
-            Emergentes.mostrarDialogo("No conectada", "Error de Base de Datos", "Error");
-        } catch (SQLException ex) { 
-            Emergentes.mostrarDialogo("Su usuario no ha sido conectado correctamente", "Error de Usuario", "Error");
-        }
-        return conn;
+            throw new SQLException("Error de Base de Datos.\nNo conectada");
+        } 
     }
 
     public ResultSet seleccionarDatos(String query, Connection conn) throws SQLException {
