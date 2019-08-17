@@ -70,4 +70,18 @@ public class CtrlMaster {
     public static Usuario getUser(){
         return userLogin;
     }
+
+    
+    public static ResultSet llenarTablaProductos() throws SQLException {
+        ConexionBD bd = ConexionBD.getInstance();
+        Connection conn = bd.conectarMySQL();
+        String query = "select * from producto";
+        ResultSet rs = bd.seleccionarDatos(query, conn);
+        return rs;}
+
+
+    public static String cambiarPantalla(){
+        return null;
+
+    }
 }
