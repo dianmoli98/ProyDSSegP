@@ -94,7 +94,13 @@ public class FXMLVistaTController implements Initializable {
         }
     }
 
-
+    @FXML
+    private void CerrarSesion(MouseEvent event) {
+        System.exit(0);
+    }
+    
+    
+    
     @FXML
     private void Administrar(MouseEvent event) {
     }
