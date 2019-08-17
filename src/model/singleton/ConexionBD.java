@@ -57,6 +57,7 @@ public class ConexionBD {
         try {
             Class.forName(DRIVER);
             conn = DriverManager.getConnection(URL, user,pass); 
+            System.out.println("CONECTADO");
             return conn;
         } catch (ClassNotFoundException ex) {
             throw new SQLException("Error de Base de Datos.\nNo conectada");

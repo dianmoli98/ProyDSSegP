@@ -5,12 +5,25 @@
  */
 package tecnoimport;
 
+import Controller.CtrlMaster;
+import Emergentes.Emergentes;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import model.singleton.ConexionBD;
 
 /**
  * FXML Controller class
@@ -20,24 +33,49 @@ import javafx.scene.control.TableView;
 public class PantallaCrearRutasController implements Initializable {
 
     @FXML
-    private TableView<?> tablaRutasgeneral;
+    private TableView tablaRutasgeneral;
     @FXML
-    private TableColumn<?, ?> idped;
-    @FXML
-    private TableColumn<?, ?> dir;
-    @FXML
-    private TableView<?> tablaRutasAsignadas;
-    @FXML
-    private TableColumn<?, ?> idpedido;
-    @FXML
-    private TableColumn<?, ?> direccion;
-
+    private TableView tablaRutasAsignadas;
+    private ObservableList<String> data;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        try {
+            cargarData();
+        } catch (SQLException ex) {
+            Logger.getLogger(PantallaCrearRutasController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
+    public void cargarData() throws SQLException {
+            ConexionBD bd = ConexionBD.getInstance();
+             Connection conn = bd.conectarMySQL();
+            String sql1 = "select * from Cliente"; //  este es pero queria ver si me salia con este en general --- "select * from Cliente join pedido on id_cliente=cedula"
+            String sql2="select * from Matriz join pedido on Matriz.id_matriz=Pedido.id_matriz";
+            ResultSet rs = bd.seleccionarDatos(sql1, conn);
+            ResultSet rs2=bd.seleccionarDatos(sql2,conn);
+            TableColumn column = new TableColumn<>();
+            column.setText("Direcciones-Pedido");
+            column.setCellValueFactory(new PropertyValueFactory<>("direccion"));
+            tablaRutasgeneral.getColumns().add(column);
+            dataBaseArrayList(conn,rs);
+    }
     
+    private void dataBaseArrayList(Connection st,ResultSet rs) throws SQLException{
+        tablaRutasgeneral.setVisible(true);
+        try {
+            data=FXCollections.observableArrayList();
+             while (rs.next()) {
+                    String dat=rs.getString("direccion");
+                    data.add(dat);
+                }
+            tablaRutasgeneral.setEditable(true);
+            //tablaRutasgeneral.setFocusTraversable(true);
+            tablaRutasgeneral.setItems(data);
+            tablaRutasgeneral.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        } catch (SQLException ex) {
+            Logger.getLogger(FXMLVistaTProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     }  
 }

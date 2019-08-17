@@ -21,7 +21,7 @@ import model.singleton.ConexionBD;
 public class CtrlMaster {
     private static Usuario userLogin = null; 
     
-    private static Connection validarLogin(String usuario, String password) throws SQLException{
+    public static Connection validarLogin(String usuario, String password) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         bd.setLogIn(usuario, password);
         Connection conn;
