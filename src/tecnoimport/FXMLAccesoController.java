@@ -10,12 +10,8 @@ import Emergentes.Emergentes;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +23,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import model.Local.Usuario;
 import static tecnoimport.TecnoImport.ventincio;
 
 /**
@@ -62,10 +57,9 @@ public class FXMLAccesoController implements Initializable {
         try {
             String usuarioText=txtusuario.getText();
             String contrasena=txtcontra.getText();
-            String sql1 = "use TecnoImport";
-            String sql2 = "select * from Usuario where cedula = '" + usuarioText + "'";
-            Connection conn= CtrlMaster.validarLogin(usuarioText, contrasena);
-            System.out.println("Usuario encontrado exitosamente");
+            
+            CtrlMaster.buscarUsuario(usuarioText, contrasena);
+            
             Parent root = FXMLLoader.load(getClass().getResource("/tecnoimport/FXMLVistaPrincipal.fxml"));
             Scene scene = new Scene(root);
             ventincio.setScene(scene);

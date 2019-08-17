@@ -19,4 +19,14 @@ public class Persona {
         this.apellido = apellido;
         this.id = id;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+    
+    
 }

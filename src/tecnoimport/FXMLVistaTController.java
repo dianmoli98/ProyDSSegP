@@ -5,6 +5,10 @@
  */
 package tecnoimport;
 
+import Controller.CtrlGerente;
+import Controller.CtrlJefeBodega;
+import Controller.CtrlMaster;
+import Controller.CtrlVendedor;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -21,6 +25,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.Bodega.Jefe_Bodega;
+import model.Local.Gerente;
+import model.Local.Usuario;
+import model.Local.Vendedor;
 
 /**
  * FXML Controller class
@@ -49,16 +57,42 @@ public class FXMLVistaTController implements Initializable {
     private Label fechaactual;
     @FXML
     private Label empleado;
-
+    
+    private CtrlGerente controlGerente;
+    private CtrlJefeBodega controlJefe;
+    private CtrlVendedor controlVendedor;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    Calendar calendar= GregorianCalendar.getInstance();
-    Date date=Calendar.getInstance().getTime();
-    SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
-    fechaactual.setText(sdf.format(date));}
+        
+        Calendar calendar = GregorianCalendar.getInstance();
+        Date date=Calendar.getInstance().getTime();
+        SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+        fechaactual.setText(sdf.format(date));
+        
+        Usuario user = CtrlMaster.getUser();
+        empleado.setText(user.getNombre() + " " + user.getApellido());
+        if(user instanceof Gerente){
+            ruta.setDisable(true);
+            imprimir.setDisable(true);
+            Ventas.setDisable(true);
+            Clientes.setDisable(true);
+            
+        }else if(user instanceof Jefe_Bodega){
+            Ventas.setDisable(true);
+            Clientes.setDisable(true);
+            Consultas.setDisable(true);
+            
+        }else if(user instanceof Vendedor){
+            ruta.setDisable(true);
+            Consultas.setDisable(true);
+            
+        }if(!user.isIsAdmin()){
+            administracion.setDisable(true);
+        }
+    }
 
 
     @FXML
