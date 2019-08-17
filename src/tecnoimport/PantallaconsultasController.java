@@ -5,6 +5,7 @@
  */
 package tecnoimport;
 
+import Controller.CtrlMaster;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,6 +17,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.Bodega.Jefe_Bodega;
+import model.Local.Gerente;
+import model.Local.Usuario;
+import model.Local.Vendedor;
 
 /**
  * FXML Controller class
@@ -42,7 +47,18 @@ public class PantallaconsultasController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        Usuario user = CtrlMaster.getUser();
+        
+        if(user instanceof Jefe_Bodega){
+            Cventa.setDisable(true);
+            CCliente.setDisable(true);
+            CStock.setDisable(true);
+            CProductos.setDisable(true);
+            
+        }else if(user instanceof Vendedor){
+            CUsuario.setDisable(true);
+            CPedido.setDisable(true);   
+        }
     }    
 
     @FXML

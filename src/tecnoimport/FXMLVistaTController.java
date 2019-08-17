@@ -88,11 +88,9 @@ public class FXMLVistaTController implements Initializable {
         }else if(user instanceof Jefe_Bodega){
             Ventas.setDisable(true);
             Clientes.setDisable(true);
-            Consultas.setDisable(true);
             
         }else if(user instanceof Vendedor){
             ruta.setDisable(true);
-            Consultas.setDisable(true);
             
         }if(!user.isIsAdmin()){
             administracion.setDisable(true);
