@@ -56,7 +56,6 @@ public class ConexionBD {
         Connection conn;
         try {
             Class.forName(DRIVER);
-            System.out.println("dirver?");
             conn = DriverManager.getConnection(URL, user,pass); 
             return conn;
         } catch (ClassNotFoundException ex) {

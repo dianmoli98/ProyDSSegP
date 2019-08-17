@@ -64,15 +64,8 @@ public class FXMLAccesoController implements Initializable {
             String contrasena=txtcontra.getText();
             String sql1 = "use TecnoImport";
             String sql2 = "select * from Usuario where cedula = '" + usuarioText + "'";
-
             Connection conn= CtrlMaster.validarLogin(usuarioText, contrasena);
-            PreparedStatement ps1 = conn.prepareStatement(sql1);
-            ps1.execute();
-            PreparedStatement ps2 = conn.prepareStatement(sql2);
-            ResultSet resultSet = ps2.executeQuery(sql2);
-            Usuario user=CtrlMaster.buscarUsuario(usuarioText, contrasena);
             System.out.println("Usuario encontrado exitosamente");
-
             Parent root = FXMLLoader.load(getClass().getResource("/tecnoimport/FXMLVistaPrincipal.fxml"));
             Scene scene = new Scene(root);
             ventincio.setScene(scene);
