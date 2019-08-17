@@ -7,6 +7,8 @@ package tecnoimport;
 
 import Controller.CtrlMaster;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,6 +19,8 @@ import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -30,6 +34,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import model.Inventario.Producto;
+import model.singleton.ConexionBD;
 
 /**
  * FXML Controller class
@@ -78,6 +83,7 @@ public class FXMLVistaTProductoController implements Initializable {
     Date date=Calendar.getInstance().getTime();
     SimpleDateFormat sdf=new SimpleDateFormat("     dd/MM/yyyy");
     fecha.setText(sdf.format(date));
+    setCenter();
         try {
             llenar();
         } catch (SQLException ex) {
@@ -86,13 +92,76 @@ public class FXMLVistaTProductoController implements Initializable {
     }
     
     public void llenar() throws SQLException{
-            ResultSet rs = CtrlMaster.llenarTablaProductos();
+             ConexionBD bd = ConexionBD.getInstance();
+             Connection conn = bd.conectarMySQL();
+             String query = "select * from producto";
+             ResultSet rs = bd.seleccionarDatos(query, conn);
             id_producto.setCellValueFactory(new PropertyValueFactory<>("id_producto"));
             nombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
             descripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
             precio_Venta.setCellValueFactory(new PropertyValueFactory<>("precio"));
             ccategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
             tablaProductos.setVisible(true);
+            celdas(conn,rs);
+     }
+    
+        public void setCenter(){
+        busqueda.setPromptText("Ingrese su búsqueda");
+        ObservableList ob=FXCollections.observableArrayList("Nombre","Categoria");
+        comboxbus.setItems(ob);
+        comboxbus.setPromptText("Filtrar");
+        comboxbus.setOnAction((l)->{
+            if(((String)comboxbus.getValue()).equals("Nombre")){
+                busqueda.setPromptText("Nombre");
+            }else if(((String)comboxbus.getValue()).equals("Categoria")){
+                busqueda.setPromptText("Categoria");
+            }else{
+                busqueda.setPromptText("Ingrese su búsqueda"); 
+            }
+        });
+        
+        busqueda.textProperty().addListener(new ChangeListener(){
+            @Override
+            public void changed(ObservableValue args0,Object o1,Object o2){
+                String comboText=(String)comboxbus.getValue();
+                if (comboText != null && !comboText.equals("") && !comboText.equals(" ")) {
+                try {
+                    Connection st = null;
+                    ResultSet rs = null;
+                    String stbuscar = "";
+
+                        String stringActual = (String) o2;
+                        if (((String) comboxbus.getValue()).equals("Nombre")) {
+                             ConexionBD bd = ConexionBD.getInstance();      
+                            stbuscar = "select * from producto where Nombre like " + " \'" + busqueda.getText() + "%\' ;";
+                            st = bd.conectarMySQL();
+                            rs = bd.seleccionarDatos(stbuscar,st);
+                            celdas(st,rs);
+
+                        } else if (((String) comboxbus.getValue()).equals("Categoria")) {
+                            ConexionBD bd = ConexionBD.getInstance();    
+                            stbuscar = "select * from producto where Categoria like " + " \'" + busqueda.getText() + "%\' ;";
+                            st = bd.conectarMySQL();
+                            rs = bd.seleccionarDatos(stbuscar,st);
+                            celdas(st,rs);
+                        }
+                        
+                       if(busqueda.getText().equals("")){
+                        ConexionBD bd = ConexionBD.getInstance();       
+                        stbuscar = "select * from producto;"; 
+                        st = bd.conectarMySQL();
+                            rs = bd.seleccionarDatos(stbuscar,st);
+                            celdas(st,rs);}
+                    } catch (SQLException ex) {
+                        Logger.getLogger(FXMLVistaTProductoController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+            }
+            }
+        });
+     }
+        
+      private void celdas(Connection st,ResultSet rs){
+        tablaProductos.setVisible(true);
         try {
             ObservableList<Producto> datos = FXCollections.observableArrayList();
             while (rs.next()) {
@@ -112,8 +181,10 @@ public class FXMLVistaTProductoController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(FXMLVistaTProductoController.class.getName()).log(Level.SEVERE, null, ex);
         }
-     }
-    
+     }  
+        
+        
+        
         
     @FXML
     private void Inicio(MouseEvent event) {

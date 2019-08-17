@@ -77,6 +77,8 @@ public class CtrlMaster {
         String query = "select * from producto";
         ResultSet rs = bd.seleccionarDatos(query, conn);
         return rs;}
+    
+    
 
 
     public static String cambiarPantalla(){
