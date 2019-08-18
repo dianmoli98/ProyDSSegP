@@ -70,3 +70,16 @@ INSERT INTO stock(id_stock,id_producto,descripcion,id_matriz) VALUES
 (default,2,"CPU XTRATECH","0003"),
 (default,3,"Impresora HP tinta continua","0002");
 
+DELETE FROM stock
+WHERE descripcion="Celulares Xiaomi Redmi";
+DELETE FROM stock
+WHERE descripcion="CPU XTRATECH";
+DELETE FROM stock
+WHERE descripcion="Impresora HP tinta continua";
+ALTER TABLE stock CHANGE descripcion Stock int(50);
+INSERT INTO stock(id_stock,id_producto,stock,id_matriz) VALUES
+(default,1,600,"0001"),
+(default,2,26,"0003"),
+(default,3,100,"0002");
+
+

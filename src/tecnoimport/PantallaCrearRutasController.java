@@ -22,12 +22,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-<<<<<<< HEAD
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.singleton.ConexionBD;
-=======
 import javafx.scene.input.MouseEvent;
->>>>>>> 8ed14c3f2da05470788e176139382c1053a2636d
 
 /**
  * FXML Controller class
@@ -66,7 +63,7 @@ public class PantallaCrearRutasController implements Initializable {
             dataBaseArrayList(conn,rs);
     }
     
-<<<<<<< HEAD
+
     private void dataBaseArrayList(Connection st,ResultSet rs) throws SQLException{
         tablaRutasgeneral.setVisible(true);
         try {
@@ -83,9 +80,9 @@ public class PantallaCrearRutasController implements Initializable {
             Logger.getLogger(FXMLVistaTProductoController.class.getName()).log(Level.SEVERE, null, ex);
         }
      }  
-=======
+
     @FXML
     private void regreso(MouseEvent event) {
     }
->>>>>>> 8ed14c3f2da05470788e176139382c1053a2636d
+
 }
