@@ -84,5 +84,12 @@ public class PantallaCrearRutasController implements Initializable {
     @FXML
     private void regreso(MouseEvent event) {
     }
+    
+     @FXML
+    private void btnGuardar (MouseEvent event) {
+    }
 
+     @FXML
+    private void btnCancelar (MouseEvent event) {
+    }
 }

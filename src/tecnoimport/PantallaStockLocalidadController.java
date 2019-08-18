@@ -77,6 +77,7 @@ public class PantallaStockLocalidadController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        busqueda.setDisable(true);
         Calendar calendar = GregorianCalendar.getInstance();
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("     dd/MM/yyyy");
@@ -197,7 +198,9 @@ public class PantallaStockLocalidadController implements Initializable {
     }
 
     public void setCentercopy() throws SQLException {
+        
         idenlocal.setOnAction((l) -> {
+            busqueda.setDisable(false);
             String numlocal = idenlocal.getValue().toString();
             ResultSet rs = null;
             if (numlocal != null && !numlocal.equals("") && !numlocal.equals(" ")) {
