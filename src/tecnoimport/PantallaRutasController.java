@@ -31,8 +31,6 @@ import javafx.stage.Stage;
 import model.Bodega.Jefe_Bodega;
 import model.Bodega.Repartidor;
 import model.Bodega.Ruta;
-import model.Inventario.Producto;
-import model.Pedido.Pedido;
 import model.singleton.ConexionBD;
 
 /**
@@ -89,7 +87,7 @@ public class PantallaRutasController implements Initializable {
     public void llenar() throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
-        ResultSet rs = control.obtenerRSPedidos(conn);
+        ResultSet rs = control.obtenerRSRutas(conn);
         
         IdRuta.setCellValueFactory(new PropertyValueFactory<>("id_ruta"));
         repartidor.setCellValueFactory(new PropertyValueFactory<>("repartidor"));
@@ -108,7 +106,7 @@ public class PantallaRutasController implements Initializable {
         }
         tablaRutas.setItems(datos);
         tablaRutas.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        st.close();
+        ConexionBD.getInstance().cerrarConexion(st);
      } 
     
 }

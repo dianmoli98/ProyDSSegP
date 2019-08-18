@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controller;
 
 import java.sql.Connection;
@@ -41,17 +36,14 @@ public class CtrlMaster {
         int tipo = rs.getInt("TipoUsuario");
         switch(tipo){
             case 1:
-                System.out.println("vendedor");
                 userLogin = new Vendedor(rs.getString("usuario"),rs.getString("clave"),
                 rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
                 break;
             case 2:
-                System.out.println("Jefe");
                 userLogin = new Jefe_Bodega(rs.getString("usuario"),rs.getString("clave"),
                 rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
                 break;
             case 3:
-                System.out.println("gerente");
                 userLogin = new Gerente(rs.getString("usuario"),rs.getString("clave"),
                 rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
                 break;
@@ -88,6 +80,5 @@ public class CtrlMaster {
 
     public static String cambiarPantalla(){
         return null;
-
     }
 }

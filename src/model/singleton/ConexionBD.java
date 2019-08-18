@@ -1,15 +1,10 @@
 package model.singleton;
 
-import Emergentes.Emergentes;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.Local.Usuario;
 /**
  *
  * @author Jocellyn Luna
@@ -56,8 +51,7 @@ public class ConexionBD {
         Connection conn;
         try {
             Class.forName(DRIVER);
-            conn = DriverManager.getConnection(URL, user,pass); 
-            System.out.println("CONECTADO");
+            conn = DriverManager.getConnection(URL, user,pass);
             return conn;
         } catch (ClassNotFoundException ex) {
             throw new SQLException("Error de Base de Datos.\nNo conectada");
