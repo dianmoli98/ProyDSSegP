@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 public class TecnoImport extends Application{
    public static Stage ventPrincipal = new Stage();
     public static Stage ventincio = new Stage();
+    public static Stage ventsegunda = new Stage();
     public static Scene scene;
     
     @Override

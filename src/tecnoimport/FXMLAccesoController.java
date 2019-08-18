@@ -22,8 +22,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import static tecnoimport.TecnoImport.ventincio;
-
+import static tecnoimport.TecnoImport.ventsegunda;
 /**
  * FXML Controller class
  *
@@ -63,6 +64,11 @@ public class FXMLAccesoController implements Initializable {
             Scene scene = new Scene(root);
             ventincio.setScene(scene);
             ventincio.show();
+            Parent root3 = FXMLLoader.load(getClass().getResource("/tecnoimport/Pantalla de Espera.fxml"));
+            Scene scene3 = new Scene(root3);
+            ventsegunda.setScene(scene3);
+            ventsegunda.show();
+            
             ((Node)(event.getSource())).getScene().getWindow().hide();
         }catch (SQLException | IOException ex) {
             Emergentes.mostrarDialogo(ex.getMessage(), "Error", "Error");
