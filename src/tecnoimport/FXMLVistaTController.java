@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -104,8 +105,14 @@ public class FXMLVistaTController implements Initializable {
         alert.setContentText ("¿Está seguro que desea cerrar sesión?");
         Optional <ButtonType> result = alert.showAndWait ();
         if (result.get () == ButtonType.OK){   
-        System.exit(0);}
-        else{}
+            Parent root = FXMLLoader.load(getClass().getResource("PantallaAcceso.fxml"));
+            Stage stage= new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+            final Node source = (Node) event.getSource();
+            final Stage stage1 = (Stage) source.getScene().getWindow();
+            stage1.close();}
+            else{}
         
     }
     
@@ -118,7 +125,7 @@ public class FXMLVistaTController implements Initializable {
     @FXML
     private void RealizarVenta(MouseEvent event) throws IOException{
           Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
-        Stage stage= new Stage();
+          Stage stage= new Stage();
             stage.setScene(new Scene(root));
             stage.show();
     }
@@ -134,7 +141,7 @@ public class FXMLVistaTController implements Initializable {
     @FXML
     private void RealizarConsultas(MouseEvent event)throws IOException {
          Parent root = FXMLLoader.load(getClass().getResource("Pantallaconsultas.fxml"));
-        Stage stage= new Stage();
+         Stage stage= new Stage();
             stage.setScene(new Scene(root));
             stage.show();
     }

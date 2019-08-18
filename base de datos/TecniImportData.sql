@@ -106,7 +106,7 @@ flush privileges;
 create user 'dmendoza'@'%' identified by 'lister';
 grant all privileges on *.* to 'dmendoza'@'%' with grant option;
 flush privileges;
-
+drop user if exists pbmoral;
 create user 'pbmoral'@'%' identified by 'pbmoral';
 grant all privileges on *.* to 'pbmoral'@'%' with grant option;
 flush privileges;
