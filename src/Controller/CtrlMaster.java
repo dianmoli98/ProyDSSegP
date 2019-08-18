@@ -21,11 +21,15 @@ import model.singleton.ConexionBD;
 public class CtrlMaster {
     private static Usuario userLogin = null; 
     
-    public static Connection validarLogin(String usuario, String password) throws SQLException{
+    private static Connection validarLogin(String usuario, String password) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         bd.setLogIn(usuario, password);
         Connection conn;
+        try{
         conn = bd.conectarMySQL();
+        }catch(SQLException ex){
+            throw new SQLException("Usuario o contraseña equivocada.\nIntente nuevamente.");
+        }
         return conn;
     }
     

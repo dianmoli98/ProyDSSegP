@@ -1,4 +1,3 @@
-
 use TecnoImport;
 -- Here it's gonna be charged with datas for getting sure 
 -- all made before were correct
@@ -23,22 +22,22 @@ INSERT INTO TipoUsuario(id_tipoUsuario,descripcion) VALUES
 (2,"JEFE DE BODEGA"),
 (3,"GERENTE");
 
-INSERT INTO Usuario(cedula,usuario,clave,TipoUsuario,isAdmin) VALUES
-("0950165811","jfmorale","0950165811",1,false),
-("0950165860","pbmoral","pbmoral",2,false),
-("1306944461","celema","guayaquil",3,false),
-("0348288833","jasaman","348288833",2,false),
-("0930074422","dmendoza","lister",1,false);
-
-INSERT INTO Repartidor(cedula,MatriculaVehiculo,telefono,id_jefeBodega) VALUES
-("1304858388","ABC-3232","0940832978","0950165860"),
-("0930210399","HFS-1212","0956734988","0348288833"),
-("0952859322","GBE-5050","0939443454","0950165860");
-
 INSERT INTO Matriz(id_matriz,direccion,tipoLocalidad) VALUES
 ("0001","Av. Victor Emilio Estrada y Circunvalacion Sur","Matriz"),
 ("0002","Av. Francisco de Orellana y Calle Sexta","Sucursal"),
 ("0003","Km 16 1/2 via a Daule","Bodega");
+
+INSERT INTO Usuario(cedula,usuario,clave,TipoUsuario,matriz_id,isAdmin) VALUES
+("0950165811","jfmorale","0950165811",1,"0002",false),
+("0950165860","pbmoral","pbmoral",2,"0001",false),
+("1306944461","celema","guayaquil",3,"0002",false),
+("0348288833","jasaman","348288833",1,"0003",false),
+("0930074422","dmendoza","lister",1,"0002",false);
+
+INSERT INTO Repartidor(cedula,MatriculaVehiculo,telefono,id_jefeBodega) VALUES
+("1304858388","ABC-3232","0940832978","0950165860"),
+("0930210399","HFS-1212","0956734988","0950165860"),
+("0952859322","GBE-5050","0939443454","0950165860");
 
 INSERT INTO Cliente(cedula,direccion,telefono) VALUES
 ("0946274823","Cdla. Primavera 1. Secap Duran","0979367299"),
@@ -49,7 +48,13 @@ INSERT INTO Cliente(cedula,direccion,telefono) VALUES
 ("0943083432","Guasmo Sur Solar ZY Vlla 3432","0923174323");
 
 INSERT INTO Ruta(id_ruta,Realizado,id_repartidor,id_jefeBodega) VALUES
-(1,"F","1304858388","0950165860");
+(1,"F","1304858388","0950165860"),
+(2,"F","0930210399","0950165860");
+
+INSERT INTO pedido(id_pedido, id_matriz, id_cliente, id_vendedor, id_jefeBodega, id_ruta) VALUES
+(default,NULL, "0946274823" , "0950165811","0348288833",1),
+(default,NULL, "0943083432" , "0950165811","0348288833",2),
+(default,NULL, "0947284555" , "0950165811","0348288833",1);
 
 INSERT INTO FormaPago(id_formaPago,descripcion) VALUES
 (1,"TARJETA DE CREDITO/DEBITO"),
@@ -65,39 +70,24 @@ INSERT INTO Producto(id_producto,precio,nombre,categoria,descripcion) VALUES
 (default,950,"CPU XTRATECH","Computadoras","Intel Core I5"),
 (default,500,"Impresora HP","Impresoras","tinta continua");
 
-INSERT INTO stock(id_stock,id_producto,descripcion,id_matriz) VALUES
-(default,1,"Celulares Xiaomi Redmi","0001"),
-(default,2,"CPU XTRATECH","0003"),
-(default,3,"Impresora HP tinta continua","0002");
-
-DELETE FROM stock
-WHERE descripcion="Celulares Xiaomi Redmi";
-DELETE FROM stock
-WHERE descripcion="CPU XTRATECH";
-DELETE FROM stock
-WHERE descripcion="Impresora HP tinta continua";
-ALTER TABLE stock CHANGE descripcion Stock int(50);
 INSERT INTO stock(id_stock,id_producto,stock,id_matriz) VALUES
 (default,1,600,"0001"),
 (default,2,26,"0003"),
 (default,3,100,"0002");
 
-INSERT INTO Producto(id_producto,precio,nombre,categoria,descripcion) VALUES
-(default,520,"Celular Samsung J7","Celular","Doble camara"),
-(default,950,"Computadora HP","Computadoras","Intel Core I7"),
-(default,670,"Impresora Epson","Impresoras","tinta de cartucho");
 
-INSERT INTO stock(id_stock,id_producto,stock,id_matriz) VALUES
-(default,4,760,"0003"),
-(default,6,126,"0003"),
-(default,5,134,"0001");
+create user 'jasaman'@'%' identified by '348288833';
+grant all privileges on *.* to 'jasaman'@'%' with grant option;
+flush privileges;
 
-INSERT INTO Matriz(id_matriz,direccion,tipoLocalidad) VALUES
-("0004","Av. Olmedo y Boyaca","Bodega"),
-("0005","Venezuela y Antepara","Sucursal"),
-("0006","Km Via a la Costa","Matriz");
+create user 'dmendoza'@'%' identified by 'lister';
+grant all privileges on *.* to 'dmendoza'@'%' with grant option;
+flush privileges;
 
-INSERT INTO stock(id_stock,id_producto,stock,id_matriz) VALUES
-(default,4,760,"0004"),
-(default,4,126,"0005"),
-(default,6,134,"0006");
+create user 'pbmoral'@'%' identified by 'pbmoral';
+grant all privileges on *.* to 'pbmoral'@'%' with grant option;
+flush privileges;
+
+create user 'celema'@'%' identified by 'guayaquil';
+grant all privileges on *.* to 'celema'@'%' with grant option;
+flush privileges;

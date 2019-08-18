@@ -96,10 +96,10 @@ public class FXMLVistaTProductoController implements Initializable {
     }
     
     public void llenar() throws SQLException{
-             ConexionBD bd = ConexionBD.getInstance();
-             Connection conn = bd.conectarMySQL();
-             String query = "select * from producto";
-             ResultSet rs = bd.seleccionarDatos(query, conn);
+            ConexionBD bd = ConexionBD.getInstance();
+            Connection conn = bd.conectarMySQL();
+            String query = "select * from producto";
+            ResultSet rs = bd.seleccionarDatos(query, conn);
             id_producto.setCellValueFactory(new PropertyValueFactory<>("id_producto"));
             nombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
             descripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
@@ -116,7 +116,7 @@ public class FXMLVistaTProductoController implements Initializable {
          txtprecio.setVisible(false);
     }
     
-        public void setCenter(){
+    public void setCenter(){
         busqueda.setPromptText("Ingrese su búsqueda");
         ObservableList ob=FXCollections.observableArrayList("Nombre","Categoria");
         comboxbus.setItems(ob);

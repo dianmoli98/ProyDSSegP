@@ -22,4 +22,9 @@ public class Repartidor extends Persona{
         super(nombre, apellido, id);
         cantRutas = cant;
     }
+    
+    @Override
+    public String toString(){
+        return this.nombre + " " + this.apellido;
+    }
 }

@@ -32,6 +32,14 @@ CREATE TABLE TipoUsuario(
 )ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=100;
 
 
+DROP TABLE IF EXISTS Matriz;
+CREATE TABLE Matriz(
+  `id_matriz` varchar(4) NOT NULL ,
+  `direccion` varchar(100) NOT NULL,
+  `tipoLocalidad` varchar(20) NULL DEFAULT "Matriz",
+  PRIMARY KEY(`id_matriz`)
+  )ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  
   
 DROP TABLE IF EXISTS Usuario;
 CREATE TABLE Usuario(
@@ -39,8 +47,10 @@ CREATE TABLE Usuario(
   `usuario` varchar(45) NOT NULL,
   `clave` varchar(45) NOT NULL,
   `TipoUsuario` integer(6) NOT NULL,
+   `matriz_id` varchar(4) NOT NULL,
   `isAdmin` BOOLEAN NULL DEFAULT False,
   PRIMARY KEY(`cedula`),
+  CONSTRAINT `idMatriz` FOREIGN KEY (`matriz_id`) REFERENCES `Matriz` (`id_matriz`) ,
   CONSTRAINT `_cedula` FOREIGN KEY (`cedula`) REFERENCES `Persona` (`cedula`) ,
   CONSTRAINT `_TipoUsuario` FOREIGN KEY (`TipoUsuario`) REFERENCES `TipoUsuario` (`id_tipoUsuario`) 
  
@@ -59,15 +69,6 @@ CREATE TABLE Repartidor(
   )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-DROP TABLE IF EXISTS Matriz;
-CREATE TABLE Matriz(
-  `id_matriz` varchar(4) NOT NULL ,
-  `direccion` varchar(100) NOT NULL,
-  `tipoLocalidad` varchar(20) NULL DEFAULT "Matriz",
-  PRIMARY KEY(`id_matriz`)
-  )ENGINE=InnoDB DEFAULT CHARSET=latin1;
-  
-  
   DROP TABLE IF EXISTS Cliente;
 CREATE TABLE Cliente(
   `cedula` varchar(11) NULL DEFAULT "99999999999",
@@ -168,10 +169,10 @@ DROP TABLE IF EXISTS DetalleCompra;
     DROP TABLE IF EXISTS Stock;
   CREATE TABLE Stock(
 	`id_stock` INTEGER(6) NOT NULL AUTO_INCREMENT,
-    `id_producto` INTEGER(6) DEFAULT 0,
-    `descripcion` varchar(50) NULL DEFAULT "SIN ASIGNACION",
+    `id_producto` INTEGER(6) NOT NULL,
+    `stock` INTEGER(6) DEFAULT 0,
     `id_matriz` varchar(6) NOT NULL,
-    PRIMARY KEY(`id_stock`),
+    PRIMARY KEY(`id_stock`, `id_producto`),
     CONSTRAINT `_id_producto` FOREIGN KEY (`id_producto`) REFERENCES `Producto`(`id_producto`),
     CONSTRAINT `_id_matriz` FOREIGN KEY (`id_matriz`) REFERENCES `Matriz`(`id_matriz`)
     )ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;  
@@ -179,11 +180,11 @@ DROP TABLE IF EXISTS DetalleCompra;
      DROP TABLE IF EXISTS Pedido;
   CREATE TABLE Pedido(
 	`id_pedido` INTEGER(10) NOT NULL AUTO_INCREMENT,
-    `id_matriz` varchar(6) NOT NULL,
-    `id_cliente` varchar(6) NOT NULL,
-    `id_vendedor` varchar(6) NOT NULL,
-    `id_jefeBodega` varchar(6) NOT NULL,
-    `id_ruta` INTEGER(8) NOT NULL,
+    `id_matriz` varchar(6),
+    `id_cliente` varchar(11),
+    `id_vendedor` varchar(11) NOT NULL,
+    `id_jefeBodega` varchar(11) NOT NULL,
+    `id_ruta` INTEGER(8),
     PRIMARY KEY(`id_pedido`),
     CONSTRAINT `__id_matriz`  FOREIGN KEY (`id_matriz`) REFERENCES `Matriz`(`id_matriz`),
     CONSTRAINT `_1_id_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `Cliente`(`cedula`),

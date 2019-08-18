@@ -5,9 +5,18 @@
  */
 package tecnoimport;
 
+import Controller.CtrlJefeBodega;
+import Controller.CtrlMaster;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,8 +24,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.Bodega.Jefe_Bodega;
+import model.Bodega.Repartidor;
+import model.Bodega.Ruta;
+import model.Inventario.Producto;
+import model.Pedido.Pedido;
+import model.singleton.ConexionBD;
 
 /**
  * FXML Controller class
@@ -24,26 +41,35 @@ import javafx.stage.Stage;
  * @author User-pc
  */
 public class PantallaRutasController implements Initializable {
-
+    
+    private TableView<Ruta> tablaRutas;
     @FXML
-    private TableColumn<?, ?> IdRuta;
+    private TableColumn<Ruta, Integer> IdRuta;
     @FXML
-    private TableColumn<?, ?> repartidor;
+    private TableColumn<Ruta, Repartidor> repartidor;
     @FXML
-    private TableColumn<?, ?> pedido;
+    private TableColumn<Ruta, Integer> pedido;
     @FXML
-    private TableColumn<?, ?> status;
+    private TableColumn<Ruta, String> status;
     @FXML
     private Button CrearRuta;
     @FXML
     private Button FinRuta;
+    
+    private CtrlJefeBodega control;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        control = new CtrlJefeBodega((Jefe_Bodega)CtrlMaster.getUser());
+        tablaRutas =IdRuta.getTableView();
+        try {
+            llenar();
+        } catch (SQLException ex) {
+            Logger.getLogger(PantallaRutasController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
 
     @FXML
@@ -56,6 +82,33 @@ public class PantallaRutasController implements Initializable {
 
     @FXML
     private void FinalizarRutas(MouseEvent event) {
+        
+        
     }
+    
+    public void llenar() throws SQLException{
+        ConexionBD bd = ConexionBD.getInstance();
+        Connection conn = bd.conectarMySQL();
+        ResultSet rs = control.obtenerRSPedidos(conn);
+        
+        IdRuta.setCellValueFactory(new PropertyValueFactory<>("id_ruta"));
+        repartidor.setCellValueFactory(new PropertyValueFactory<>("repartidor"));
+        pedido.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        
+        celdas(conn,rs);
+    }
+    
+    private void celdas(Connection st,ResultSet rs) throws SQLException{
+        tablaRutas.setVisible(true);
+        ObservableList<Ruta> datos = FXCollections.observableArrayList();
+        while (rs.next()) {
+            Ruta r = control.obtenerRuta(rs);
+            datos.add(r);
+        }
+        tablaRutas.setItems(datos);
+        tablaRutas.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        st.close();
+     } 
     
 }
