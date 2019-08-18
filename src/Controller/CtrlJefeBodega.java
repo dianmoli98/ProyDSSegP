@@ -7,8 +7,10 @@ package Controller;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.Queue;
 import javafx.collections.ObservableList;
 import model.Bodega.Jefe_Bodega;
 import model.Bodega.Repartidor;
@@ -28,8 +30,14 @@ import model.singleton.ConexionBD;
 public class CtrlJefeBodega {
     
     private final Jefe_Bodega jefe;
+    private Queue<Repartidor> repartidores;
     
     public CtrlJefeBodega(Jefe_Bodega jefe){
+        try {
+            repartidores = obtenerRepartidores();
+        } catch (SQLException ex) {
+           Emergentes.Emergentes.mostrarDialogo("No fue posible conectarse al servidor.", "Error de conexión", "Error");
+        }
         this.jefe = jefe;
     }
 
@@ -152,11 +160,15 @@ public class CtrlJefeBodega {
     }
     
     private Repartidor obtenerRepartidor(){
-        return new Repartidor("x", "x","0930210399", 0);
+       return (repartidores.isEmpty())? null: repartidores.poll();
     }
     
-    private Ruta crearRuta(ObservableList<Pedido> pedidos){
-        Ruta r = new Ruta(0, jefe, obtenerRepartidor(), "F", 0);
+    private Ruta crearRuta(ObservableList<Pedido> pedidos) throws SQLException{
+        Repartidor repart = obtenerRepartidor();
+        if(repart == null){
+            throw new SQLException("No hay repartidores Disponible");
+        }
+        Ruta r = new Ruta(0, jefe, repart, "F", 0);
         LinkedList<Pedido> pedidosL = new LinkedList<>(pedidos);
         r.setPedidos(pedidosL);
         return r;
@@ -164,17 +176,17 @@ public class CtrlJefeBodega {
     
     public void guardarRuta(ObservableList<Pedido> pedidos) throws SQLException{
         Ruta r = crearRuta(pedidos);
-        insertarRutaBD();
+        insertarRutaBD(r);
         r.setId_ruta(obtenerLastRuta());
         for(Pedido p: pedidos){
             asignarRuta(r, p);
         }
     }
     
-    private void insertarRutaBD() throws SQLException{
+    private void insertarRutaBD(Ruta r) throws SQLException{
         String query = 
             "INSERT INTO Ruta(id_ruta,Realizado,id_repartidor,id_jefeBodega) VALUES\n" +
-            "(default,\"F\",\""+obtenerRepartidor().getId()+"\",\""+jefe.getId()+"\")";
+            "(default,\"F\",\""+r.getRepartidor().getId()+"\",\""+jefe.getId()+"\")";
         
         ConexionBD.getInstance().hacerQuery(query); 
     }
@@ -203,5 +215,24 @@ public class CtrlJefeBodega {
         }
         bd.cerrarConexion(conn);
         return id;  
+    }
+    
+    private LinkedList<Repartidor> obtenerRepartidores() throws SQLException{
+        ConexionBD bd = ConexionBD.getInstance();
+        Connection conn = bd.conectarMySQL();
+        String query = 
+            "SELECT * \n" +
+            "FROM repartidor r\n" +
+            "JOIN persona p On r.cedula = p.cedula\n" +
+            "WHERE r.cedula NOT IN\n" +
+            "	(SELECT r1.id_repartidor\n" +
+            "	 FROM  ruta r1);";
+        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
+        LinkedList<Repartidor> rep = new LinkedList<>();
+        while(rs.next()){
+            rep.add(new Repartidor(rs.getString("nombre"), rs.getString("apellido"), rs.getString("cedula"), 0));
+        }
+        bd.cerrarConexion(conn);
+        return rep;
     }
 }

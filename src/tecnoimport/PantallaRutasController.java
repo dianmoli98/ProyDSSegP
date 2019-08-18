@@ -6,7 +6,6 @@
 package tecnoimport;
 
 import Controller.CtrlJefeBodega;
-import Controller.CtrlMaster;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -57,13 +56,14 @@ public class PantallaRutasController implements Initializable {
     
     private static PantallaRutasController controller = null;
     
-    private static CtrlJefeBodega control = new CtrlJefeBodega((Jefe_Bodega)CtrlMaster.getUser());;
+    private CtrlJefeBodega control;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        control = FXMLVistaTController.getControlJefe();
         controller = this;
         tablaRutas =IdRuta.getTableView();
         try {
@@ -113,11 +113,6 @@ public class PantallaRutasController implements Initializable {
         tablaRutas.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         ConexionBD.getInstance().cerrarConexion(st);
     }
-    
-    public static CtrlJefeBodega getControl(){
-        return control;
-    }
-
     public static PantallaRutasController getController() {
         return controller;
     }

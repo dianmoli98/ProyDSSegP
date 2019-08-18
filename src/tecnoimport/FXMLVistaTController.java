@@ -9,7 +9,6 @@ import Controller.CtrlGerente;
 import Controller.CtrlJefeBodega;
 import Controller.CtrlMaster;
 import Controller.CtrlVendedor;
-import Emergentes.Emergentes;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -18,6 +17,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -36,6 +37,7 @@ import model.Bodega.Jefe_Bodega;
 import model.Local.Gerente;
 import model.Local.Usuario;
 import model.Local.Vendedor;
+import static tecnoimport.TecnoImport.ventsegunda;
 
 /**
  * FXML Controller class
@@ -65,9 +67,9 @@ public class FXMLVistaTController implements Initializable {
     @FXML
     private Label empleado;
     
-    private CtrlGerente controlGerente;
-    private CtrlJefeBodega controlJefe;
-    private CtrlVendedor controlVendedor;
+    private static CtrlGerente controlGerente = null;
+    private static CtrlJefeBodega controlJefe = null;
+    private static CtrlVendedor controlVendedor = null;
     /**
      * Initializes the controller class.
      */
@@ -90,6 +92,15 @@ public class FXMLVistaTController implements Initializable {
         }else if(user instanceof Jefe_Bodega){
             Ventas.setDisable(true);
             Clientes.setDisable(true);
+            controlJefe = new CtrlJefeBodega((Jefe_Bodega)CtrlMaster.getUser());
+            try {
+                Parent root3 = FXMLLoader.load(getClass().getResource("/tecnoimport/Pantalla de Espera.fxml"));
+                Scene scene3 = new Scene(root3);
+                ventsegunda.setScene(scene3);
+                ventsegunda.show();
+            } catch (IOException ex) {
+                Logger.getLogger(FXMLVistaTController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
         }else if(user instanceof Vendedor){
             ruta.setDisable(true);
@@ -112,8 +123,9 @@ public class FXMLVistaTController implements Initializable {
             stage.show();
             final Node source = (Node) event.getSource();
             final Stage stage1 = (Stage) source.getScene().getWindow();
-            stage1.close();}
-            else{}
+            stage1.close();
+            ventsegunda.close();
+        }
         
     }
     
@@ -171,4 +183,15 @@ public class FXMLVistaTController implements Initializable {
     private void ImprimirDoc(MouseEvent event) {
     }
     
+    public static CtrlJefeBodega getControlJefe(){
+        return controlJefe;
+    }
+    
+    public static CtrlGerente getControlGerente(){
+        return controlGerente;
+    }
+    
+    public static CtrlVendedor getControlVendedor(){
+        return controlVendedor;
+    }
 }
