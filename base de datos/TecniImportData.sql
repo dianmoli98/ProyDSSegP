@@ -82,4 +82,12 @@ INSERT INTO stock(id_stock,id_producto,stock,id_matriz) VALUES
 (default,2,26,"0003"),
 (default,3,100,"0002");
 
+INSERT INTO Producto(id_producto,precio,nombre,categoria,descripcion) VALUES
+(default,520,"Celular Samsung J7","Celular","Doble camara"),
+(default,950,"Computadora HP","Computadoras","Intel Core I7"),
+(default,670,"Impresora Epson","Impresoras","tinta de cartucho");
 
+INSERT INTO stock(id_stock,id_producto,stock,id_matriz) VALUES
+(default,4,760,"0003"),
+(default,6,126,"0003"),
+(default,5,134,"0001");
