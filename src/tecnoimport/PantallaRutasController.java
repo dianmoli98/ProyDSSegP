@@ -84,8 +84,13 @@ public class PantallaRutasController implements Initializable {
     }
 
     @FXML
-    private void FinalizarRutas(MouseEvent event) {
-        
+    private void FinalizarRutas(MouseEvent event)throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("FinalizaRuta.fxml"));
+        Stage stage= new Stage();
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(tablaRutas.getScene().getWindow());
+        stage.setScene(new Scene(root));
+        stage.show();
         
     }
     
