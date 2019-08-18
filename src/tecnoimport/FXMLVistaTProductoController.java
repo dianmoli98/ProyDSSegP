@@ -62,10 +62,6 @@ public class FXMLVistaTProductoController implements Initializable {
     @FXML
     private Label lblprecio;
     @FXML
-    private Label lblstock;
-    @FXML
-    private TextField txtstock;
-    @FXML
     private TextField txtprecio;
     @FXML
     private Label fecha;
@@ -113,8 +109,7 @@ public class FXMLVistaTProductoController implements Initializable {
     private void ocultar(){
      
         lblprecio.setVisible(false);
-         lblstock.setVisible(false);
-        txtstock.setVisible(false);
+
          txtprecio.setVisible(false);
     }
     
@@ -221,8 +216,7 @@ public class FXMLVistaTProductoController implements Initializable {
     private void mostrar(){
        
         lblprecio.setVisible(true);
-         lblstock.setVisible(true);
-        txtstock.setVisible(true);
+ 
          txtprecio.setVisible(true);
     }
     
@@ -236,12 +230,7 @@ ConexionBD bd = ConexionBD.getInstance();
             Connection conn = bd.conectarMySQL();
 Statement st = conn.createStatement();
         st.execute(modify);
-                String modify2= "update stock set stock= '" + txtstock.getText() 
-                + "' where id_producto= '" + p.getId_producto() + "' ; ";
-
-            Connection conn2 = bd.conectarMySQL();
-Statement st2 = conn2.createStatement();
-        st2.execute(modify2);
+               
         String show = "select * from producto";
         Connection connn = bd.conectarMySQL();
         ResultSet rs = bd.seleccionarDatos(show, connn);

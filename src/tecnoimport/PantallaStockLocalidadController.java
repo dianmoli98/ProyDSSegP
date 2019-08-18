@@ -24,6 +24,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -51,6 +53,10 @@ public class PantallaStockLocalidadController implements Initializable {
     private Label fechaactual;
     @FXML
     private Label empleado;
+     @FXML
+    private ImageView insertar;
+    @FXML
+    private ImageView act;
     @FXML
     private ImageView regreso;
     @FXML
@@ -62,6 +68,8 @@ public class PantallaStockLocalidadController implements Initializable {
     @FXML
     private TableView<Dpro> tablaStock;
     @FXML
+    private TableColumn<String, Dpro> idpro;
+    @FXML
     private TableColumn<String, Dpro> nombrePro;
     @FXML
     private TableColumn<String, Dpro> stock;
@@ -71,6 +79,10 @@ public class PantallaStockLocalidadController implements Initializable {
     private TableColumn<String, Dpro> direccion;
     @FXML
     private TableColumn<String, Dpro> lugar;
+     @FXML
+    private Label lblstock;
+    @FXML
+    private TextField txtstock;
 
     /**
      * Initializes the controller class.
@@ -78,10 +90,12 @@ public class PantallaStockLocalidadController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         busqueda.setDisable(true);
+         insertar.setVisible(false);
+         act.setVisible(false);
         Calendar calendar = GregorianCalendar.getInstance();
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("     dd/MM/yyyy");
-
+        ocultar();
         try {
             llenar();
         } catch (SQLException ex) {
@@ -93,9 +107,22 @@ public class PantallaStockLocalidadController implements Initializable {
         empleado.setText(user.getNombre() + " " + user.getApellido());
     }
 
+        private void ocultar(){
+    
+         lblstock.setVisible(false);
+        txtstock.setVisible(false);
+
+    }
+        
+         private void mostrar(){
+
+         lblstock.setVisible(true);
+        txtstock.setVisible(true);
+        
+    }
     public void llenar() throws SQLException {
         conn = bd.conectarMySQL();
-        String query = "select p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
+        String query = "select p.id_producto,p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
                 + "from producto  p\n"
                 + "join stock s on p.id_producto=s.id_producto\n"
                 + "join matriz m on m.id_matriz=s.id_matriz ;";
@@ -105,7 +132,7 @@ public class PantallaStockLocalidadController implements Initializable {
 
     public void llenarMa() throws SQLException {
         conn = bd.conectarMySQL();
-        String query = "select p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
+        String query = "select p.id_producto,p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
                 + "from producto  p\n"
                 + "join stock s on p.id_producto=s.id_producto\n"
                 + "join matriz m on m.id_matriz=s.id_matriz\n"
@@ -116,7 +143,7 @@ public class PantallaStockLocalidadController implements Initializable {
 
     public void llenarSu() throws SQLException {
         conn = bd.conectarMySQL();
-        String query = "select p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
+        String query = "select p.id_producto,p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
                 + "from producto  p\n"
                 + "join stock s on p.id_producto=s.id_producto\n"
                 + "join matriz m on m.id_matriz=s.id_matriz\n"
@@ -127,7 +154,7 @@ public class PantallaStockLocalidadController implements Initializable {
 
     public void llenarBo() throws SQLException {
         conn = bd.conectarMySQL();
-        String query = "select p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
+        String query = "select p.id_producto,p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
                 + "from producto  p\n"
                 + "join stock s on p.id_producto=s.id_producto\n"
                 + "join matriz m on m.id_matriz=s.id_matriz\n"
@@ -171,6 +198,7 @@ public class PantallaStockLocalidadController implements Initializable {
         idlocal.setCellValueFactory(new PropertyValueFactory<>("tipoLocalidad"));
         direccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
         lugar.setCellValueFactory(new PropertyValueFactory<>("id_matriz"));
+        idpro.setCellValueFactory(new PropertyValueFactory<>("id_producto"));
         tablaStock.setVisible(true);
         celdas(conn, rs);
     }
@@ -186,7 +214,8 @@ public class PantallaStockLocalidadController implements Initializable {
                     String tloc = rs.getString("tipoLocalidad");
                     String dir = rs.getString("direccion");
                     String lug = rs.getString("id_matriz");
-                    Dpro dv = new Dpro(nom, tloc, Integer.parseInt(sto), dir, lug);
+                    String idprod = rs.getString("id_producto");
+                    Dpro dv = new Dpro(nom, tloc, Integer.parseInt(sto), dir, lug,Integer.parseInt(idprod));
                     datos.add(dv);
                 }
             }
@@ -200,6 +229,8 @@ public class PantallaStockLocalidadController implements Initializable {
     public void setCentercopy() throws SQLException {
         
         idenlocal.setOnAction((l) -> {
+            insertar.setVisible(true);
+            act.setVisible(true);
             busqueda.setDisable(false);
             String numlocal = idenlocal.getValue().toString();
             ResultSet rs = null;
@@ -209,7 +240,7 @@ public class PantallaStockLocalidadController implements Initializable {
                 } catch (SQLException ex) {
                     Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                query = "select p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
+                query = "select p.id_producto,p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
                         + "from producto  p\n"
                         + "join stock s on p.id_producto=s.id_producto\n"
                         + "join matriz m on m.id_matriz=s.id_matriz\n"
@@ -238,7 +269,7 @@ public class PantallaStockLocalidadController implements Initializable {
                     } catch (SQLException ex) {
                         Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    stbuscar = "select p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
+                    stbuscar = "select p.id_producto,p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
                             + "from producto  p\n"
                             + "join stock s on p.id_producto=s.id_producto\n"
                             + "join matriz m on m.id_matriz=s.id_matriz \n"
@@ -310,4 +341,42 @@ public class PantallaStockLocalidadController implements Initializable {
     private void regreso(MouseEvent event) {
     }
 
+    @FXML
+    private void Modificar(MouseEvent event) {
+        try{
+        mostrar();
+        Dpro p = tablaStock.getSelectionModel().getSelectedItem();
+        txtstock.setText(String.valueOf(p.getStock()));  
+        }catch (Exception e) {
+                    ocultar();
+                          Alert mensajeExp = new Alert(Alert.AlertType.CONFIRMATION);
+        mensajeExp.setHeaderText("Diálogo de confirmación");
+        mensajeExp.setContentText ("No has seleccionado ninguna celda");
+        mensajeExp.showAndWait();
+                }
+    }
+
+    
+      @FXML
+    private void actualizar(MouseEvent event) throws SQLException {
+        
+        Dpro p = tablaStock.getSelectionModel().getSelectedItem();
+        String modify= "update stock set stock= '" + txtstock.getText() 
+                + "' where id_producto= '" + p.getId_producto() + "' and id_matriz='"+p.getId_matriz()+"' ; ";
+ConexionBD bd = ConexionBD.getInstance();
+            Connection conn = bd.conectarMySQL();
+Statement st = conn.createStatement();
+        st.execute(modify);
+        String show = "select p.id_producto,p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
+                + "from producto  p\n"
+                + "join stock s on p.id_producto=s.id_producto\n"
+                + "join matriz m on m.id_matriz=s.id_matriz\n"
+                + "where m.tipoLocalidad='"+ComboLugar.getValue().toString()+"' and m.id_matriz='"+ idenlocal.getValue().toString()+"' ;";
+        Connection connn = bd.conectarMySQL();
+        ResultSet rs = bd.seleccionarDatos(show, connn);
+        celdas(conn,rs);
+            ocultar();
+    }
+    
+    
 }
