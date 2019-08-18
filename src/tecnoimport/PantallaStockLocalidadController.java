@@ -28,8 +28,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import model.Inventario.Dpro;
+import model.Inventario.Producto;
 import model.Local.Usuario;
 import model.singleton.ConexionBD;
 
@@ -51,13 +54,18 @@ public class PantallaStockLocalidadController implements Initializable {
     @FXML
     private ComboBox<?> ComboLugar;
     @FXML
-    private TableView<?> tablaStock;
+    private TableView<Dpro> tablaStock;
     @FXML
-    private TableColumn<?, ?> nombrePro;
+    private TableColumn<String,Dpro> nombrePro;
     @FXML
-    private TableColumn<?, ?> stock;
+    private TableColumn<String,Dpro> stock;
     @FXML
-    private TableColumn<?, ?> idlocal;
+    private TableColumn<String,Dpro> idlocal;
+    @FXML
+    private TableColumn<String,Dpro> direccion;
+    @FXML
+    private TableColumn<String,Dpro> lugar;
+    
 
     /**
      * Initializes the controller class.
@@ -67,11 +75,60 @@ public class PantallaStockLocalidadController implements Initializable {
     Calendar calendar= GregorianCalendar.getInstance();
     Date date=Calendar.getInstance().getTime();
     SimpleDateFormat sdf=new SimpleDateFormat("     dd/MM/yyyy");
+    
+        try {
+            llenar();
+        } catch (SQLException ex) {
+            Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     setCenter();   
     fechaactual.setText(sdf.format(date));
     Usuario user = CtrlMaster.getUser();
     empleado.setText(user.getNombre() + " " + user.getApellido());
     }    
 
+    public void llenar() throws SQLException{
+             ConexionBD bd = ConexionBD.getInstance();
+             Connection conn = bd.conectarMySQL();
+             String query = "select p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n" +
+"from producto  p\n" +
+"join stock s on p.id_producto=s.id_producto\n" +
+"join matriz m on m.id_matriz=s.id_matriz ;";
+    ResultSet rs = bd.seleccionarDatos(query, conn);
+    llenartable(conn,rs);}
+
+    public void llenartable(Connection conn,ResultSet rs){
+             nombrePro.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+             stock.setCellValueFactory(new PropertyValueFactory<>("Stock"));
+            idlocal.setCellValueFactory(new PropertyValueFactory<>("tipoLocalidad"));
+            direccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
+            lugar.setCellValueFactory(new PropertyValueFactory<>("id_matriz"));
+            tablaStock.setVisible(true);
+            celdas(conn,rs);
+     }
+    
+    private void celdas(Connection st,ResultSet rs){
+        tablaStock.setVisible(true);
+        try {
+            ObservableList<Dpro> datos = FXCollections.observableArrayList();
+            while (rs.next()) {
+                if (!rs.getString("nombre").equalsIgnoreCase("0")) {
+                    String nom = rs.getString("nombre");
+                    String sto = rs.getString("Stock");
+                    String tloc = rs.getString("tipoLocalidad");
+                    String dir = rs.getString("direccion");
+                    String lug = rs.getString("id_matriz");
+                    Dpro dv = new Dpro(nom,tloc,Integer.parseInt(sto),dir,lug);
+                    datos.add(dv);
+                }}
+            tablaStock.setItems(datos);
+            tablaStock.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        } catch (SQLException ex) {
+            Logger.getLogger(FXMLVistaTProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     }  
+    
+    
     public void setCenter(){
         busqueda.setPromptText("Ingrese su búsqueda");
         ObservableList ob=FXCollections.observableArrayList("Matriz","Sucursal","Bodega");
@@ -93,7 +150,7 @@ public class PantallaStockLocalidadController implements Initializable {
         busqueda.textProperty().addListener(new ChangeListener(){
             @Override
             public void changed(ObservableValue args0,Object o1,Object o2){
-                /*String comboText=(String)ComboLugar.getValue();
+                String comboText=(String)ComboLugar.getValue();
                 if (comboText != null && !comboText.equals("") && !comboText.equals(" ")) {
                 try {
                     Connection st = null;
@@ -102,35 +159,26 @@ public class PantallaStockLocalidadController implements Initializable {
 
                         String stringActual = (String) o2;
                         if (((String) ComboLugar.getValue()).equals("Matriz")) {
+                            System.out.println("df");
                             ConexionBD bd = ConexionBD.getInstance();      
-                            stbuscar = "select * from matriz where tipoLocalidad="+busqueda.getText() + "%\' ;";
+                            stbuscar = "select nombre,Stock,tipoLocalidad,direccion\n" +
+"from producto\n" +
+"join stock on producto.id_producto=stock.id_producto\n" +
+"join matriz on matriz.id_matriz=stock.id_matriz \n" +
+"where tipoLocalidad=\"Matriz\";";
                             st = bd.conectarMySQL();
                             rs = bd.seleccionarDatos(stbuscar,st);
-                            celdas(st,rs);
-
-                        } else if (((String) comboxbus.getValue()).equals("Categoria")) {
-                            ConexionBD bd = ConexionBD.getInstance();    
-                            stbuscar = "select * from producto where Categoria like " + " \'" + busqueda.getText() + "%\' ;";
-                            st = bd.conectarMySQL();
-                            rs = bd.seleccionarDatos(stbuscar,st);
-                            celdas(st,rs);
+                            llenartable(st,rs);
+                          
                         }
-                        
-                       if(busqueda.getText().equals("")){
-                        ConexionBD bd = ConexionBD.getInstance();       
-                        stbuscar = "select * from producto;"; 
-                        st = bd.conectarMySQL();
-                            rs = bd.seleccionarDatos(stbuscar,st);
-                            celdas(st,rs);}
+
                     } catch (SQLException ex) {
                         Logger.getLogger(FXMLVistaTProductoController.class.getName()).log(Level.SEVERE, null, ex);
                     }
             }
             }
-        });*/
-     }
-                });}
-    
+        });
+    }
     
     
     @FXML
