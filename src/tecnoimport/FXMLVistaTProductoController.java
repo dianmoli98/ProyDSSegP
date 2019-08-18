@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tecnoimport;
 
 import Controller.CtrlMaster;
@@ -64,7 +59,12 @@ public class FXMLVistaTProductoController implements Initializable {
     private ComboBox<?> comboxbus;
     @FXML
     private ImageView regreso;
-   
+    @FXML
+    private Label lblprecio;
+    @FXML
+    private Label lblstock;
+    @FXML
+    private TextField txtstock;
     @FXML
     private TextField txtprecio;
     @FXML
@@ -111,7 +111,10 @@ public class FXMLVistaTProductoController implements Initializable {
      }
     
     private void ocultar(){
-
+     
+        lblprecio.setVisible(false);
+         lblstock.setVisible(false);
+        txtstock.setVisible(false);
          txtprecio.setVisible(false);
     }
     
@@ -216,6 +219,10 @@ public class FXMLVistaTProductoController implements Initializable {
     }
     
     private void mostrar(){
+       
+        lblprecio.setVisible(true);
+         lblstock.setVisible(true);
+        txtstock.setVisible(true);
          txtprecio.setVisible(true);
     }
     
@@ -229,7 +236,7 @@ ConexionBD bd = ConexionBD.getInstance();
             Connection conn = bd.conectarMySQL();
 Statement st = conn.createStatement();
         st.execute(modify);
-                String modify2= "update stock set stock= '" + txtprecio.getText() 
+                String modify2= "update stock set stock= '" + txtstock.getText() 
                 + "' where id_producto= '" + p.getId_producto() + "' ; ";
 
             Connection conn2 = bd.conectarMySQL();
