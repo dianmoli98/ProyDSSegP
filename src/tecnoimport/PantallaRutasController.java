@@ -54,14 +54,13 @@ public class PantallaRutasController implements Initializable {
     @FXML
     private Button FinRuta;
     
-    private CtrlJefeBodega control;
+    private static CtrlJefeBodega control = new CtrlJefeBodega((Jefe_Bodega)CtrlMaster.getUser());;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        control = new CtrlJefeBodega((Jefe_Bodega)CtrlMaster.getUser());
         tablaRutas =IdRuta.getTableView();
         try {
             llenar();
@@ -107,6 +106,10 @@ public class PantallaRutasController implements Initializable {
         tablaRutas.setItems(datos);
         tablaRutas.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         ConexionBD.getInstance().cerrarConexion(st);
-     } 
+    }
+    
+    public static CtrlJefeBodega getControl(){
+        return control;
+    }
     
 }

@@ -11,7 +11,12 @@ import java.sql.SQLException;
 import model.Bodega.Jefe_Bodega;
 import model.Bodega.Repartidor;
 import model.Bodega.Ruta;
+import model.Inventario.Matriz;
+import model.Local.Cliente;
+import model.Local.Vendedor;
 import model.Pedido.Pedido;
+import model.Pedido.PedidoCliente;
+import model.Pedido.PedidoMatriz;
 import model.singleton.ConexionBD;
 
 /**
@@ -68,14 +73,80 @@ public class CtrlJefeBodega {
         return r;
     }
     
-    private ResultSet obtenerRSPedidos(Connection conn) throws SQLException{
+    public ResultSet obtenerRSPedidos(Connection conn) throws SQLException{
         String query = 
-            "use tecnoimport;\n" +
-            "SELECT * \n" +
+            "SELECT p.id_pedido, p.id_cliente, p.id_matriz, p.id_vendedor  \n" +
             "FROM pedido p  \n" +
-            "Where p.id_ruta is NULL and id_jefeBodega = \""+jefe.getId()+"\";";
+            "Where p.id_ruta is NULL and p.id_jefeBodega = \""+jefe.getId()+"\";";
         ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
         return rs; 
+    }
+    
+    public Pedido obtenerPedido(ResultSet rs) throws SQLException{
+        int id_pedido = rs.getInt("id_pedido");
+        String id_matriz = rs.getString("id_matriz");
+        String id_cliente = rs.getString("id_cliente");
+        String id_vendedor = rs.getString("id_vendedor");
+        Pedido pedido = null;
+        if(id_matriz != null){
+            pedido = new PedidoMatriz(obtenerMatriz(id_matriz), obtenerVendedor(id_vendedor), id_pedido);
+        }else{
+            pedido = new PedidoCliente(id_pedido,obtenerCliente(id_cliente), obtenerVendedor(id_vendedor));
+        }
+        
+        return pedido;
+    } 
+    
+    private Cliente obtenerCliente(String cedula) throws SQLException{
+        ConexionBD bd = ConexionBD.getInstance();
+        Connection conn = bd.conectarMySQL();
+        String query = 
+            "SELECT *\n" +
+            "FROM cliente c\n" +
+            "JOIN persona p On p.cedula = c.cedula\n" +
+            "WHERE p.cedula = \"" + cedula + "\";";
+        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
+        Cliente c = null;
+        if(rs.next()){
+            c = new Cliente(rs.getString("nombre"), rs.getString("apellido"), 
+                    rs.getString("cedula"), rs.getString("direccion"), rs.getString("telefono"));
+        }
+        bd.cerrarConexion(conn);
+        return c;
+    }
+    
+    private Matriz obtenerMatriz(String id) throws SQLException{
+        ConexionBD bd = ConexionBD.getInstance();
+        Connection conn = bd.conectarMySQL();
+        String query = 
+            "SELECT * \n" +
+            "FROM matriz m\n" +
+            "WHERE m.id_matriz = \"" + id + "\";";
+        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
+        Matriz m = null;
+        if(rs.next()){
+            m = new Matriz(rs.getString("id_matriz"),rs.getString("direccion"),rs.getString("tipoLocalidad"));
+        }
+        bd.cerrarConexion(conn);
+        return m;
+    }
+    
+    private Vendedor obtenerVendedor(String cedula) throws SQLException{
+        ConexionBD bd = ConexionBD.getInstance();
+        Connection conn = bd.conectarMySQL();
+        String query = 
+            "SELECT * \n" +
+            "FROM usuario u\n" +
+            "JOIN persona p ON p.cedula = u.cedula\n" +
+            "WHERE p.cedula = \"" + cedula + "\";";
+        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
+        Vendedor v = null;
+        if(rs.next()){
+            v = new Vendedor(rs.getString("usuario"), rs.getString("clave"),
+                    rs.getBoolean("isAdmin"), rs.getString("nombre"), rs.getString("apellido"), rs.getString("cedula"));
+        }
+        bd.cerrarConexion(conn);
+        return v;
     }
     
     private boolean guardarRuta(Ruta ruta){

@@ -12,8 +12,16 @@ import java.util.LinkedList;
  * @author josie
  */
 public class Matriz {
+    private String id;
+    private String tipo;
     private String direccion;
     private LinkedList<Stock> stocks;
+    
+    public Matriz(String id, String direccion, String tipo){
+        this.id = id;
+        this.direccion = direccion;
+        this.tipo = tipo;
+    }
 
     public String getDireccion() {
         return direccion;

@@ -17,6 +17,8 @@ public class Cliente extends Persona {
 
     public Cliente(String nombre, String apellido, String id, String direccion, String telefono) {
         super(nombre, apellido, id);
+        this.direccion = direccion;
+        this.telefono = telefono;
     }
 
     public String getDireccion() {

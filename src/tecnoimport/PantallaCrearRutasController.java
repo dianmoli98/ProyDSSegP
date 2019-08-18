@@ -5,26 +5,25 @@
  */
 package tecnoimport;
 
-import Controller.CtrlMaster;
-import Emergentes.Emergentes;
+import Controller.CtrlJefeBodega;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import model.singleton.ConexionBD;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import model.Pedido.Pedido;
 
 /**
  * FXML Controller class
@@ -34,62 +33,91 @@ import javafx.scene.input.MouseEvent;
 public class PantallaCrearRutasController implements Initializable {
 
     @FXML
-    private TableView tablaRutasgeneral;
+    private TableView<Pedido> tablaRutasgeneral;
+    
     @FXML
-    private TableView tablaRutasAsignadas;
+    private TableColumn<Pedido, String> idped;
+    @FXML
+    private TableColumn<Pedido, String> dir;
+    @FXML
+    private TableView<Pedido> tablaRutasAsignadas;
+    @FXML
+    private TableColumn<Pedido, String> idpedido;
+    @FXML
+    private TableColumn<Pedido, String> direccion;
+    
     private ObservableList<String> data;
+    private static CtrlJefeBodega control = PantallaRutasController.getControl();
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        agregarColumasRuta();
         try {
-            cargarData();
+            llenar();
         } catch (SQLException ex) {
-            Logger.getLogger(PantallaCrearRutasController.class.getName()).log(Level.SEVERE, null, ex);
+           Emergentes.Emergentes.mostrarDialogo(ex.getMessage(), "Error de conexión.",
+                   "Error");
         }
-    }    
-    public void cargarData() throws SQLException {
-            ConexionBD bd = ConexionBD.getInstance();
-             Connection conn = bd.conectarMySQL();
-            String sql1 = "select * from Cliente"; //  este es pero queria ver si me salia con este en general --- "select * from Cliente join pedido on id_cliente=cedula"
-            String sql2="select * from Matriz join pedido on Matriz.id_matriz=Pedido.id_matriz";
-            ResultSet rs = bd.seleccionarDatos(sql1, conn);
-            ResultSet rs2=bd.seleccionarDatos(sql2,conn);
-            TableColumn column = new TableColumn<>();
-            column.setText("Direcciones-Pedido");
-            column.setCellValueFactory(new PropertyValueFactory<>("direccion"));
-            tablaRutasgeneral.getColumns().add(column);
-            dataBaseArrayList(conn,rs);
+        accionDoubleClickTabla(tablaRutasAsignadas, tablaRutasgeneral);
+        accionDoubleClickTabla(tablaRutasgeneral, tablaRutasAsignadas);
+    }   
+      
+    private void llenar() throws SQLException{
+        ConexionBD bd = ConexionBD.getInstance();
+        Connection conn = bd.conectarMySQL();
+        ResultSet rs = control.obtenerRSPedidos(conn);
+        celdas(conn,rs);
     }
     
-
-    private void dataBaseArrayList(Connection st,ResultSet rs) throws SQLException{
+    private void celdas(Connection st,ResultSet rs) throws SQLException{
         tablaRutasgeneral.setVisible(true);
-        try {
-            data=FXCollections.observableArrayList();
-             while (rs.next()) {
-                    String dat=rs.getString("direccion");
-                    data.add(dat);
-                }
-            tablaRutasgeneral.setEditable(true);
-            //tablaRutasgeneral.setFocusTraversable(true);
-            tablaRutasgeneral.setItems(data);
-            tablaRutasgeneral.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        } catch (SQLException ex) {
-            Logger.getLogger(FXMLVistaTProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        ObservableList<Pedido> datos = FXCollections.observableArrayList();
+        while (rs.next()) {
+            Pedido p = control.obtenerPedido(rs);
+            datos.add(p);
         }
-     }  
+        tablaRutasgeneral.setItems(datos);
+        tablaRutasgeneral.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        ConexionBD.getInstance().cerrarConexion(st);
+     } 
+    
+    private void agregarColumasRuta(){
+        idped.setCellValueFactory(new PropertyValueFactory<>("id_pedido"));
+        dir.setCellValueFactory(new PropertyValueFactory<>("direccion"));
+        idpedido.setCellValueFactory(new PropertyValueFactory<>("id_pedido"));
+        direccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
+    }
+    
+    private void accionDoubleClickTabla( TableView<Pedido> eliminado,  TableView<Pedido> agregado){
+        eliminado.setRowFactory(tv -> {
+            TableRow<Pedido> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY 
+                     && event.getClickCount() == 1) {
 
+                    Pedido clickedRow = row.getItem();
+                    agregado.getItems().add(clickedRow);
+                    eliminado.getItems().remove(clickedRow);
+                }
+            });
+            return row ;
+        });
+    }
+    
     @FXML
     private void regreso(MouseEvent event) {
     }
     
      @FXML
     private void btnGuardar (MouseEvent event) {
+        
     }
 
      @FXML
     private void btnCancelar (MouseEvent event) {
+        Stage stage = (Stage) tablaRutasAsignadas.getScene().getWindow();
+        stage.close();
     }
 }
