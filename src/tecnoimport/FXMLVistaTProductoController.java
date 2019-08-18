@@ -25,6 +25,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -62,18 +64,17 @@ public class FXMLVistaTProductoController implements Initializable {
     private ComboBox<?> comboxbus;
     @FXML
     private ImageView regreso;
-    @FXML
-    private TextField txtnombre;
-    @FXML
-    private TextField txtmarca;
-    @FXML
-    private TextField txtstock;
+   
     @FXML
     private TextField txtprecio;
     @FXML
     private Label fecha;
     @FXML
     private Label nomE;
+    @FXML
+    private ImageView insertar;
+    @FXML
+    private ImageView act;
 
     /**
      * Initializes the controller class.
@@ -110,9 +111,7 @@ public class FXMLVistaTProductoController implements Initializable {
      }
     
     private void ocultar(){
-         txtnombre.setVisible(false);
-         txtmarca.setVisible(false);
-         txtstock.setVisible(false);
+
          txtprecio.setVisible(false);
     }
     
@@ -203,11 +202,53 @@ public class FXMLVistaTProductoController implements Initializable {
     
      @FXML
     private void Modificar(MouseEvent event) {
+        try{
+        mostrar();
+        Producto p = tablaProductos.getSelectionModel().getSelectedItem();
+        txtprecio.setText(String.valueOf(p.getPrecio()));  
+        }catch (Exception e) {
+                    ocultar();
+                          Alert mensajeExp = new Alert(Alert.AlertType.CONFIRMATION);
+        mensajeExp.setHeaderText("Diálogo de confirmación");
+        mensajeExp.setContentText ("No has seleccionado ninguna celda");
+        mensajeExp.showAndWait();
+                }
     }
     
-     @FXML
-    private void Eliminar(MouseEvent event) {
+    private void mostrar(){
+         txtprecio.setVisible(true);
     }
+    
+      @FXML
+    private void actualizar(MouseEvent event) throws SQLException {
+        try{
+        Producto p = tablaProductos.getSelectionModel().getSelectedItem();
+        String modify = "update producto set precio= '" + txtprecio.getText() 
+                + "' where id_producto= '" + p.getId_producto() + "' ; ";
+ConexionBD bd = ConexionBD.getInstance();
+            Connection conn = bd.conectarMySQL();
+Statement st = conn.createStatement();
+        st.execute(modify);
+                String modify2= "update stock set stock= '" + txtprecio.getText() 
+                + "' where id_producto= '" + p.getId_producto() + "' ; ";
+
+            Connection conn2 = bd.conectarMySQL();
+Statement st2 = conn2.createStatement();
+        st2.execute(modify2);
+        String show = "select * from producto";
+        Connection connn = bd.conectarMySQL();
+        ResultSet rs = bd.seleccionarDatos(show, connn);
+        celdas(conn,rs);
+            ocultar();
+    }catch (Exception e) {
+                    ocultar();
+                          Alert mensajeExp = new Alert(Alert.AlertType.CONFIRMATION);
+        mensajeExp.setHeaderText("Diálogo de confirmación");
+        mensajeExp.setContentText ("No has seleccionado ninguna celda");
+        mensajeExp.showAndWait();
+                }}
+        
+ 
 
     @FXML
     private void regreso(MouseEvent event) {

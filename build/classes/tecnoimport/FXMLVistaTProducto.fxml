@@ -20,11 +20,11 @@
       </ImageView>
       <TableView id="tablaProductos" fx:id="tablaProductos" layoutX="30.0" layoutY="201.0" prefHeight="282.0" prefWidth="573.0">
         <columns>
-          <TableColumn fx:id="id_producto" prefWidth="77.0" text="Producto_ID" />
           <TableColumn fx:id="nombre" prefWidth="120.0" text="Nombre" />
             <TableColumn fx:id="descripcion" prefWidth="67.0" text="Descrip." />
             <TableColumn fx:id="precio_Venta" text="Precio_Venta" />
             <TableColumn fx:id="ccategoria" prefWidth="84.0" text="CategoriaID" />
+          <TableColumn fx:id="id_producto" prefWidth="77.0" text="Producto_ID" />
         </columns>
       </TableView>
       <TextField fx:id="busqueda" layoutX="226.0" layoutY="140.0" prefHeight="35.0" prefWidth="220.0" />
@@ -34,10 +34,7 @@
          </image>
       </ImageView>
       <ComboBox fx:id="comboxbus" layoutX="96.0" layoutY="140.0" onMouseClicked="#Inicio" prefHeight="35.0" prefWidth="124.0" />
-      <TextField fx:id="txtnombre" layoutX="30.0" layoutY="498.0" prefHeight="25.0" prefWidth="167.0" promptText="Nombre" />
-      <TextField fx:id="txtmarca" layoutX="214.0" layoutY="498.0" prefHeight="25.0" prefWidth="113.0" promptText="Marca" />
-      <TextField fx:id="txtstock" layoutX="348.0" layoutY="498.0" prefHeight="25.0" prefWidth="113.0" promptText="Stock" />
-      <TextField fx:id="txtprecio" layoutX="487.0" layoutY="498.0" prefHeight="25.0" prefWidth="113.0" promptText="Precio_Venta" />
+      <TextField fx:id="txtprecio" layoutX="226.0" layoutY="499.0" prefHeight="25.0" prefWidth="113.0" promptText="Precio_Venta" />
       <Label fx:id="fecha" alignment="TOP_RIGHT" layoutX="481.0" layoutY="42.0" prefHeight="17.0" prefWidth="143.0">
          <font>
             <Font name="System Bold" size="18.0" />
@@ -53,16 +50,6 @@
             <Image url="@../recursos/foto.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="insertar" fitHeight="60.0" fitWidth="60.0" layoutX="473.0" layoutY="123.0" onMouseClicked="#Modificar">
-         <image>
-            <Image url="@../../../diseño/src/recursos/Untitled-1.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="borrartodo" fitHeight="50.0" fitWidth="52.0" layoutX="543.0" layoutY="129.0" onMouseClicked="#Eliminar">
-         <image>
-            <Image url="@../../../diseño/src/recursos/basura.png" />
-         </image>
-      </ImageView>
       <Button defaultButton="true" layoutX="-2.0" mnemonicParsing="false" onMouseClicked="#regreso" prefHeight="50.0" prefWidth="124.0" text="Volver">
          <graphic>
             <ImageView fx:id="regreso" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#regreso">
@@ -72,5 +59,15 @@
             </ImageView>
          </graphic>
       </Button>
+      <ImageView fx:id="insertar" fitHeight="62.0" fitWidth="63.0" layoutX="464.0" layoutY="127.0" onMouseClicked="#Modificar">
+         <image>
+            <Image url="@../recursos/Untitled-1.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="act" fitHeight="56.0" fitWidth="52.0" layoutX="553.0" layoutY="130.0" onMouseClicked="#actualizar">
+         <image>
+            <Image url="@../recursos/actual.png" />
+         </image>
+      </ImageView>
     </children>
 </AnchorPane>
