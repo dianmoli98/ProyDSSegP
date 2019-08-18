@@ -57,9 +57,7 @@ public class FXMLAccesoController implements Initializable {
         try {
             String usuarioText=txtusuario.getText();
             String contrasena=txtcontra.getText();
-            
-            CtrlMaster.buscarUsuario(usuarioText, contrasena);
-            
+            CtrlMaster.buscarUsuario(usuarioText,contrasena);
             Parent root = FXMLLoader.load(getClass().getResource("/tecnoimport/FXMLVistaPrincipal.fxml"));
             Scene scene = new Scene(root);
             ventincio.setScene(scene);

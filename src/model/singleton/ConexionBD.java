@@ -73,7 +73,6 @@ public class ConexionBD {
         }
 
         try {
-            // execute the query, and get a java resultset
             rs = st.executeQuery(query);
         } catch (SQLException ex) {
             throw new SQLException("la Consulta no fue exitosa.\nInténtelo más tarde. " + ex.getMessage());

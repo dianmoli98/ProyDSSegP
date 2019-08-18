@@ -14,7 +14,7 @@ import model.singleton.ConexionBD;
  * @author josie
  */
 public class CtrlMaster {
-    private static Usuario userLogin = null; 
+    private static Usuario user=null; 
     
     private static Connection validarLogin(String usuario, String password) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
@@ -23,12 +23,13 @@ public class CtrlMaster {
         try{
         conn = bd.conectarMySQL();
         }catch(SQLException ex){
-            throw new SQLException("Usuario o contraseña equivocada.\nIntente nuevamente.");
+            throw new SQLException("Sus credenciales son incorrectas.\nIntente nuevamente.");
         }
         return conn;
     }
     
-    public static void buscarUsuario(String username, String password) throws SQLException{
+    public static void buscarUsuario(String username,String password) throws SQLException{
+        
         if(validarLogin(username,password)==null){
            throw new SQLException("El usuario o contraseña es incorrecto.");
         }
@@ -36,15 +37,15 @@ public class CtrlMaster {
         int tipo = rs.getInt("TipoUsuario");
         switch(tipo){
             case 1:
-                userLogin = new Vendedor(rs.getString("usuario"),rs.getString("clave"),
+                user = new Vendedor(rs.getString("usuario"),rs.getString("clave"),
                 rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
                 break;
             case 2:
-                userLogin = new Jefe_Bodega(rs.getString("usuario"),rs.getString("clave"),
+                user = new Jefe_Bodega(rs.getString("usuario"),rs.getString("clave"),
                 rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
                 break;
             case 3:
-                userLogin = new Gerente(rs.getString("usuario"),rs.getString("clave"),
+                user = new Gerente(rs.getString("usuario"),rs.getString("clave"),
                 rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
                 break;
         }
@@ -64,7 +65,7 @@ public class CtrlMaster {
     }
     
     public static Usuario getUser(){
-        return userLogin;
+        return user;
     }
 
     

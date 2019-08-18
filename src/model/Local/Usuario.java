@@ -25,6 +25,11 @@ public class Usuario extends Persona{
         return isAdmin;
     }
 
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+    
+
     public String getUser() {
         return user;
     }
