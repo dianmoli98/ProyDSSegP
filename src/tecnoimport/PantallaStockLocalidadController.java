@@ -232,7 +232,9 @@ public class PantallaStockLocalidadController implements Initializable {
             insertar.setVisible(true);
             act.setVisible(true);
             busqueda.setDisable(false);
-            String numlocal = idenlocal.getValue().toString();
+            Object o = idenlocal.getValue();
+            if(o != null){
+            String numlocal = o.toString();
             ResultSet rs = null;
             if (numlocal != null && !numlocal.equals("") && !numlocal.equals(" ")) {
                 try {
@@ -248,9 +250,11 @@ public class PantallaStockLocalidadController implements Initializable {
                 try {
                     rs = bd.seleccionarDatos(query, conn);
                 } catch (SQLException ex) {
+                    System.out.println("Aqui?");
                     Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 llenartable(conn, rs);
+            }
             }
 
         });
