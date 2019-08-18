@@ -29,6 +29,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import static javax.swing.JOptionPane.showMessageDialog;
 import model.Bodega.Jefe_Bodega;
@@ -124,34 +125,46 @@ public class FXMLVistaTController implements Initializable {
 
     @FXML
     private void RealizarVenta(MouseEvent event) throws IOException{
-          Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
-          Stage stage= new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
+        Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
+        Stage stage= new Stage();
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(label.getScene().getWindow());
+        stage.setResizable(false);
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @FXML
     private void AgregarClientes(MouseEvent event)throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
         Stage stage= new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(label.getScene().getWindow());
+        stage.setResizable(false);
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @FXML
     private void RealizarConsultas(MouseEvent event)throws IOException {
          Parent root = FXMLLoader.load(getClass().getResource("Pantallaconsultas.fxml"));
          Stage stage= new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
+         stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(label.getScene().getWindow());
+        stage.setResizable(false);
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @FXML
     private void Rutas(MouseEvent event) throws IOException {
          Parent root = FXMLLoader.load(getClass().getResource("PantallaRutas.fxml"));
         Stage stage= new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(label.getScene().getWindow());
+        stage.setResizable(false);
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @FXML

@@ -48,8 +48,8 @@ INSERT INTO Cliente(cedula,direccion,telefono) VALUES
 ("0943083432","Guasmo Sur Solar ZY Vlla 3432","0923174323");
 
 INSERT INTO Ruta(id_ruta,Realizado,id_repartidor,id_jefeBodega) VALUES
-(1,"F","1304858388","0950165860"),
-(2,"F","0930210399","0950165860");
+(default,"F","1304858388","0950165860"),
+(default,"F","0930210399","0950165860");
 
 INSERT INTO pedido(id_pedido, id_matriz, id_cliente, id_vendedor, id_jefeBodega, id_ruta) VALUES
 (default,NULL, "0946274823" , "0950165811","0950165860",1),

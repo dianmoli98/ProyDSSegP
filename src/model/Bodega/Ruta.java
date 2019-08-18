@@ -37,7 +37,14 @@ public class Ruta {
         pedidos.forEach((p) -> {
             direcciones.add(p.getDireccion());
         });
+        cantidad = pedidos.size();
     }  
+    
+    public void agregarPedido(Pedido pedido){
+        pedidos.add(pedido);
+        direcciones.add(pedido.getDireccion());
+        cantidad++;
+    }
 
     public int getId_ruta() {
         return id_ruta;
@@ -54,6 +61,20 @@ public class Ruta {
     public int getCantidad() {
         return cantidad;
     }
-    
-    
+
+    public Jefe_Bodega getJefe() {
+        return jefe;
+    }
+
+    public LinkedList<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public LinkedList<String> getDirecciones() {
+        return direcciones;
+    }
+
+    public void setId_ruta(int id_ruta) {
+        this.id_ruta = id_ruta;
+    }
 }

@@ -27,6 +27,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Bodega.Jefe_Bodega;
 import model.Bodega.Repartidor;
@@ -54,6 +55,8 @@ public class PantallaRutasController implements Initializable {
     @FXML
     private Button FinRuta;
     
+    private static PantallaRutasController controller = null;
+    
     private static CtrlJefeBodega control = new CtrlJefeBodega((Jefe_Bodega)CtrlMaster.getUser());;
 
     /**
@@ -61,6 +64,7 @@ public class PantallaRutasController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        controller = this;
         tablaRutas =IdRuta.getTableView();
         try {
             llenar();
@@ -73,8 +77,10 @@ public class PantallaRutasController implements Initializable {
     private void CrearRutass(MouseEvent event)throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("PantallaCrearRutas.fxml"));
         Stage stage= new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(tablaRutas.getScene().getWindow());
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @FXML
@@ -111,5 +117,8 @@ public class PantallaRutasController implements Initializable {
     public static CtrlJefeBodega getControl(){
         return control;
     }
-    
+
+    public static PantallaRutasController getController() {
+        return controller;
+    }
 }

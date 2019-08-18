@@ -6,6 +6,7 @@
 package tecnoimport;
 
 import Controller.CtrlJefeBodega;
+import Emergentes.Emergentes;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -57,8 +58,7 @@ public class PantallaCrearRutasController implements Initializable {
         try {
             llenar();
         } catch (SQLException ex) {
-           Emergentes.Emergentes.mostrarDialogo(ex.getMessage(), "Error de conexión.",
-                   "Error");
+           Emergentes.mostrarDialogo(ex.getMessage(), "Error de conexión.", "Error");
         }
         accionDoubleClickTabla(tablaRutasAsignadas, tablaRutasgeneral);
         accionDoubleClickTabla(tablaRutasgeneral, tablaRutasAsignadas);
@@ -112,7 +112,22 @@ public class PantallaCrearRutasController implements Initializable {
     
      @FXML
     private void btnGuardar (MouseEvent event) {
-        
+        ObservableList<Pedido> pedidos =tablaRutasAsignadas.getItems();
+        if(pedidos.isEmpty()){
+            Emergentes.mostrarDialogo("Debe seleccionar al menos un pedido para crear una ruta.",
+                    "No hay Pedidos Asignados.", "Aviso");
+        }else if(Emergentes.comfirm("¿Desea guardar los cambios?")){
+            try {
+                control.guardarRuta(pedidos);
+                //TODO: datos del repartidor
+                Emergentes.mostrarDialogo("", "Se ha guardado correctamente", "Aviso");
+                Stage stage = (Stage) tablaRutasAsignadas.getScene().getWindow();
+                PantallaRutasController.getController().llenar();
+                stage.close();
+            } catch (SQLException ex) {
+                Emergentes.mostrarDialogo(ex.getMessage(), "Error de Guardado", "Error");
+            }
+        }
     }
 
      @FXML

@@ -1,5 +1,6 @@
 package model.singleton;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -96,4 +97,11 @@ public class ConexionBD {
         return pass;
     }
     
+    public void hacerQuery(String query) throws SQLException {
+        ConexionBD bd = ConexionBD.getInstance();
+        Connection conn = bd.conectarMySQL();
+        CallableStatement cl = conn.prepareCall(query);
+        cl.execute();
+        bd.cerrarConexion(conn); 
+    }
 }
