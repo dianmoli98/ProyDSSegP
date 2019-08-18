@@ -91,3 +91,13 @@ INSERT INTO stock(id_stock,id_producto,stock,id_matriz) VALUES
 (default,4,760,"0003"),
 (default,6,126,"0003"),
 (default,5,134,"0001");
+
+INSERT INTO Matriz(id_matriz,direccion,tipoLocalidad) VALUES
+("0004","Av. Olmedo y Boyaca","Bodega"),
+("0005","Venezuela y Antepara","Sucursal"),
+("0006","Km Via a la Costa","Matriz");
+
+INSERT INTO stock(id_stock,id_producto,stock,id_matriz) VALUES
+(default,4,760,"0004"),
+(default,4,126,"0005"),
+(default,6,134,"0006");
