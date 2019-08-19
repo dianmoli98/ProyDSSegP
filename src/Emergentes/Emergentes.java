@@ -29,6 +29,8 @@ public class Emergentes {
         alert.setContentText(mensaje);
 
         Optional<ButtonType> result = alert.showAndWait();
-        return (result.get() == ButtonType.OK);
+        if(result.isPresent())
+            return (result.get() == ButtonType.OK); 
+        return false;
     }
 }

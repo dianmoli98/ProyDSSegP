@@ -162,7 +162,7 @@ public class FXMLVistaTProductoController implements Initializable {
                             celdas(st,rs);}
                     } catch (SQLException ex) {
                         Logger.getLogger(FXMLVistaTProductoController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                }
             }
             }
         });
