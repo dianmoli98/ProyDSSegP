@@ -23,6 +23,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -94,6 +95,7 @@ public class PantallaUsuariosController implements Initializable {
         mensajeExp.setHeaderText("Diálogo de confirmación");
         mensajeExp.setContentText ("Estas seguro de asignarlo como administrador");
         mensajeExp.showAndWait();
+        ((Node)(event.getSource())).getScene().getWindow().hide();
                 
     }
     
@@ -105,6 +107,7 @@ public class PantallaUsuariosController implements Initializable {
         mensajeExp.setHeaderText("Diálogo de confirmación");
         mensajeExp.setContentText ("Lo eliminaras de administrador, estas seguro?");
         mensajeExp.showAndWait();
+        ((Node)(event.getSource())).getScene().getWindow().hide();
     }
     
     public void llenar() throws SQLException{
