@@ -347,7 +347,8 @@ public class PantallaStockLocalidadController implements Initializable {
 
     @FXML
     private void Modificar(MouseEvent event) {
-        try{
+        if(CtrlMaster.getUser().isIsAdmin()){
+            try{
         mostrar();
         Dpro p = tablaStock.getSelectionModel().getSelectedItem();
         txtstock.setText(String.valueOf(p.getStock()));  
@@ -358,13 +359,15 @@ public class PantallaStockLocalidadController implements Initializable {
         mensajeExp.setContentText ("No has seleccionado ninguna celda");
         mensajeExp.showAndWait();
                 }
+        }
+        
     }
 
     
       @FXML
     private void actualizar(MouseEvent event) throws SQLException {
-        
-        Dpro p = tablaStock.getSelectionModel().getSelectedItem();
+        if(CtrlMaster.getUser().isIsAdmin()){
+            Dpro p = tablaStock.getSelectionModel().getSelectedItem();
         String modify= "update stock set stock= '" + txtstock.getText() 
                 + "' where id_producto= '" + p.getId_producto() + "' and id_matriz='"+p.getId_matriz()+"' ; ";
         ConexionBD bd = ConexionBD.getInstance();
@@ -381,6 +384,11 @@ public class PantallaStockLocalidadController implements Initializable {
         celdas(conn,rs);
             ocultar();
     }
+        }
+    
+    
+   
+        
     
     
 }

@@ -214,7 +214,3 @@ CREATE TRIGGER crear_user AFTER INSERT ON Usuario
 END ||
 DELIMITER ;
 */
-drop user if exists jfmorale;
-create user 'jfmorale'@'%' identified by '0950165811';
-grant all privileges on *.* to 'jfmorale'@'%' with grant option;
-flush privileges;

@@ -27,12 +27,12 @@ public class CtrlGerente {
     public void AssignarAdministrador(String cedula,boolean asignar) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
+        Statement st = conn.createStatement();
         if(asignar){
-        String query="update usuario set usuario.isAdmin='"+asignar+"' WHERE (usuario.cedula=\""+cedula+"\") ";
-        bd.hacerQuery(query);
-        }
+        String query="update usuario set usuario.isAdmin='"+1+"' WHERE (usuario.cedula=\""+cedula+"\") ";
+        st.execute(query);}
         String query="update usuario set usuario.isAdmin='0' WHERE (usuario.cedula=\""+cedula+"\") ";
-        bd.hacerQuery(query);
+        st.execute(query);
     }
     
     public  ResultSet UsuarioByLocalidad() throws SQLException{
@@ -59,4 +59,7 @@ public class CtrlGerente {
         return persona;
     }
     
+     public void peticionAbastecimiento(){
+         
+     }
 }

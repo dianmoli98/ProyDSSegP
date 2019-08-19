@@ -30,9 +30,9 @@ INSERT INTO Matriz(id_matriz,direccion,tipoLocalidad) VALUES
 INSERT INTO Usuario(cedula,usuario,clave,TipoUsuario,matriz_id,isAdmin) VALUES
 ("0950165811","jfmorale","0950165811",1,"0002",false),
 ("0950165860","pbmoral","pbmoral",2,"0001",false),
-("1306944461","celema","guayaquil",3,"0002",false),
+("1306944461","celema","guayaquil",3,"0002",true),
 ("0348288833","jasaman","348288833",1,"0003",false),
-("0930074422","dmendoza","lister",1,"0002",false);
+("0930074422","dmendoza","lister",1,"0002",true);
 
 INSERT INTO Repartidor(cedula,MatriculaVehiculo,telefono,id_jefeBodega) VALUES
 ("1304858388","ABC-3232","0940832978","0950165860"),
@@ -99,19 +99,27 @@ INSERT INTO stock(id_stock,id_producto,stock,id_matriz) VALUES
 (default,4,126,"0005"),
 (default,6,134,"0006");
 
+drop user if exists jasaman; 
 create user 'jasaman'@'%' identified by '348288833';
 grant all privileges on *.* to 'jasaman'@'%' with grant option;
 flush privileges;
 
+drop user if exists dmendoza;
 create user 'dmendoza'@'%' identified by 'lister';
 grant all privileges on *.* to 'dmendoza'@'%' with grant option;
 flush privileges;
+
 drop user if exists pbmoral;
 create user 'pbmoral'@'%' identified by 'pbmoral';
 grant all privileges on *.* to 'pbmoral'@'%' with grant option;
 flush privileges;
 
+drop user if exists celema;
 create user 'celema'@'%' identified by 'guayaquil';
 grant all privileges on *.* to 'celema'@'%' with grant option;
 flush privileges;
 
+drop user if exists jfmorale;
+create user 'jfmorale'@'%' identified by '0950165811';
+grant all privileges on *.* to 'jfmorale'@'%' with grant option;
+flush privileges;

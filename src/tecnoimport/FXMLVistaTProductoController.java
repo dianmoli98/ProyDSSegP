@@ -200,7 +200,8 @@ public class FXMLVistaTProductoController implements Initializable {
     
      @FXML
     private void Modificar(MouseEvent event) {
-        try{
+        if(CtrlMaster.getUser().isIsAdmin()){
+            try{
         mostrar();
         Producto p = tablaProductos.getSelectionModel().getSelectedItem();
         txtprecio.setText(String.valueOf(p.getPrecio()));  
@@ -211,6 +212,8 @@ public class FXMLVistaTProductoController implements Initializable {
         mensajeExp.setContentText ("No has seleccionado ninguna celda");
         mensajeExp.showAndWait();
                 }
+        }
+        
     }
     
     private void mostrar(){
@@ -222,7 +225,8 @@ public class FXMLVistaTProductoController implements Initializable {
     
       @FXML
     private void actualizar(MouseEvent event) throws SQLException {
-        try{
+        if(CtrlMaster.getUser().isIsAdmin()){
+            try{
         Producto p = tablaProductos.getSelectionModel().getSelectedItem();
         String modify = "update producto set precio= '" + txtprecio.getText() 
                 + "' where id_producto= '" + p.getId_producto() + "' ; ";
@@ -243,6 +247,8 @@ Statement st = conn.createStatement();
         mensajeExp.setContentText ("No has seleccionado ninguna celda");
         mensajeExp.showAndWait();
                 }}
+        }
+        
         
  
 

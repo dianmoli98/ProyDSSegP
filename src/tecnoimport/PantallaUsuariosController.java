@@ -23,6 +23,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -71,8 +72,6 @@ public class PantallaUsuariosController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        habilitar.setVisible(false);
-        desabilitar.setVisible(false);
     Calendar calendar= GregorianCalendar.getInstance();
     Date date=Calendar.getInstance().getTime();
     SimpleDateFormat sdf=new SimpleDateFormat("     dd/MM/yyyy");
@@ -89,41 +88,25 @@ public class PantallaUsuariosController implements Initializable {
 
     @FXML
     private void Convertirdmin(MouseEvent event) throws SQLException {
-        
+        Persona p=tablaUsuarios.getSelectionModel().getSelectedItem();
+        control.AssignarAdministrador(p.getId(), true);
+        Alert mensajeExp = new Alert(Alert.AlertType.CONFIRMATION);
+        mensajeExp.setHeaderText("Diálogo de confirmación");
+        mensajeExp.setContentText ("Estas seguro de asignarlo como administrador");
+        mensajeExp.showAndWait();
+                
     }
     
     @FXML
     private void Desabilitar(MouseEvent event) throws SQLException {
+        Persona p=tablaUsuarios.getSelectionModel().getSelectedItem();
+        control.AssignarAdministrador(p.getId(), false);
+        Alert mensajeExp = new Alert(Alert.AlertType.CONFIRMATION);
+        mensajeExp.setHeaderText("Diálogo de confirmación");
+        mensajeExp.setContentText ("Lo eliminaras de administrador, estas seguro?");
+        mensajeExp.showAndWait();
     }
     
-    @FXML
-    private void onClickedTable( MouseEvent e){
-        tablaUsuarios.setRowFactory(tv -> {
-            TableRow<Persona> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (row.isEmpty() && event.getButton()==MouseButton.PRIMARY 
-                     && event.getClickCount() == 1) {
-                    Persona clickedRow = row.getItem();
-                    try {
-                        habilitar.setVisible(true);
-                        desabilitar.setVisible(true);
-                        if(habilitar.getOnAction()!=null){
-                            control.AssignarAdministrador(clickedRow.getId(), true);
-                        }
-                        if(desabilitar.getOnAction()!=null){
-                            control.AssignarAdministrador(clickedRow.getId(), false);
-                        }
-                        System.out.println("CAMBIADO");
-                        Emergentes.mostrarDialogo("Guardado con exito", "Guardado", "Exito");
-                    } catch (SQLException ex) {
-                        Logger.getLogger(PantallaUsuariosController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            });
-            return row ;
-        });
-        
-    }
     public void llenar() throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
