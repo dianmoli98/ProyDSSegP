@@ -51,7 +51,7 @@ public class CtrlMaster {
         }
     }
     
-    private static ResultSet buscarTipoUsuario() throws SQLException {
+    public static ResultSet buscarTipoUsuario() throws SQLException {
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
         String query = "SELECT * FROM Usuario JOIN Persona ON Usuario.cedula= Persona.cedula Where usuario =\""+bd.getUser()+"\";";

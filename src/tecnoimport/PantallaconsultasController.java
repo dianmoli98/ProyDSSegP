@@ -95,7 +95,7 @@ public class PantallaconsultasController implements Initializable {
 
     @FXML
     private void ConsultarUsuario(MouseEvent event)throws IOException  {
-        Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("PantallaUsuarios.fxml"));
         Stage stage= new Stage();
             stage.setScene(new Scene(root));
             stage.show();

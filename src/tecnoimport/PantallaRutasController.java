@@ -57,7 +57,7 @@ public class PantallaRutasController implements Initializable {
     
     private static PantallaRutasController controller = null;
     
-    private static CtrlJefeBodega control = new CtrlJefeBodega((Jefe_Bodega)CtrlMaster.getUser());;
+    private static CtrlJefeBodega control = new CtrlJefeBodega((Jefe_Bodega)CtrlMaster.getUser());
 
     /**
      * Initializes the controller class.

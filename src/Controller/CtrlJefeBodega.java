@@ -44,19 +44,19 @@ public class CtrlJefeBodega {
             return rs;
     }
     
-    public Ruta obtenerRuta(ResultSet rs) throws SQLException{
-        int id_ruta = rs.getInt("id_ruta");
-        int cantidad = rs.getInt("cantidad");
-        String realizado = rs.getString("Realizado");
-        String id_repartidor = rs.getString("id_repartidor");
-        if(realizado.equals("F")){
-            realizado = "En proceso";
-        }else{
-            realizado = "Finalizado";
+        public Ruta obtenerRuta(ResultSet rs) throws SQLException{
+            int id_ruta = rs.getInt("id_ruta");
+            int cantidad = rs.getInt("cantidad");
+            String realizado = rs.getString("Realizado");
+            String id_repartidor = rs.getString("id_repartidor");
+            if(realizado.equals("F")){
+                realizado = "En proceso";
+            }else{
+                realizado = "Finalizado";
+            }
+            Repartidor r = obtenerRepartidor(id_repartidor);
+            return new Ruta(id_ruta, jefe, r, realizado, cantidad);
         }
-        Repartidor r = obtenerRepartidor(id_repartidor);
-        return new Ruta(id_ruta, jefe, r, realizado, cantidad);
-    }
     
     private Repartidor obtenerRepartidor(String cedula) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
