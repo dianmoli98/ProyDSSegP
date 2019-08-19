@@ -25,18 +25,17 @@ public class CtrlGerente {
         this.gerente = jefe;
     }
     public void AssignarAdministrador(String cedula,boolean asignar) throws SQLException{
-        if(asignar){
-        String query="update usuario set usuario.isAdmin="+1+" WHERE (usuario.cedula=\""+cedula+"\") ";
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
         Statement st = conn.createStatement();
+        if(asignar){
+        String query="update usuario set usuario.isAdmin='1' WHERE (usuario.cedula=\""+cedula+"\") ";
+        st.execute(query);
+        }else{
+        String query="update usuario set usuario.isAdmin='0'WHERE (usuario.cedula=\""+cedula+"\") ";
         st.execute(query);
         }
-        String query="update usuario set usuario.isAdmin=0 WHERE (usuario.cedula=\""+cedula+"\") ";
-        ConexionBD bd = ConexionBD.getInstance();
-        Connection conn = bd.conectarMySQL();
-        Statement st = conn.createStatement();
-        st.execute(query);
+       
     }
     
     public  ResultSet UsuarioByLocalidad() throws SQLException{

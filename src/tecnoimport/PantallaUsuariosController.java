@@ -90,11 +90,11 @@ public class PantallaUsuariosController implements Initializable {
     @FXML
     private void Convertirdmin(MouseEvent event) throws SQLException {
         Persona p=tablaUsuarios.getSelectionModel().getSelectedItem();
-        control.AssignarAdministrador(p.getId(), true);
         Alert mensajeExp = new Alert(Alert.AlertType.CONFIRMATION);
         mensajeExp.setHeaderText("Diálogo de confirmación");
         mensajeExp.setContentText ("Estas seguro de asignarlo como administrador");
         mensajeExp.showAndWait();
+        control.AssignarAdministrador(p.getId(), true);
         ((Node)(event.getSource())).getScene().getWindow().hide();
                 
     }
@@ -102,11 +102,11 @@ public class PantallaUsuariosController implements Initializable {
     @FXML
     private void Desabilitar(MouseEvent event) throws SQLException {
         Persona p=tablaUsuarios.getSelectionModel().getSelectedItem();
-        control.AssignarAdministrador(p.getId(), false);
         Alert mensajeExp = new Alert(Alert.AlertType.CONFIRMATION);
         mensajeExp.setHeaderText("Diálogo de confirmación");
         mensajeExp.setContentText ("Lo eliminaras de administrador, estas seguro?");
         mensajeExp.showAndWait();
+        control.AssignarAdministrador(p.getId(), false);
         ((Node)(event.getSource())).getScene().getWindow().hide();
     }
     

@@ -29,7 +29,7 @@ INSERT INTO Matriz(id_matriz,direccion,tipoLocalidad) VALUES
 
 INSERT INTO Usuario(cedula,usuario,clave,TipoUsuario,matriz_id,isAdmin) VALUES
 ("0950165811","jfmorale","0950165811",1,"0002",false),
-("0950165860","pbmoral","pbmoral",2,"0001",false),
+("0950165860","pbmoral","pbmoral",2,"0002",false),
 ("1306944461","celema","guayaquil",3,"0002",true),
 ("0348288833","jasaman","348288833",1,"0003",false),
 ("0930074422","dmendoza","lister",1,"0002",true);
