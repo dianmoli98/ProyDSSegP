@@ -34,7 +34,7 @@
       </ImageView>
       <ImageView fx:id="regreso" fitHeight="60.0" fitWidth="60.0" layoutX="554.0" layoutY="43.0" onMouseClicked="#regreso">
          <image>
-            <Image url="@../recursos/inicio.png" />
+            <Image url="@../recursos/person.png" />
          </image>
       </ImageView>
       <TextField id="busqueda" fx:id="busqueda" layoutX="379.0" layoutY="167.0" prefHeight="35.0" prefWidth="220.0" />

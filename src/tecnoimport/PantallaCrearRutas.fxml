@@ -39,20 +39,11 @@
             <Image url="@../recursos/avanzar.png" />
          </image>
       </ImageView>
-      <Button defaultButton="true" layoutX="-2.0" layoutY="-1.0" mnemonicParsing="false" onMouseClicked="#regreso" prefHeight="50.0" prefWidth="124.0" text="Volver">
-         <graphic>
-            <ImageView fx:id="regreso" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#regreso">
-               <image>
-                  <Image url="@../recursos/volver.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
       <Button id="btnguardar" defaultButton="true" layoutX="465.0" layoutY="-1.0" mnemonicParsing="false" onMouseClicked="#btnGuardar" prefHeight="45.0" prefWidth="135.0" style="-fx-background-size: 60px;" text=" GUARDAR">
          <graphic>
             <ImageView fitHeight="38.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../comercialariasp/src/recursos/guardar.png" />
+                  <Image url="@../recursos/guardar.png" />
                </image>
             </ImageView>
          </graphic>
