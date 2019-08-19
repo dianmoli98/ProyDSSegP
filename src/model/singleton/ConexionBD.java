@@ -56,7 +56,7 @@ public class ConexionBD {
             return conn;
         } catch (ClassNotFoundException ex) {
             throw new SQLException("Error de Base de Datos.\nNo conectada");
-        } 
+        }
     }
 
     public ResultSet seleccionarDatos(String query, Connection conn) throws SQLException {
@@ -80,6 +80,14 @@ public class ConexionBD {
         }
         return rs;
     }
+    /*
+   try (Statement st = conn.createStatement()) {
+            ResultSet rs = st.executeQuery(query);
+            return rs;
+        } catch (SQLException ex) {
+            throw new SQLException("La base de datos se desconectó inesperadamente.");
+        }
+    */
 
     public void cerrarConexion(Connection conn) throws SQLException {
         try {
@@ -97,11 +105,15 @@ public class ConexionBD {
         return pass;
     }
     
-    public void hacerQuery(String query) throws SQLException {
+    public void hacerQuery(String query) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
-        Connection conn = bd.conectarMySQL();
-        CallableStatement cl = conn.prepareCall(query);
-        cl.execute();
-        bd.cerrarConexion(conn); 
+        try(Connection conn = bd.conectarMySQL()){
+            try(CallableStatement cl = conn.prepareCall(query)) {
+                cl.execute();
+            } 
+            bd.cerrarConexion(conn); 
+        } catch (SQLException ex) {
+            throw new SQLException("No se pudo realizar la acción");
+        }
     }
 }

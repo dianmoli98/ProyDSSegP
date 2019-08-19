@@ -11,6 +11,8 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,6 +26,7 @@ import javafx.scene.input.MouseButton;
 import model.singleton.ConexionBD;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.Bodega.Repartidor;
 import model.Pedido.Pedido;
 
 /**
@@ -48,7 +51,9 @@ public class PantallaCrearRutasController implements Initializable {
     private TableColumn<Pedido, String> direccion;
     
     private ObservableList<String> data;
-    private static CtrlJefeBodega control = PantallaRutasController.getControl();
+    
+    private static CtrlJefeBodega control = FXMLVistaTController.getControlJefe();
+    
     /**
      * Initializes the controller class.
      */
@@ -124,6 +129,9 @@ public class PantallaCrearRutasController implements Initializable {
                 Stage stage = (Stage) tablaRutasAsignadas.getScene().getWindow();
                 PantallaRutasController.getController().llenar();
                 stage.close();
+                if(PantallaDeEsperaController.getPantalla() != null){
+                   PantallaDeEsperaController.getPantalla().llenar();
+                }
             } catch (SQLException ex) {
                 Emergentes.mostrarDialogo(ex.getMessage(), "Error de Guardado", "Error");
             }

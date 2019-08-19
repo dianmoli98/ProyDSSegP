@@ -232,7 +232,9 @@ public class PantallaStockLocalidadController implements Initializable {
             insertar.setVisible(true);
             act.setVisible(true);
             busqueda.setDisable(false);
-            String numlocal = idenlocal.getValue().toString();
+            Object o = idenlocal.getValue();
+            if(o != null){
+            String numlocal = o.toString();
             ResultSet rs = null;
             if (numlocal != null && !numlocal.equals("") && !numlocal.equals(" ")) {
                 try {
@@ -248,9 +250,11 @@ public class PantallaStockLocalidadController implements Initializable {
                 try {
                     rs = bd.seleccionarDatos(query, conn);
                 } catch (SQLException ex) {
+                    System.out.println("Aqui?");
                     Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 llenartable(conn, rs);
+            }
             }
 
         });
@@ -363,10 +367,10 @@ public class PantallaStockLocalidadController implements Initializable {
         Dpro p = tablaStock.getSelectionModel().getSelectedItem();
         String modify= "update stock set stock= '" + txtstock.getText() 
                 + "' where id_producto= '" + p.getId_producto() + "' and id_matriz='"+p.getId_matriz()+"' ; ";
-ConexionBD bd = ConexionBD.getInstance();
-            Connection conn = bd.conectarMySQL();
-Statement st = conn.createStatement();
-        st.execute(modify);
+        ConexionBD bd = ConexionBD.getInstance();
+                    Connection conn = bd.conectarMySQL();
+        Statement st = conn.createStatement();
+            st.execute(modify);
         String show = "select p.id_producto,p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
                 + "from producto  p\n"
                 + "join stock s on p.id_producto=s.id_producto\n"

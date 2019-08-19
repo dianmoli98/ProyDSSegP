@@ -19,10 +19,9 @@ import javafx.stage.Stage;
  * @author User-pc
  */
 public class TecnoImport extends Application{
-   public static Stage ventPrincipal = new Stage();
-    public static Stage ventincio = new Stage();
-    public static Stage ventsegunda = new Stage();
-    public static Scene scene;
+   public static final Stage ventPrincipal = new Stage();
+    public static final Stage ventincio = new Stage();
+    public static final Stage ventsegunda = new Stage();
     
     @Override
     public void start(Stage stage) throws Exception {
