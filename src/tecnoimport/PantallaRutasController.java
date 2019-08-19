@@ -23,12 +23,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Bodega.Jefe_Bodega;
 import model.Bodega.Repartidor;
 import model.Bodega.Ruta;
 import model.singleton.ConexionBD;
@@ -55,6 +56,7 @@ public class PantallaRutasController implements Initializable {
     private Button FinRuta;
     
     private static PantallaRutasController controller = null;
+    private static Ruta ruta = null;
     
     private CtrlJefeBodega control;
 
@@ -71,6 +73,19 @@ public class PantallaRutasController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(PantallaRutasController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        tablaRutas.setRowFactory(tv -> {
+            TableRow<Ruta> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY 
+                     && event.getClickCount() == 1) {
+
+                    Ruta clickedRow = row.getItem();
+                    ruta = clickedRow;
+                }
+            });
+            return row ;
+        });
     }    
 
     @FXML
@@ -85,13 +100,17 @@ public class PantallaRutasController implements Initializable {
 
     @FXML
     private void FinalizarRutas(MouseEvent event)throws IOException {
+        if(ruta != null && !ruta.getStatus().equals("Finalizado")){
         Parent root = FXMLLoader.load(getClass().getResource("FinalizaRuta.fxml"));
         Stage stage= new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(tablaRutas.getScene().getWindow());
         stage.setScene(new Scene(root));
         stage.show();
-        
+        }else{
+            Emergentes.Emergentes.mostrarDialogo("Debe seleccionar una ruta En proceso de la tabla para"
+                    + "\npoder finalizarla", "No hay ruta seleccionada", "Error");
+        }
     }
     
     public void llenar() throws SQLException{
@@ -120,5 +139,13 @@ public class PantallaRutasController implements Initializable {
     }
     public static PantallaRutasController getController() {
         return controller;
+    }
+    
+    public static Ruta getRuta(){
+        return ruta;
+    }
+    
+    public static void setRuta(Ruta r){
+        ruta = r;
     }
 }

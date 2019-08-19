@@ -26,7 +26,6 @@ import javafx.scene.input.MouseButton;
 import model.singleton.ConexionBD;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import model.Bodega.Repartidor;
 import model.Pedido.Pedido;
 
 /**
@@ -95,7 +94,7 @@ public class PantallaCrearRutasController implements Initializable {
         direccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
     }
     
-    private void accionDoubleClickTabla( TableView<Pedido> eliminado,  TableView<Pedido> agregado){
+    public static void accionDoubleClickTabla( TableView<Pedido> eliminado,  TableView<Pedido> agregado){
         eliminado.setRowFactory(tv -> {
             TableRow<Pedido> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -137,7 +136,7 @@ public class PantallaCrearRutasController implements Initializable {
             }
         }
     }
-
+    
      @FXML
     private void btnCancelar (MouseEvent event) {
         Stage stage = (Stage) tablaRutasAsignadas.getScene().getWindow();

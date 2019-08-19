@@ -23,7 +23,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import static tecnoimport.TecnoImport.ventincio;
-import static tecnoimport.TecnoImport.ventsegunda;
 /**
  * FXML Controller class
  *

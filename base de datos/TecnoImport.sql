@@ -83,6 +83,7 @@ CREATE TABLE Cliente(
   CREATE TABLE Ruta(
 	`id_ruta` integer(8) NOT NULL AUTO_INCREMENT,
     `Realizado` character(1) NULL DEFAULT "F",
+    `observaciones` varchar(100),
     `id_repartidor` varchar(11) NOT NULL,
     `id_jefeBodega` varchar(11) NOT NULL,
     PRIMARY KEY(`id_ruta`),

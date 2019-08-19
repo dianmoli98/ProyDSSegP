@@ -23,8 +23,7 @@ import model.Pedido.PedidoCliente;
 import model.Pedido.PedidoMatriz;
 import model.singleton.ConexionBD;
 
-/**
- *
+/*
  * @author josie
  */
 public class CtrlJefeBodega {
@@ -34,7 +33,7 @@ public class CtrlJefeBodega {
     
     public CtrlJefeBodega(Jefe_Bodega jefe){
         try {
-            repartidores = obtenerRepartidores();
+            obtenerRepartidores();
         } catch (SQLException ex) {
            Emergentes.Emergentes.mostrarDialogo("No fue posible conectarse al servidor.", "Error de conexión", "Error");
         }
@@ -46,25 +45,25 @@ public class CtrlJefeBodega {
             "Select r.id_ruta, count(p.id_pedido) as \"cantidad\" , r.Realizado, r.id_repartidor " +
             "from ruta r join repartidor re On r.id_repartidor = re.cedula " +
             "join pedido p On p.id_ruta = r.id_ruta " +
-            "where r.id_jefeBodega = \""+jefe.getId()+"\" " +
+            "where r.id_jefeBodega = \""+jefe.getId()+"\"  and r.Realizado = \"F\"" +
             "group by r.id_ruta;";
             ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
             return rs;
     }
     
-        public Ruta obtenerRuta(ResultSet rs) throws SQLException{
-            int id_ruta = rs.getInt("id_ruta");
-            int cantidad = rs.getInt("cantidad");
-            String realizado = rs.getString("Realizado");
-            String id_repartidor = rs.getString("id_repartidor");
-            if(realizado.equals("F")){
-                realizado = "En proceso";
-            }else{
-                realizado = "Finalizado";
-            }
-            Repartidor r = obtenerRepartidor(id_repartidor);
-            return new Ruta(id_ruta, jefe, r, realizado, cantidad);
+    public Ruta obtenerRuta(ResultSet rs) throws SQLException{
+        int id_ruta = rs.getInt("id_ruta");
+        int cantidad = rs.getInt("cantidad");
+        String realizado = rs.getString("Realizado");
+        String id_repartidor = rs.getString("id_repartidor");
+        if(realizado.equals("F")){
+            realizado = "En proceso";
+        }else{
+            realizado = "Finalizado";
         }
+        Repartidor r = obtenerRepartidor(id_repartidor);
+        return new Ruta(id_ruta, jefe, r, realizado, cantidad);
+    }
     
     private Repartidor obtenerRepartidor(String cedula) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
@@ -88,6 +87,15 @@ public class CtrlJefeBodega {
             "SELECT p.id_pedido, p.id_cliente, p.id_matriz, p.id_vendedor  \n" +
             "FROM pedido p  \n" +
             "Where p.id_ruta is NULL and p.id_jefeBodega = \""+jefe.getId()+"\";";
+        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
+        return rs; 
+    }
+    
+    public ResultSet obtenerRSPedidos(Connection conn, int id_ruta) throws SQLException{
+        String query = 
+            "SELECT p.id_pedido, p.id_cliente, p.id_matriz, p.id_vendedor  \n" +
+            "FROM pedido p  \n" +
+            "Where p.id_ruta= "+id_ruta+" and p.id_jefeBodega = \""+jefe.getId()+"\";";
         ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
         return rs; 
     }
@@ -163,6 +171,10 @@ public class CtrlJefeBodega {
        return (repartidores.isEmpty())? null: repartidores.poll();
     }
     
+    public void agregarRepartidor(Repartidor r){
+        repartidores.add(r);
+    }
+    
     private Ruta crearRuta(ObservableList<Pedido> pedidos) throws SQLException{
         Repartidor repart = obtenerRepartidor();
         if(repart == null){
@@ -217,7 +229,7 @@ public class CtrlJefeBodega {
         return id;  
     }
     
-    private LinkedList<Repartidor> obtenerRepartidores() throws SQLException{
+    public void obtenerRepartidores() throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
         String query = 
@@ -226,13 +238,12 @@ public class CtrlJefeBodega {
             "JOIN persona p On r.cedula = p.cedula\n" +
             "WHERE r.cedula NOT IN\n" +
             "	(SELECT r1.id_repartidor\n" +
-            "	 FROM  ruta r1);";
+            "	 FROM  ruta r1  WHERE  r1.Realizado = \"F\");";
         ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        LinkedList<Repartidor> rep = new LinkedList<>();
+        repartidores = new LinkedList<>();
         while(rs.next()){
-            rep.add(new Repartidor(rs.getString("nombre"), rs.getString("apellido"), rs.getString("cedula"), 0));
+            repartidores.add(new Repartidor(rs.getString("nombre"), rs.getString("apellido"), rs.getString("cedula"), 0));
         }
         bd.cerrarConexion(conn);
-        return rep;
     }
 }
