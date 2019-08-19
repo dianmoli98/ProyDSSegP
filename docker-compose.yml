@@ -1,15 +1,15 @@
 version: "3"
 services:
   mysql:
-    build: ./"base de datos"
+    build: ./baseDatos
     volumes:
-     - ./"base de datos":/docker-entrypoint-initdb.d
+     - ./baseDatos:/docker-entrypoint-initdb.d
     ports:
      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: user
       MYSQL_PASSWORD: userpass
-      MYSQL_DATABASE: tecnoimport
+      MYSQL_DATABASE: TecnoImport
    
 
