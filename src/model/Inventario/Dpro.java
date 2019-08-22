@@ -3,23 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model.Inventario;
+package model.inventario;
 
 /**
  *
  * @author User-pc
  */
 public class Dpro {
-    private String nombre,tipoLocalidad,direccion,id_matriz;
-    private int Stock,id_producto;
+    private String nombre;
+    private String tipoLocalidad;
+    private String direccion;
+    private String idMatriz;
+    private int stock;
+    private int idProducto;
 
-    public Dpro(String nombre, String tipoLocalidad, int Stock,String direccion,String id_matriz,int id_producto) {
+    public Dpro(String nombre, String tipoLocalidad, int stock,String direccion,String idMatriz,int idProducto) {
         this.nombre = nombre;
         this.tipoLocalidad = tipoLocalidad;
-        this.Stock = Stock;
+        this.stock = stock;
         this.direccion=direccion;
-        this.id_matriz=id_matriz;
-        this.id_producto=id_producto;
+        this.idMatriz=idMatriz;
+        this.idProducto=idProducto;
     }
 
     public String getNombre() {
@@ -39,11 +43,11 @@ public class Dpro {
     }
 
     public int getStock() {
-        return Stock;
+        return stock;
     }
 
     public void setStock(int Stock) {
-        this.Stock = Stock;
+        this.stock = Stock;
     }
 
     public String getDireccion() {
@@ -54,24 +58,19 @@ public class Dpro {
         this.direccion = direccion;
     }
 
-    public String getId_matriz() {
-        return id_matriz;
+    public String getIdMatriz() {
+        return idMatriz;
     }
 
     public void setId_matriz(String id_matriz) {
-        this.id_matriz = id_matriz;
+        this.idMatriz = id_matriz;
     }
 
-    public int getId_producto() {
-        return id_producto;
+    public int getIdProducto() {
+        return idProducto;
     }
 
-    public void setId_producto(int id_producto) {
-        this.id_producto = id_producto;
+    public void setIdProducto(int id_producto) {
+        this.idProducto = id_producto;
     }
-
-    
-    
-    
-    
 }

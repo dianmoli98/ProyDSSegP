@@ -5,15 +5,13 @@
  */
 package tecnoimport;
 
-import Controller.CtrlJefeBodega;
-import Emergentes.Emergentes;
+import controller.CtrlJefeBodega;
+import emergentes.Emergentes;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -25,9 +23,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import model.Bodega.Ruta;
-import model.Pedido.Pedido;
+import model.bodega.Ruta;
+import model.pedido.Pedido;
 import model.singleton.ConexionBD;
+import model.singleton.GetObjectBodegaDB;
 import static tecnoimport.PantallaCrearRutasController.accionDoubleClickTabla;
 
 /**
@@ -75,7 +74,7 @@ public class FinalizaRutaController implements Initializable {
     private void llenar() throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
-        ResultSet rs = control.obtenerRSPedidos(conn, ruta.getId_ruta());
+        ResultSet rs = control.obtenerRSPedidos(conn, ruta.getIdRuta());
         celdas(conn,rs);
     }
     
@@ -113,7 +112,7 @@ public class FinalizaRutaController implements Initializable {
                     actualizarObservaciones();
                 }if(isFinalizada){
                     finalizarRuta();
-                    control.obtenerRepartidores();
+                    control.actualizarRepartidores();
                     PantallaRutasController.setRuta(null);
                     PantallaRutasController.getController().llenar();
                     if(PantallaDeEsperaController.getPantalla() != null)
@@ -141,7 +140,7 @@ public class FinalizaRutaController implements Initializable {
     private void actualizarObservaciones() throws SQLException{
         String query = 
             "UPDATE Ruta SET observaciones = \""+observaciones.getText()+"\"\n" +
-            "WHERE id_ruta = "+ ruta.getId_ruta()+";";
+            "WHERE id_ruta = "+ ruta.getIdRuta()+";";
         
         ConexionBD.getInstance().hacerQuery(query); 
     }
@@ -149,7 +148,7 @@ public class FinalizaRutaController implements Initializable {
     private void finalizarRuta() throws SQLException{
         String query = 
             "UPDATE Ruta SET Realizado = \"V\"\n" +
-            "WHERE id_ruta = "+ ruta.getId_ruta()+";";
+            "WHERE id_ruta = "+ ruta.getIdRuta()+";";
         
         ConexionBD.getInstance().hacerQuery(query); 
     }

@@ -5,8 +5,8 @@
  */
 package tecnoimport;
 
-import Controller.CtrlJefeBodega;
-import Emergentes.Emergentes;
+import controller.CtrlJefeBodega;
+import emergentes.Emergentes;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -24,7 +24,7 @@ import javafx.scene.input.MouseButton;
 import model.singleton.ConexionBD;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import model.Pedido.Pedido;
+import model.pedido.Pedido;
 
 /**
  * FXML Controller class

@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model.Bodega;
+package model.bodega;
 
 import java.util.LinkedList;
-import model.Inventario.Matriz;
-import model.Local.Persona;
+import model.inventario.Matriz;
+import model.local.Persona;
 
 /**
  *

@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model.Pedido;
+package model.pedido;
 
-import model.Local.Compra.DetalleProducto;
 import java.util.List;
+import model.local.compras.DetalleProducto;
 
 /**
  *

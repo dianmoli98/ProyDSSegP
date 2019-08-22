@@ -5,9 +5,9 @@
  */
 package tecnoimport;
 
-import Controller.CtrlGerente;
-import Controller.CtrlMaster;
-import Emergentes.Emergentes;
+import controller.CtrlGerente;
+import controller.CtrlMaster;
+import emergentes.Emergentes;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -35,10 +35,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import model.Bodega.Ruta;
-import model.Local.Gerente;
-import model.Local.Persona;
-import model.Local.Usuario;
+import model.bodega.Ruta;
+import model.local.Gerente;
+import model.local.Persona;
+import model.local.Usuario;
 import model.singleton.ConexionBD;
 
 /**
@@ -94,7 +94,7 @@ public class PantallaUsuariosController implements Initializable {
         if(p == null){
             Emergentes.mostrarDialogo("Debe seleccionar el usuario que desea habilitar la opción de admin.", "Falta de Selección","Error");
         }else if(Emergentes.comfirm("Estas seguro de asignarlo como administrador")){
-            control.AssignarAdministrador(p.getId(), true);
+            control.asignarAdministrador(p.getId(), true);
             Stage stage = (Stage) ((Node)(event.getSource())).getScene().getWindow();;
             stage.close();
         }
@@ -106,7 +106,7 @@ public class PantallaUsuariosController implements Initializable {
         if(p == null){
             Emergentes.mostrarDialogo("Debe seleccionar el usuario que desea deshabilitar la opción de admin.", "Falta de Selección","Error");
         }else if(Emergentes.comfirm("Lo eliminarás de administrador, estas seguro?")){
-            control.AssignarAdministrador(p.getId(), false);
+            control.asignarAdministrador(p.getId(), false);
             Stage stage = (Stage) ((Node)(event.getSource())).getScene().getWindow();;
             stage.close();
         }
@@ -115,7 +115,7 @@ public class PantallaUsuariosController implements Initializable {
     public void llenar() throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
-        ResultSet rs = control.UsuarioByLocalidad();
+        ResultSet rs = control.usuarioByLocalidad();
         nombre.setCellValueFactory(new PropertyValueFactory<>("Nombre"));
         apellido.setCellValueFactory(new PropertyValueFactory<>("Apellido"));
         celdas(conn,rs);

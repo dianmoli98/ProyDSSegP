@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package controller;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import model.Local.Gerente;
-import model.Local.Persona;
-import model.Local.Usuario;
+import model.local.Persona;
+import model.local.Usuario;
 import model.singleton.ConexionBD;
 
 /**
@@ -25,7 +24,7 @@ public class CtrlGerente {
     public CtrlGerente(Usuario jefe){
         this.usuario = jefe;
     }
-    public void AssignarAdministrador(String cedula,boolean asignar) throws SQLException{
+    public void asignarAdministrador(String cedula,boolean asignar) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
         Statement st = conn.createStatement();
@@ -39,12 +38,13 @@ public class CtrlGerente {
        
     }
     
-    public  ResultSet UsuarioByLocalidad() throws SQLException{
+    public  ResultSet usuarioByLocalidad() throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
         ResultSet resul=CtrlMaster.buscarTipoUsuario();
         String query = "SELECT Persona.cedula,Persona.nombre,Persona.apellido "
-                + "FROM Usuario JOIN Persona On Persona.cedula=Usuario.cedula  Where Usuario.matriz_id= \""+resul.getString("matriz_id")+"\"";
+                + "FROM Usuario JOIN Persona On Persona.cedula=Usuario.cedula "
+                + " Where Usuario.matriz_id= \""+resul.getString("matriz_id")+"\"";
         ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
         if (rs == null || rs.isClosed() || !rs.next()) {
             throw new SQLException("Usuario no encontrado.\nInténtelo más tarde. ");
@@ -62,8 +62,8 @@ public class CtrlGerente {
         }
         return persona;
     }
-    
-     public void peticionAbastecimiento(){
-         
-     }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
 }

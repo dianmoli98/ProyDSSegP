@@ -5,7 +5,7 @@
  */
 package tecnoimport;
 
-import Controller.CtrlJefeBodega;
+import controller.CtrlJefeBodega;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -19,7 +19,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import model.Bodega.Ruta;
+import model.bodega.Ruta;
 import model.singleton.ConexionBD;
 
 /**
@@ -65,7 +65,7 @@ public class PantallaDeEsperaController implements Initializable {
         while(rs.next()){
             Ruta r = control.obtenerRuta(rs);
             CodRepartidor.getItems().add(r.getRepartidor().getId());
-            CodRuta.getItems().add(r.getId_ruta());
+            CodRuta.getItems().add(r.getIdRuta());
         }
     }
     

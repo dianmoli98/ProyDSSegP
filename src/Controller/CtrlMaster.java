@@ -1,12 +1,12 @@
-package Controller;
+package controller;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import model.Bodega.Jefe_Bodega;
-import model.Local.Gerente;
-import model.Local.Usuario;
-import model.Local.Vendedor;
+import model.bodega.JefeBodega;
+import model.local.Gerente;
+import model.local.Usuario;
+import model.local.Vendedor;
 import model.singleton.ConexionBD;
 
 /**
@@ -14,7 +14,10 @@ import model.singleton.ConexionBD;
  * @author josie
  */
 public class CtrlMaster {
-    private static Usuario user=null; 
+    
+    private static Usuario user=null;
+    
+    private CtrlMaster(){} 
     
     private static Connection validarLogin(String usuario, String password) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
@@ -34,20 +37,21 @@ public class CtrlMaster {
            throw new SQLException("El usuario o contraseña es incorrecto.");
         }
         ResultSet rs=buscarTipoUsuario();
+        Usuario u = new Usuario(rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
         int tipo = rs.getInt("TipoUsuario");
+        
         switch(tipo){
             case 1:
-                user = new Vendedor(rs.getString("usuario"),rs.getString("clave"),
-                rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
+                user = new Vendedor(u);
                 break;
             case 2:
-                user = new Jefe_Bodega(rs.getString("usuario"),rs.getString("clave"),
-                rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
+                user = new JefeBodega(u);
                 break;
             case 3:
-                user = new Gerente(rs.getString("usuario"),rs.getString("clave"),
-                rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
+                user = new Gerente(u);
                 break;
+            default:
+                user = u;
         }
     }
     
@@ -73,12 +77,9 @@ public class CtrlMaster {
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
         String query = "select * from producto";
-        ResultSet rs = bd.seleccionarDatos(query, conn);
-        return rs;}
+        return bd.seleccionarDatos(query, conn);
+    }
     
-    
-
-
     public static String cambiarPantalla(){
         return null;
     }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Emergentes;
+package emergentes;
 
 import java.util.Optional;
 import javafx.scene.control.Alert;
@@ -14,6 +14,8 @@ import javafx.scene.control.ButtonType;
  * @author Francisco
  */
 public class Emergentes {
+    
+    private Emergentes(){}
     
     public static void mostrarDialogo(String info, String cabecera, String titulo) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package controller;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -11,165 +11,33 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Queue;
 import javafx.collections.ObservableList;
-import model.Bodega.Jefe_Bodega;
-import model.Bodega.Repartidor;
-import model.Bodega.Ruta;
-import model.Inventario.Matriz;
-import model.Local.Cliente;
-import model.Local.Vendedor;
-import model.Pedido.Pedido;
-import model.Pedido.PedidoCliente;
-import model.Pedido.PedidoMatriz;
+import model.bodega.JefeBodega;
+import model.bodega.Repartidor;
+import model.bodega.Ruta;
+import model.pedido.Pedido;
 import model.singleton.ConexionBD;
+import model.singleton.GetObjectBodegaDB;
+import model.singleton.GetObjectPersonaDB;
 
 /*
  * @author josie
  */
-public class CtrlJefeBodega {
+public class CtrlJefeBodega extends GetObjectBodegaDB {
     
-    private final Jefe_Bodega jefe;
+    private final JefeBodega jefe;
     private Queue<Repartidor> repartidores;
+    private GetObjectPersonaDB obP = GetObjectPersonaDB.getInstance();
     
-    public CtrlJefeBodega(Jefe_Bodega jefe){
+    public CtrlJefeBodega(JefeBodega jefe){
+        super(jefe);
         try {
-            obtenerRepartidores();
+            actualizarRepartidores();
         } catch (SQLException ex) {
-           Emergentes.Emergentes.mostrarDialogo("No fue posible conectarse al servidor.", "Error de conexión", "Error");
+           emergentes.Emergentes.mostrarDialogo("No fue posible conectarse al servidor.", "Error de conexión", "Error");
         }
         this.jefe = jefe;
     }
 
-    public ResultSet obtenerRSRutas(Connection conn) throws SQLException{
-            String query = 
-            "Select r.id_ruta, count(p.id_pedido) as \"cantidad\" , r.Realizado, r.id_repartidor " +
-            "from Ruta r join Repartidor re On r.id_repartidor = re.cedula " +
-            "join Pedido p On p.id_ruta = r.id_ruta " +
-            "where r.id_jefeBodega = \""+jefe.getId()+"\"  and r.Realizado = \"F\"" +
-            "group by r.id_ruta;";
-            ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-            return rs;
-    }
-    
-    public Ruta obtenerRuta(ResultSet rs) throws SQLException{
-        int id_ruta = rs.getInt("id_ruta");
-        int cantidad = rs.getInt("cantidad");
-        String realizado = rs.getString("Realizado");
-        String id_repartidor = rs.getString("id_repartidor");
-        if(realizado.equals("F")){
-            realizado = "En proceso";
-        }else{
-            realizado = "Finalizado";
-        }
-        Repartidor r = obtenerRepartidor(id_repartidor);
-        return new Ruta(id_ruta, jefe, r, realizado, cantidad);
-    }
-    
-    private Repartidor obtenerRepartidor(String cedula) throws SQLException{
-        ConexionBD bd = ConexionBD.getInstance();
-        Connection conn = bd.conectarMySQL();
-        String query = 
-            "Select r.cedula, p.nombre, p.apellido\n" +
-            "From Repartidor r \n" +
-            "Join Persona p On r.cedula = p.cedula\n" +
-            "Where r.cedula = \"" + cedula + "\" ;";
-        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        Repartidor r = null;
-        if(rs.next()){
-            r = new Repartidor(rs.getString("nombre"), rs.getString("apellido"), rs.getString("cedula"), 0);
-        }
-        bd.cerrarConexion(conn);
-        return r;
-    }
-    
-    public ResultSet obtenerRSPedidos(Connection conn) throws SQLException{
-        String query = 
-            "SELECT p.id_pedido, p.id_cliente, p.id_matriz, p.id_vendedor  \n" +
-            "FROM Pedido p  \n" +
-            "Where p.id_ruta is NULL and p.id_jefeBodega = \""+jefe.getId()+"\";";
-        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        return rs; 
-    }
-    
-    public ResultSet obtenerRSPedidos(Connection conn, int id_ruta) throws SQLException{
-        String query = 
-            "SELECT p.id_pedido, p.id_cliente, p.id_matriz, p.id_vendedor  \n" +
-            "FROM Pedido p  \n" +
-            "Where p.id_ruta= "+id_ruta+" and p.id_jefeBodega = \""+jefe.getId()+"\";";
-        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        return rs; 
-    }
-    
-    public Pedido obtenerPedido(ResultSet rs) throws SQLException{
-        int id_pedido = rs.getInt("id_pedido");
-        String id_matriz = rs.getString("id_matriz");
-        String id_cliente = rs.getString("id_cliente");
-        String id_vendedor = rs.getString("id_vendedor");
-        Pedido pedido = null;
-        if(id_matriz != null){
-            pedido = new PedidoMatriz(obtenerMatriz(id_matriz), obtenerVendedor(id_vendedor), id_pedido);
-        }else{
-            pedido = new PedidoCliente(id_pedido,obtenerCliente(id_cliente), obtenerVendedor(id_vendedor));
-        }
-        
-        return pedido;
-    } 
-    
-    private Cliente obtenerCliente(String cedula) throws SQLException{
-        ConexionBD bd = ConexionBD.getInstance();
-        Connection conn = bd.conectarMySQL();
-        String query = 
-            "SELECT *\n" +
-            "FROM Cliente c\n" +
-            "JOIN Persona p On p.cedula = c.cedula\n" +
-            "WHERE p.cedula = \"" + cedula + "\";";
-        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        Cliente c = null;
-        if(rs.next()){
-            c = new Cliente(rs.getString("nombre"), rs.getString("apellido"), 
-                    rs.getString("cedula"), rs.getString("direccion"), rs.getString("telefono"));
-        }
-        bd.cerrarConexion(conn);
-        return c;
-    }
-    
-    private Matriz obtenerMatriz(String id) throws SQLException{
-        ConexionBD bd = ConexionBD.getInstance();
-        Connection conn = bd.conectarMySQL();
-        String query = 
-            "SELECT * \n" +
-            "FROM Matriz m\n" +
-            "WHERE m.id_matriz = \"" + id + "\";";
-        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        Matriz m = null;
-        if(rs.next()){
-            m = new Matriz(rs.getString("id_matriz"),rs.getString("direccion"),rs.getString("tipoLocalidad"));
-        }
-        bd.cerrarConexion(conn);
-        return m;
-    }
-    
-    private Vendedor obtenerVendedor(String cedula) throws SQLException{
-        ConexionBD bd = ConexionBD.getInstance();
-        Connection conn = bd.conectarMySQL();
-        String query = 
-            "SELECT * \n" +
-            "FROM Usuario u\n" +
-            "JOIN Persona p ON p.cedula = u.cedula\n" +
-            "WHERE p.cedula = \"" + cedula + "\";";
-        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        Vendedor v = null;
-        if(rs.next()){
-            v = new Vendedor(rs.getString("usuario"), rs.getString("clave"),
-                    rs.getBoolean("isAdmin"), rs.getString("nombre"), rs.getString("apellido"), rs.getString("cedula"));
-        }
-        bd.cerrarConexion(conn);
-        return v;
-    }
-    
-    private Repartidor obtenerRepartidor(){
-       return (repartidores.isEmpty())? null: repartidores.poll();
-    }
-    
     public void agregarRepartidor(Repartidor r){
         repartidores.add(r);
     }
@@ -188,7 +56,7 @@ public class CtrlJefeBodega {
     public void guardarRuta(ObservableList<Pedido> pedidos) throws SQLException{
         Ruta r = crearRuta(pedidos);
         insertarRutaBD(r);
-        r.setId_ruta(obtenerLastRuta());
+        r.setIdRuta(obtenerLastRuta());
         for(Pedido p: pedidos){
             asignarRuta(r, p);
         }
@@ -205,7 +73,7 @@ public class CtrlJefeBodega {
     private void asignarRuta(Ruta r, Pedido p) throws SQLException{
         String query = 
             "UPDATE  Pedido \n" +
-            "SET id_ruta = " + r.getId_ruta()+"\n" +
+            "SET id_ruta = " + r.getIdRuta()+"\n" +
             "Where Pedido.id_pedido = " + p.getId_pedido() + ";";
         ConexionBD.getInstance().hacerQuery(query); 
     }
@@ -228,21 +96,11 @@ public class CtrlJefeBodega {
         return id;  
     }
     
-    public void obtenerRepartidores() throws SQLException{
-        ConexionBD bd = ConexionBD.getInstance();
-        Connection conn = bd.conectarMySQL();
-        String query = 
-            "SELECT * \n" +
-            "FROM Repartidor r\n" +
-            "JOIN Persona p On r.cedula = p.cedula\n" +
-            "WHERE r.cedula NOT IN\n" +
-            "	(SELECT r1.id_repartidor\n" +
-            "	 FROM  Ruta r1  WHERE  r1.Realizado = \"F\");";
-        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        repartidores = new LinkedList<>();
-        while(rs.next()){
-            repartidores.add(new Repartidor(rs.getString("nombre"), rs.getString("apellido"), rs.getString("cedula"), 0));
-        }
-        bd.cerrarConexion(conn);
+    private Repartidor obtenerRepartidor(){
+       return (repartidores.isEmpty())? null: repartidores.poll();
+    }
+    
+    public final void actualizarRepartidores() throws SQLException{
+        repartidores = obP.obtenerRepartidores();
     }
 }

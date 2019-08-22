@@ -5,7 +5,7 @@
  */
 package tecnoimport;
 
-import Controller.CtrlJefeBodega;
+import controller.CtrlJefeBodega;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -30,8 +30,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Bodega.Repartidor;
-import model.Bodega.Ruta;
+import model.bodega.Repartidor;
+import model.bodega.Ruta;
 import model.singleton.ConexionBD;
 
 /**
@@ -108,7 +108,7 @@ public class PantallaRutasController implements Initializable {
         stage.setScene(new Scene(root));
         stage.show();
         }else{
-            Emergentes.Emergentes.mostrarDialogo("Debe seleccionar una ruta En proceso de la tabla para"
+            emergentes.Emergentes.mostrarDialogo("Debe seleccionar una ruta En proceso de la tabla para"
                     + "\npoder finalizarla", "No hay ruta seleccionada", "Error");
         }
     }

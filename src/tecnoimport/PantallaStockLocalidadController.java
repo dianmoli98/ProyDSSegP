@@ -5,7 +5,7 @@
  */
 package tecnoimport;
 
-import Controller.CtrlMaster;
+import controller.CtrlMaster;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -34,10 +34,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import model.Inventario.Dpro;
-import model.Inventario.Matriz;
-import model.Inventario.Producto;
-import model.Local.Usuario;
+import model.inventario.Dpro;
+import model.local.Usuario;
 import model.singleton.ConexionBD;
 
 /**
@@ -299,7 +297,7 @@ public class PantallaStockLocalidadController implements Initializable {
             ResultSet rs = null;
             String stbuscar = "";
             idenlocal.getItems().clear();
-            if (((String) ComboLugar.getValue()).equals("Matriz")) {
+            if (ComboLugar.getValue().equals("Matriz")) {
                 busqueda.setPromptText("Matriz");
                 try {
                     llenarMa();
@@ -307,7 +305,7 @@ public class PantallaStockLocalidadController implements Initializable {
                     Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 com();
-            } else if (((String) ComboLugar.getValue()).equals("Sucursal")) {
+            } else if (ComboLugar.getValue().equals("Sucursal")) {
                 busqueda.setPromptText("Sucursal");
                 try {
                     llenarSu();
@@ -315,7 +313,7 @@ public class PantallaStockLocalidadController implements Initializable {
                     Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 com();
-            } else if (((String) ComboLugar.getValue()).equals("Bodega")) {
+            } else if (ComboLugar.getValue().equals("Bodega")) {
                 busqueda.setPromptText("Bodega");
                 try {
                     llenarBo();
@@ -368,10 +366,10 @@ public class PantallaStockLocalidadController implements Initializable {
         if(CtrlMaster.getUser().isIsAdmin()){
             Dpro p = tablaStock.getSelectionModel().getSelectedItem();
             if(p == null){
-                Emergentes.Emergentes.mostrarDialogo("Debe seleccionar un producto en el que cambiará el stock.", "Falta Selección", "Error");
+                emergentes.Emergentes.mostrarDialogo("Debe seleccionar un producto en el que cambiará el stock.", "Falta Selección", "Error");
             }else if (ComboLugar.getValue() != null&& idenlocal.getValue() != null){
                 String modify= "update Stock set stock= '" + txtstock.getText() 
-                        + "' where id_producto= '" + p.getId_producto() + "' and id_matriz='"+p.getId_matriz()+"' ; ";
+                        + "' where id_producto= '" + p.getIdProducto() + "' and id_matriz='"+p.getIdMatriz()+"' ; ";
                 ConexionBD bd = ConexionBD.getInstance();
                             Connection conn = bd.conectarMySQL();
                 Statement st = conn.createStatement();
@@ -386,7 +384,7 @@ public class PantallaStockLocalidadController implements Initializable {
                 celdas(conn,rs);
                     ocultar();
             }else{
-                Emergentes.Emergentes.mostrarDialogo("Debe seleccionar el código de la instalación que se desee modificar.", "Falta Selección", "Error");
+                emergentes.Emergentes.mostrarDialogo("Debe seleccionar el código de la instalación que se desee modificar.", "Falta Selección", "Error");
             }
         }
     }

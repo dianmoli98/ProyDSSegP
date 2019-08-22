@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model.Inventario;
+package model.inventario;
 
 /**
  *
@@ -11,15 +11,15 @@ package model.Inventario;
  */
 public class Stock {
     private Producto nombre;
-    private int id_stock, id_producto;
-    private String id_matriz; 
-    //todo: HostBD
+    private int idProducto;
+    private int idStock;
+    private String idMatriz; 
 
-    public Stock(Producto nombre, int id_stock, int id_producto, String id_matriz) {
+    public Stock(Producto nombre, int idStock, int idProducto, String idMatriz) {
         this.nombre = nombre;
-        this.id_stock = id_stock;
-        this.id_producto = id_producto;
-        this.id_matriz = id_matriz;
+        this.idStock = idStock;
+        this.idProducto = idProducto;
+        this.idMatriz = idMatriz;
     }
 
     public Producto getNombre() {
@@ -30,31 +30,27 @@ public class Stock {
         this.nombre = nombre;
     }
 
-    public int getId_stock() {
-        return id_stock;
+    public int getIdStock() {
+        return idStock;
     }
 
-    public void setId_stock(int id_stock) {
-        this.id_stock = id_stock;
+    public void setIdStock(int idStock) {
+        this.idStock = idStock;
     }
 
-    public int getId_producto() {
-        return id_producto;
+    public int getIdProducto() {
+        return idProducto;
     }
 
-    public void setId_producto(int id_producto) {
-        this.id_producto = id_producto;
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
     }
 
-    public String getId_matriz() {
-        return id_matriz;
+    public String getIdMatriz() {
+        return idMatriz;
     }
 
-    public void setId_matriz(String id_matriz) {
-        this.id_matriz = id_matriz;
-    }
-
-    public void updateStock(){
-        //todo: conexion a BD
+    public void setIdMatriz(String idMatriz) {
+        this.idMatriz = idMatriz;
     }
 }

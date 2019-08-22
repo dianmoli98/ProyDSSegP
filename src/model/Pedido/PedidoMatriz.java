@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model.Pedido;
+package model.pedido;
 
 
 import java.util.LinkedList;
-import model.Inventario.Matriz;
-import model.Local.Vendedor;
+import model.inventario.Matriz;
+import model.local.Vendedor;
 
 /**
  *

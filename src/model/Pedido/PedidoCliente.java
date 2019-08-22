@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model.Pedido;
+package model.pedido;
 
-import model.Local.Cliente;
-import model.Local.Vendedor;
+import model.local.Cliente;
+import model.local.Vendedor;
 
 /**
  *

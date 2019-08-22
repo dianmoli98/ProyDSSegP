@@ -3,38 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model.Inventario;
+package model.inventario;
 
 /**
  *
  * @author josie
  */
 public class Producto {
-    private int id_producto;
+    private int idProducto;
     private String nombre;
-    private String descripcion,categoria;
+    private String descripcion;
+    private String categoria;
     private double precio;
     
-    public Producto(int id_producto,String nombre, String descripcion, double precio,String categoria){
-        this.id_producto=id_producto;
+    public Producto(int idProducto,String nombre, String descripcion, double precio,String categoria){
+        this.idProducto=idProducto;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.categoria=categoria;
     }
-    
-    public boolean cambiarPrecio(double n){
-        precio = n;
-        //todo: actualizar base de datos
-        return true;
+
+    public int getIdProducto() {
+        return idProducto;
     }
 
-    public int getId_producto() {
-        return id_producto;
-    }
-
-    public void setId_producto(int id_producto) {
-        this.id_producto = id_producto;
+    public void setIdProducto(int id_producto) {
+        this.idProducto = id_producto;
     }
 
     public String getNombre() {

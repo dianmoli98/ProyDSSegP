@@ -5,10 +5,11 @@
  */
 package tecnoimport;
 
-import Controller.CtrlGerente;
-import Controller.CtrlJefeBodega;
-import Controller.CtrlMaster;
-import Controller.CtrlVendedor;
+import controller.CtrlGerente;
+import controller.CtrlJefeBodega;
+import controller.CtrlMaster;
+import controller.CtrlVendedor;
+import emergentes.Emergentes;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -33,10 +34,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import static javax.swing.JOptionPane.showMessageDialog;
-import model.Bodega.Jefe_Bodega;
-import model.Local.Gerente;
-import model.Local.Usuario;
-import model.Local.Vendedor;
+import model.bodega.JefeBodega;
+import model.local.Gerente;
+import model.local.Usuario;
+import model.local.Vendedor;
 import static tecnoimport.TecnoImport.ventsegunda;
 
 /**
@@ -89,10 +90,10 @@ public class FXMLVistaTController implements Initializable {
             Ventas.setDisable(true);
             Clientes.setDisable(true);
             
-        }else if(user instanceof Jefe_Bodega){
+        }else if(user instanceof JefeBodega){
             Ventas.setDisable(true);
             Clientes.setDisable(true);
-            controlJefe = new CtrlJefeBodega((Jefe_Bodega)CtrlMaster.getUser());
+            controlJefe = new CtrlJefeBodega((JefeBodega)CtrlMaster.getUser());
             try {
                 Parent root3 = FXMLLoader.load(getClass().getResource("/tecnoimport/Pantalla de Espera.fxml"));
                 Scene scene3 = new Scene(root3);
@@ -112,11 +113,7 @@ public class FXMLVistaTController implements Initializable {
 
     @FXML
     private void CerrarSesion(MouseEvent event) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Diálogo de confirmación");
-        alert.setContentText ("¿Está seguro que desea cerrar sesión?");
-        Optional <ButtonType> result = alert.showAndWait ();
-        if (result.get () == ButtonType.OK){   
+        if (Emergentes.comfirm("¿Está seguro que desea cerrar sesión?")){   
             Parent root = FXMLLoader.load(getClass().getResource("PantallaAcceso.fxml"));
             Stage stage= new Stage();
             stage.setScene(new Scene(root));
@@ -189,8 +186,8 @@ public class FXMLVistaTController implements Initializable {
     @FXML
     private void ImprimirDoc(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
-         Stage stage= new Stage();
-         stage.initModality(Modality.WINDOW_MODAL);
+        Stage stage= new Stage();
+        stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(label.getScene().getWindow());
         stage.setResizable(false);
         stage.setScene(new Scene(root));

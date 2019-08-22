@@ -3,26 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model.Bodega;
+package model.bodega;
 
 import java.util.LinkedList;
-import model.Pedido.Pedido;
+import java.util.List;
+import model.pedido.Pedido;
 
 /**
  *
  * @author josie
  */
 public class Ruta {
-    private int id_ruta;
-    private Jefe_Bodega jefe;
+    private int idRuta;
+    private JefeBodega jefe;
     private Repartidor repartidor;
     private String status;
     private int cantidad;
-    private LinkedList<Pedido> pedidos;
-    private LinkedList<String> direcciones;
+    private List<Pedido> pedidos;
+    private List<String> direcciones;
 
-    public Ruta(int id_ruta, Jefe_Bodega jefe, Repartidor repartidor, String status, int cantidad) {
-        this.id_ruta = id_ruta;
+    public Ruta(int id_ruta, JefeBodega jefe, Repartidor repartidor, String status, int cantidad) {
+        this.idRuta = id_ruta;
         this.jefe = jefe;
         this.repartidor = repartidor;
         this.status = status;
@@ -31,12 +32,10 @@ public class Ruta {
         direcciones = new LinkedList<>();
     }
 
-    public void setPedidos(LinkedList<Pedido> pedidos) {
+    public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
         direcciones.clear();
-        pedidos.forEach((p) -> {
-            direcciones.add(p.getDireccion());
-        });
+        pedidos.forEach(p -> direcciones.add(p.getDireccion()));
         cantidad = pedidos.size();
     }  
     
@@ -46,8 +45,8 @@ public class Ruta {
         cantidad++;
     }
 
-    public int getId_ruta() {
-        return id_ruta;
+    public int getIdRuta() {
+        return idRuta;
     }
 
     public Repartidor getRepartidor() {
@@ -62,19 +61,19 @@ public class Ruta {
         return cantidad;
     }
 
-    public Jefe_Bodega getJefe() {
+    public JefeBodega getJefe() {
         return jefe;
     }
 
-    public LinkedList<Pedido> getPedidos() {
+    public List<Pedido> getPedidos() {
         return pedidos;
     }
 
-    public LinkedList<String> getDirecciones() {
+    public List<String> getDirecciones() {
         return direcciones;
     }
 
-    public void setId_ruta(int id_ruta) {
-        this.id_ruta = id_ruta;
+    public void setIdRuta(int id_ruta) {
+        this.idRuta = id_ruta;
     }
 }

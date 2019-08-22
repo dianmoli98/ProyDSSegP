@@ -15,11 +15,8 @@ public class ConexionBD {
     // Librería de MySQL
     private final String DRIVER = "com.mysql.jdbc.Driver";
     // Datos de la BD
-    private final String DB = ""
-            + ""
-            + "";
-    private final String HOST = "192.168.49.3";
-    //   private static final String HOST = "192.168.43.149";
+    private final String DB = "TecnoImport";
+    private final String HOST = "127.0.0.1";
     private final String PUERTO = "3306";
 
     private final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + DB
@@ -60,7 +57,16 @@ public class ConexionBD {
             throw new SQLException("Error de Base de Datos.\nNo conectada");
         }
     }
-
+    
+    /*
+   try (Statement st = conn.createStatement()) {
+            ResultSet rs = st.executeQuery(query);
+            return rs;
+        } catch (SQLException ex) {
+            throw new SQLException("La base de datos se desconectó inesperadamente.");
+        }
+    */
+    
     public ResultSet seleccionarDatos(String query, Connection conn) throws SQLException {
         if (conn == null) {
             throw new SQLException("Conexión con la base de datos fallida.\n Compruebe autentificación o"

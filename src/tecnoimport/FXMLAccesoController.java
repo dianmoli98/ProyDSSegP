@@ -5,8 +5,8 @@
  */
 package tecnoimport;
 
-import Controller.CtrlMaster;
-import Emergentes.Emergentes;
+import controller.CtrlMaster;
+import emergentes.Emergentes;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
