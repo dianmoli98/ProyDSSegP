@@ -62,15 +62,15 @@ public class Dpro {
         return idMatriz;
     }
 
-    public void setId_matriz(String id_matriz) {
-        this.idMatriz = id_matriz;
+    public void setIdmatriz(String idmatriz) {
+        this.idMatriz = idmatriz;
     }
 
     public int getIdProducto() {
         return idProducto;
     }
 
-    public void setIdProducto(int id_producto) {
-        this.idProducto = id_producto;
+    public void setIdProducto(int idproducto) {
+        this.idProducto = idproducto;
     }
 }

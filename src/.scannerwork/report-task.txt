@@ -1,0 +1,6 @@
+projectKey=ED-1-1S-2019:dmolin2019
+serverUrl=http://200.9.176.59:9000
+serverVersion=7.7.0.23042
+dashboardUrl=http://200.9.176.59:9000/dashboard?id=ED-1-1S-2019%3Admolin2019
+ceTaskId=AWy4Fth8OWtNxYUJFQSz
+ceTaskUrl=http://200.9.176.59:9000/api/ce/task?id=AWy4Fth8OWtNxYUJFQSz

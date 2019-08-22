@@ -18,16 +18,16 @@ public class PedidoMatriz extends Pedido {
     private Matriz matriz;
     private Vendedor vendedor;
 
-    public PedidoMatriz(Matriz matriz, Vendedor vendedor, int id_pedido) {
-        super.id_pedido = id_pedido;
+    public PedidoMatriz(Matriz matriz, Vendedor vendedor, int idpedido) {
+        super.idpedido = idpedido;
         super.productos = new LinkedList<>();
         this.matriz = matriz;
         this.vendedor = vendedor;
     }
     
     @Override
-    public int getId_pedido() {
-        return id_pedido;
+    public int getIdpedido() {
+        return idpedido;
     }
 
     @Override

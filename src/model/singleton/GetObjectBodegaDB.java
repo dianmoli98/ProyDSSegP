@@ -40,7 +40,7 @@ public class GetObjectBodegaDB {
     }
     
     public Ruta obtenerRuta(ResultSet rs) throws SQLException{
-        int id_ruta = rs.getInt("id_ruta");
+        int idruta = rs.getInt("id_ruta");
         int cantidad = rs.getInt("cantidad");
         String realizado = rs.getString("Realizado");
         String id_repartidor = rs.getString("id_repartidor");
@@ -50,7 +50,7 @@ public class GetObjectBodegaDB {
             realizado = "Finalizado";
         }
         Repartidor r = obP.obtenerRepartidor(id_repartidor);
-        return new Ruta(id_ruta, jefe, r, realizado, cantidad);
+        return new Ruta(idruta, jefe, r, realizado, cantidad);
     }
     
     public ResultSet obtenerRSPedidos(Connection conn) throws SQLException{
@@ -71,16 +71,16 @@ public class GetObjectBodegaDB {
     }
     
     public Pedido obtenerPedido(ResultSet rs) throws SQLException{
-        int id_pedido = rs.getInt("id_pedido");
-        String id_matriz = rs.getString("id_matriz");
-        String id_cliente = rs.getString("id_cliente");
-        String id_vendedor = rs.getString("id_vendedor");
+        int idpedido = rs.getInt("id_pedido");
+        String idmatriz = rs.getString("id_matriz");
+        String idcliente = rs.getString("id_cliente");
+        String idvendedor = rs.getString("id_vendedor");
         Pedido pedido;
         
-        if(id_matriz != null){
-            pedido = new PedidoMatriz(obtenerMatriz(id_matriz), obP.obtenerVendedor(id_vendedor), id_pedido);
+        if(idmatriz != null){
+            pedido = new PedidoMatriz(obtenerMatriz(idmatriz), obP.obtenerVendedor(idvendedor), idpedido);
         }else{
-            pedido = new PedidoCliente(id_pedido,obP.obtenerCliente(id_cliente), obP.obtenerVendedor(id_vendedor));
+            pedido = new PedidoCliente(idpedido,obP.obtenerCliente(idcliente), obP.obtenerVendedor(idvendedor));
         }
         
         return pedido;

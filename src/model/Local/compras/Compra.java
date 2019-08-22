@@ -8,7 +8,6 @@ package model.local.compras;
 import model.local.Cliente;
 import java.util.Date;
 import java.util.LinkedList;
-import model.local.compras.DetalleProducto;
 import model.strategy.FormaPago;
 /**
  *

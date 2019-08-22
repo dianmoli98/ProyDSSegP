@@ -74,7 +74,7 @@ public class CtrlJefeBodega extends GetObjectBodegaDB {
         String query = 
             "UPDATE  Pedido \n" +
             "SET id_ruta = " + r.getIdRuta()+"\n" +
-            "Where Pedido.id_pedido = " + p.getId_pedido() + ";";
+            "Where Pedido.id_pedido = " + p.getIdpedido() + ";";
         ConexionBD.getInstance().hacerQuery(query); 
     }
     

@@ -21,14 +21,14 @@ public class PedidoCliente extends Pedido{
         return cliente.getDireccion();
     }
 
-    public PedidoCliente(int id_pedido, Cliente cliente, Vendedor vendedor) {
-        super.id_pedido = id_pedido;
+    public PedidoCliente(int idpedido, Cliente cliente, Vendedor vendedor) {
+        super.idpedido = idpedido;
         this.cliente = cliente;
         this.vendedor = vendedor;
     }
 
     @Override
-    public int getId_pedido() {
-        return id_pedido;
+    public int getIdpedido() {
+        return idpedido;
     }
 }

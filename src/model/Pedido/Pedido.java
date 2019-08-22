@@ -13,11 +13,11 @@ import model.local.compras.DetalleProducto;
  * @author josie
  */
 public abstract class Pedido {
-    protected int id_pedido;
+    protected int idpedido;
     protected String direccion;
     protected List<DetalleProducto> productos;
     
     public abstract String getDireccion();
     
-    public abstract int getId_pedido();
+    public abstract int getIdpedido();
 }

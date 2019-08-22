@@ -8,7 +8,6 @@ package tecnoimport;
 import controller.CtrlGerente;
 import controller.CtrlJefeBodega;
 import controller.CtrlMaster;
-import controller.CtrlVendedor;
 import emergentes.Emergentes;
 import java.io.IOException;
 import java.net.URL;
@@ -70,7 +69,6 @@ public class FXMLVistaTController implements Initializable {
     
     private static CtrlGerente controlGerente = null;
     private static CtrlJefeBodega controlJefe = null;
-    private static CtrlVendedor controlVendedor = null;
     /**
      * Initializes the controller class.
      */
@@ -202,7 +200,4 @@ public class FXMLVistaTController implements Initializable {
         return controlGerente;
     }
     
-    public static CtrlVendedor getControlVendedor(){
-        return controlVendedor;
-    }
 }

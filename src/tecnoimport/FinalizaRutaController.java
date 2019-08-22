@@ -132,7 +132,7 @@ public class FinalizaRutaController implements Initializable {
     private void cancelarPedidoBD(Pedido p) throws SQLException{
         String query = 
             "UPDATE Pedido SET id_ruta = NULL\n" +
-            "WHERE id_pedido = " + p.getId_pedido() + ";";
+            "WHERE id_pedido = " + p.getIdpedido() + ";";
         
         ConexionBD.getInstance().hacerQuery(query); 
     }

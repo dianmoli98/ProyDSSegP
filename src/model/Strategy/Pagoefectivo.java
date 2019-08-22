@@ -9,7 +9,7 @@ package model.strategy;
  *
  * @author josie
  */
-public class Pago_efectivo implements FormaPago{
+public class Pagoefectivo implements FormaPago{
     protected int cambio;
     @Override
     public boolean pagar() {

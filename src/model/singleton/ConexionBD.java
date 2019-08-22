@@ -13,11 +13,11 @@ import java.sql.Statement;
 public class ConexionBD {
 
     // Librería de MySQL
-    private final String DRIVER = "com.mysql.jdbc.Driver";
+    private static final String DRIVER = "com.mysql.jdbc.Driver";
     // Datos de la BD
-    private final String DB = "TecnoImport";
-    private final String HOST = "127.0.0.1";
-    private final String PUERTO = "3306";
+    private static final String DB = "TecnoImport";
+    private static final String HOST = "127.0.0.1";
+    private static final String PUERTO = "3306";
 
     private final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + DB
             + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";;

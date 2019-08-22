@@ -22,8 +22,8 @@ public class Ruta {
     private List<Pedido> pedidos;
     private List<String> direcciones;
 
-    public Ruta(int id_ruta, JefeBodega jefe, Repartidor repartidor, String status, int cantidad) {
-        this.idRuta = id_ruta;
+    public Ruta(int idruta, JefeBodega jefe, Repartidor repartidor, String status, int cantidad) {
+        this.idRuta = idruta;
         this.jefe = jefe;
         this.repartidor = repartidor;
         this.status = status;
@@ -73,7 +73,7 @@ public class Ruta {
         return direcciones;
     }
 
-    public void setIdRuta(int id_ruta) {
-        this.idRuta = id_ruta;
+    public void setIdRuta(int idruta) {
+        this.idRuta = idruta;
     }
 }

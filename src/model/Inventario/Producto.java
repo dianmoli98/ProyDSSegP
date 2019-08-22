@@ -28,8 +28,8 @@ public class Producto {
         return idProducto;
     }
 
-    public void setIdProducto(int id_producto) {
-        this.idProducto = id_producto;
+    public void setIdProducto(int idproducto) {
+        this.idProducto = idproducto;
     }
 
     public String getNombre() {

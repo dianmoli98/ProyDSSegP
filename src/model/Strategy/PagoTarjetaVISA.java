@@ -9,8 +9,8 @@ package model.strategy;
  *
  * @author josie
  */
-public class Pago_TarjetaVISA implements FormaPago {
-    protected int num_tarjeta;
+public class PagoTarjetaVISA implements FormaPago {
+    protected int numtarjeta;
 
     @Override
     public boolean pagar() {
