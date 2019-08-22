@@ -61,10 +61,7 @@ public class CtrlMaster {
         String query = "SELECT * FROM Usuario JOIN Persona ON Usuario.cedula= Persona.cedula Where usuario =\""+bd.getUser()+"\";";
 
         ResultSet rs = bd.seleccionarDatos(query, conn);
-
-        if (rs == null || rs.isClosed() || !rs.next()) {
-            throw new SQLException("Usuario no encontrado.\nInténtelo más tarde. ");
-        }
+        validarResult(rs);
         return rs;
     }
     
@@ -82,5 +79,11 @@ public class CtrlMaster {
     
     public static String cambiarPantalla(){
         return null;
+    }
+    
+    public static void validarResult(ResultSet rs) throws SQLException{
+        if (rs == null || rs.isClosed() || !rs.next()) {
+            throw new SQLException("Usuario no encontrado.\nInténtelo más tarde. ");
+        }
     }
 }

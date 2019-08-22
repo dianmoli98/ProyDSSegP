@@ -29,13 +29,9 @@ public class CtrlGerente {
         Connection conn = bd.conectarMySQL();
         Statement st = conn.createStatement();
         if(asignar){
-        String query="update Usuario set Usuario.isAdmin='1' WHERE (Usuario.cedula=\""+cedula+"\") ";
-        st.execute(query);
-        }else{
-        String query="update Usuario set Usuario.isAdmin='0'WHERE (Usuario.cedula=\""+cedula+"\") ";
+        String query="update Usuario set Usuario.isAdmin="+asignar+" WHERE (Usuario.cedula=\""+cedula+"\") ";
         st.execute(query);
         }
-       
     }
     
     public  ResultSet usuarioByLocalidad() throws SQLException{
@@ -46,9 +42,7 @@ public class CtrlGerente {
                 + "FROM Usuario JOIN Persona On Persona.cedula=Usuario.cedula "
                 + " Where Usuario.matriz_id= \""+resul.getString("matriz_id")+"\"";
         ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        if (rs == null || rs.isClosed() || !rs.next()) {
-            throw new SQLException("Usuario no encontrado.\nInténtelo más tarde. ");
-        }
+        CtrlMaster.validarResult(rs);
         return rs;
     }
     

@@ -27,4 +27,6 @@ public class JefeBodega extends Usuario {
         pedidos = new LinkedList<>();
     }
     
+    
+    
 }

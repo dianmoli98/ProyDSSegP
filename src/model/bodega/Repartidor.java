@@ -32,4 +32,21 @@ public class Repartidor extends Persona{
     public String toString(){
         return this.nombre + " " + this.apellido;
     }
+
+    public Matriz getMatriz() {
+        return matriz;
+    }
+
+    public void setMatriz(Matriz matriz) {
+        this.matriz = matriz;
+    }
+
+    public int getCantRutas() {
+        return cantRutas;
+    }
+
+    public void setCantRutas(int cantRutas) {
+        this.cantRutas = cantRutas;
+    }
+    
 }

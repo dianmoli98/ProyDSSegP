@@ -28,4 +28,13 @@ public class Cliente extends Persona {
     public String getDireccion() {
         return direccion;
     }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+    
 }

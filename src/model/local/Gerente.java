@@ -18,4 +18,5 @@ public class Gerente extends Usuario {
     public Gerente(Usuario u){
         super(u.isAdmin, u.nombre, u.apellido, u.id);
     }
+    
 }

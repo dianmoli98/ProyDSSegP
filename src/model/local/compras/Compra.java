@@ -21,4 +21,53 @@ public class Compra {
     private FormaPago formaPago;
     private Date fecha;
 
+    public String getNumeracion() {
+        return numeracion;
+    }
+
+    public void setNumeracion(String numeracion) {
+        this.numeracion = numeracion;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public LinkedList<DetalleProducto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(LinkedList<DetalleProducto> productos) {
+        this.productos = productos;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public FormaPago getFormaPago() {
+        return formaPago;
+    }
+
+    public void setFormaPago(FormaPago formaPago) {
+        this.formaPago = formaPago;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    
 }

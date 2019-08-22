@@ -16,4 +16,38 @@ class Cotizacion {
     protected Cliente cliente;
     protected String detalle;
     protected Date fecha;
+
+    public String getNumeracion() {
+        return numeracion;
+    }
+
+    public void setNumeracion(String numeracion) {
+        this.numeracion = numeracion;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public String getDetalle() {
+        return detalle;
+    }
+
+    public void setDetalle(String detalle) {
+        this.detalle = detalle;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+    
+    
 }

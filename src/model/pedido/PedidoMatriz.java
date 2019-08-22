@@ -34,5 +34,21 @@ public class PedidoMatriz extends Pedido {
     public String getDireccion() {
         return matriz.getDireccion();
     }
+
+    public Matriz getMatriz() {
+        return matriz;
+    }
+
+    public void setMatriz(Matriz matriz) {
+        this.matriz = matriz;
+    }
+
+    public Vendedor getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(Vendedor vendedor) {
+        this.vendedor = vendedor;
+    }
     
 }
