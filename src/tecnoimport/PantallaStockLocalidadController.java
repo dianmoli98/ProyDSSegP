@@ -25,7 +25,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -370,28 +369,26 @@ public class PantallaStockLocalidadController implements Initializable {
             }else if (ComboLugar.getValue() != null&& idenlocal.getValue() != null){
                 String modify= "update Stock set stock= '" + txtstock.getText() 
                         + "' where id_producto= '" + p.getIdProducto() + "' and id_matriz='"+p.getIdMatriz()+"' ; ";
-                ConexionBD bd = ConexionBD.getInstance();
-                            Connection conn = bd.conectarMySQL();
-                Statement st = conn.createStatement();
+                bd = ConexionBD.getInstance();
+                conn = bd.conectarMySQL();
+                try (Statement st = conn.createStatement()) {
                     st.execute(modify);
+                } catch (SQLException ex) {
+                    throw new SQLException("La base de datos se desconectó inesperadamente.");
+                }
+                    
                 String show = "select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
                         + "from Producto  p\n"
                         + "join Stock s on p.id_producto=s.id_producto\n"
                         + "join Matriz m on m.id_matriz=s.id_matriz\n"
                         + "where m.tipoLocalidad='"+ComboLugar.getValue().toString()+"' and m.id_matriz='"+ idenlocal.getValue().toString()+"' ;";
-                Connection connn = bd.conectarMySQL();
-                ResultSet rs = bd.seleccionarDatos(show, connn);
+                ResultSet rs = bd.seleccionarDatos(show, conn);
                 celdas(conn,rs);
-                    ocultar();
+                ocultar();
+                bd.cerrarConexion(conn);
             }else{
                 emergentes.Emergentes.mostrarDialogo("Debe seleccionar el código de la instalación que se desee modificar.", "Falta Selección", "Error");
             }
         }
     }
-    
-    
-   
-        
-    
-    
 }

@@ -26,7 +26,6 @@ import javafx.stage.Stage;
 import model.bodega.Ruta;
 import model.pedido.Pedido;
 import model.singleton.ConexionBD;
-import model.singleton.GetObjectBodegaDB;
 import static tecnoimport.PantallaCrearRutasController.accionDoubleClickTabla;
 
 /**
@@ -166,5 +165,4 @@ public class FinalizaRutaController implements Initializable {
         idpedido.setCellValueFactory(new PropertyValueFactory<>("id_pedido"));
         direccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
     }
-    
 }

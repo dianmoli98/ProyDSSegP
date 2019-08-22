@@ -19,15 +19,14 @@ public class ConexionBD {
     private static final String HOST = "127.0.0.1";
     private static final String PUERTO = "3306";
 
-    private final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + DB
-            + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";;
+    private static final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + DB
+            + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     
     private String user;
     private String pass;
     private static ConexionBD conexion = new ConexionBD();
     
-    private ConexionBD(){
-    }
+    private ConexionBD(){}
     
     public static ConexionBD getInstance(){
         return conexion;
@@ -37,11 +36,7 @@ public class ConexionBD {
         this.user = user;
         this.pass = pass;
     }
-
-    public static ConexionBD getConexion() {
-        return conexion;
-    }
-
+    
     public static void setConexion(ConexionBD conexion) {
         ConexionBD.conexion = conexion;
     }
@@ -59,12 +54,12 @@ public class ConexionBD {
     }
     
     /*
-   try (Statement st = conn.createStatement()) {
-            ResultSet rs = st.executeQuery(query);
-            return rs;
-        } catch (SQLException ex) {
-            throw new SQLException("La base de datos se desconectó inesperadamente.");
-        }
+try (Statement st = conn.createStatement()) {
+    ResultSet rs = st.executeQuery(query);
+    return rs;
+} catch (SQLException ex) {
+    throw new SQLException("La base de datos se desconectó inesperadamente.");
+}
     */
     
     public ResultSet seleccionarDatos(String query, Connection conn) throws SQLException {

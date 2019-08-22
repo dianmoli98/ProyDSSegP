@@ -35,21 +35,20 @@ public class GetObjectBodegaDB {
             "join Pedido p On p.id_ruta = r.id_ruta " +
             "where r.id_jefeBodega = \""+jefe.getId()+"\"  and r.Realizado = \"F\"" +
             "group by r.id_ruta;";
-            ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-            return rs;
+            return ConexionBD.getInstance().seleccionarDatos(query, conn);
     }
     
     public Ruta obtenerRuta(ResultSet rs) throws SQLException{
         int idruta = rs.getInt("id_ruta");
         int cantidad = rs.getInt("cantidad");
         String realizado = rs.getString("Realizado");
-        String id_repartidor = rs.getString("id_repartidor");
+        String idRepartidor = rs.getString("id_repartidor");
         if(realizado.equals("F")){
             realizado = "En proceso";
         }else{
             realizado = "Finalizado";
         }
-        Repartidor r = obP.obtenerRepartidor(id_repartidor);
+        Repartidor r = obP.obtenerRepartidor(idRepartidor);
         return new Ruta(idruta, jefe, r, realizado, cantidad);
     }
     
@@ -61,13 +60,12 @@ public class GetObjectBodegaDB {
         return ConexionBD.getInstance().seleccionarDatos(query, conn); 
     }
     
-    public ResultSet obtenerRSPedidos(Connection conn, int id_ruta) throws SQLException{
+    public ResultSet obtenerRSPedidos(Connection conn, int idRuta) throws SQLException{
         String query = 
             "SELECT p.id_pedido, p.id_cliente, p.id_matriz, p.id_vendedor  \n" +
             "FROM Pedido p  \n" +
-            "Where p.id_ruta= "+id_ruta+" and p.id_jefeBodega = \""+jefe.getId()+"\";";
-        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        return rs; 
+            "Where p.id_ruta= "+idRuta+" and p.id_jefeBodega = \""+jefe.getId()+"\";";
+        return ConexionBD.getInstance().seleccionarDatos(query, conn); 
     }
     
     public Pedido obtenerPedido(ResultSet rs) throws SQLException{

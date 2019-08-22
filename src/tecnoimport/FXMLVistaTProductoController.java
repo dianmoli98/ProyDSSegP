@@ -114,15 +114,6 @@ public class FXMLVistaTProductoController implements Initializable {
         }
      }
     
-    /*
-    try (Statement st = conn.createStatement()) {
-        ResultSet rs = st.executeQuery(query);
-        return rs;
-    } catch (SQLException ex) {
-        throw new SQLException("La base de datos se desconectó inesperadamente.");
-    }
-    */
-    
     private void ocultar(){
         lblprecio.setVisible(false);
         txtprecio.setVisible(false);
@@ -222,7 +213,7 @@ public class FXMLVistaTProductoController implements Initializable {
                 txtprecio.setText(String.valueOf(p.getPrecio()));  
             }catch (Exception e) {
                 ocultar();
-                emergentes.Emergentes.mostrarDialogo("No ha seleccionado ninguna celda.", "Falla de selección", "Error");
+                mostrarEmergente();
             }
         }  
     }
@@ -234,36 +225,45 @@ public class FXMLVistaTProductoController implements Initializable {
     
       @FXML
     private void actualizar(MouseEvent event) throws SQLException {
-        if(CtrlMaster.getUser().isIsAdmin()){
-            try{
         Producto p = tablaProductos.getSelectionModel().getSelectedItem();
-        String modify = "update Producto set precio= '" + txtprecio.getText() 
-                + "' where id_producto= '" + p.getIdProducto() + "' ; ";
-        
+        if(CtrlMaster.getUser().isIsAdmin() && p != null){
+            String modify = "update Producto set precio= '" + txtprecio.getText() 
+                    + "' where id_producto= '" + p.getIdProducto() + "' ; ";
+
+            ConexionBD bd = ConexionBD.getInstance();
+            Connection conn = bd.conectarMySQL();
+            
+            try (Statement st = conn.createStatement()) {
+                st.execute(modify);
+            } catch (SQLException ex) {
+                throw new SQLException("La base de datos se desconectó inesperadamente.");
+            }
+            obtenerProductos();
+            bd.cerrarConexion(conn);
+        }
+    }
+    
+    private void obtenerProductos() throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
-        Statement st = conn.createStatement();
-        st.execute(modify);
-               
-        String show = "select * from Producto";
-        Connection connn = bd.conectarMySQL();
-        ResultSet rs = bd.seleccionarDatos(show, connn);
-        celdas(conn,rs);
-            ocultar();
-    }catch (Exception e) {
-                    ocultar();
-                          Alert mensajeExp = new Alert(Alert.AlertType.CONFIRMATION);
-        mensajeExp.setHeaderText("Diálogo de confirmación");
-        mensajeExp.setContentText ("No has seleccionado ninguna celda");
-        mensajeExp.showAndWait();
-                }}
-        }  
-        
-        
- 
-
+        try{
+                String show = "select * from Producto";
+                Connection connn = bd.conectarMySQL();
+                ResultSet rs = bd.seleccionarDatos(show, connn);
+                celdas(conn,rs);
+                ocultar();
+            }catch (SQLException e) {
+                ocultar();
+                mostrarEmergente();
+            }
+    }
+    
+    private void mostrarEmergente(){
+        emergentes.Emergentes.mostrarDialogo("No se ha seleccinado ninguna celda.",
+                        "Falta de selccion", "Error");
+    }
+    
     @FXML
     private void regreso(MouseEvent event) {
-}
-    
+    }
 }

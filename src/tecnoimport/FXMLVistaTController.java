@@ -14,8 +14,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,14 +23,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import static javax.swing.JOptionPane.showMessageDialog;
 import model.bodega.JefeBodega;
 import model.local.Gerente;
 import model.local.Usuario;
@@ -74,8 +69,6 @@ public class FXMLVistaTController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        Calendar calendar = GregorianCalendar.getInstance();
         Date date=Calendar.getInstance().getTime();
         SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
         fechaactual.setText(sdf.format(date));
@@ -91,7 +84,7 @@ public class FXMLVistaTController implements Initializable {
         }else if(user instanceof JefeBodega){
             ventas.setDisable(true);
             clientes.setDisable(true);
-            controlJefe = new CtrlJefeBodega((JefeBodega)CtrlMaster.getUser());
+            setJefe();
             try {
                 Parent root3 = FXMLLoader.load(getClass().getResource("/tecnoimport/Pantalla de Espera.fxml"));
                 Scene scene3 = new Scene(root3);
@@ -109,11 +102,15 @@ public class FXMLVistaTController implements Initializable {
         }
     }
 
+    private static void setJefe(){
+        controlJefe = new CtrlJefeBodega((JefeBodega)CtrlMaster.getUser());
+    }
+    
     @FXML
     private void cerrarSesion(MouseEvent event) throws IOException {
-        if (Emergentes.comfirm("¿Está seguro que desea cerrar sesión?")){   
-            Parent root = FXMLLoader.load(getClass().getResource("PantallaAcceso.fxml"));
-            Stage stage= new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("PantallaAcceso.fxml"));
+        Stage stage= new Stage();
+        if (Emergentes.comfirm("¿Está seguro que desea cerrar sesión?")){
             stage.setScene(new Scene(root));
             stage.show();
             final Node source = (Node) event.getSource();
@@ -121,42 +118,21 @@ public class FXMLVistaTController implements Initializable {
             stage1.close();
             ventsegunda.close();
         }
-        
     }
-    
-    
-    
+
     @FXML
     private void administrar(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
-        Stage stage= new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(label.getScene().getWindow());
-        stage.setResizable(false);
-        stage.setScene(new Scene(root));
-        stage.show();
+        mostrarPantallaConstruccion();
     }
 
     @FXML
     private void realizarVenta(MouseEvent event) throws IOException{
-        Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
-        Stage stage= new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(label.getScene().getWindow());
-        stage.setResizable(false);
-        stage.setScene(new Scene(root));
-        stage.show();
+        mostrarPantallaConstruccion();
     }
 
     @FXML
     private void agregarClientes(MouseEvent event)throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
-        Stage stage= new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(label.getScene().getWindow());
-        stage.setResizable(false);
-        stage.setScene(new Scene(root));
-        stage.show();
+        mostrarPantallaConstruccion();
     }
 
     @FXML
@@ -183,7 +159,11 @@ public class FXMLVistaTController implements Initializable {
 
     @FXML
     private void imprimirDoc(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
+        mostrarPantallaConstruccion();
+    }
+    
+    private void mostrarPantallaConstruccion() throws IOException{
+        Parent root = FXMLLoader.load(getClass().getResource(PantallaConstruccionController.PCONSTRUCCION));
         Stage stage= new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(label.getScene().getWindow());

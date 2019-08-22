@@ -62,26 +62,17 @@ public class PantallaconsultasController implements Initializable {
 
     @FXML
     private void consultarVentas(MouseEvent event)throws IOException {
-    Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
-        Stage stage= new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
+        mostrarPantallaConstruccion();
     }
 
     @FXML
     private void consultarPedidos(MouseEvent event)throws IOException {
-    Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
-        Stage stage= new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
+        mostrarPantallaConstruccion();
     }
 
     @FXML
     private void consultarClientes(MouseEvent event)throws IOException {
-    Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
-        Stage stage= new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
+        mostrarPantallaConstruccion();
     }
 
     @FXML
@@ -90,6 +81,13 @@ public class PantallaconsultasController implements Initializable {
         Stage stage= new Stage();
             stage.setScene(new Scene(root));
             stage.show();
+    }
+    
+    private void mostrarPantallaConstruccion() throws IOException{
+        Parent root = FXMLLoader.load(getClass().getResource(PantallaConstruccionController.PCONSTRUCCION));
+        Stage stage= new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @FXML

@@ -46,7 +46,6 @@ public class FXMLAccesoController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }    
 
     @FXML
@@ -63,13 +62,11 @@ public class FXMLAccesoController implements Initializable {
             
             ((Node)(event.getSource())).getScene().getWindow().hide();
         }catch (SQLException | IOException ex) {
-            Emergentes.mostrarDialogo(ex.getMessage(), "Error", "Error");
-        } catch (Exception ex) {
-            Emergentes.mostrarDialogo(ex.getMessage(), "Error", "Error");
+            Emergentes.mostrarDialogo(ex.getMessage(), "Ha ocurrido un error", "Error");
         }
-    }
+    }  
     
     
-    }
+}
     
 

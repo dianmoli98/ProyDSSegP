@@ -9,10 +9,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
 import model.bodega.Repartidor;
 import model.local.Cliente;
 import model.local.Persona;
+import model.local.Usuario;
 import model.local.Vendedor;
 
 /**
@@ -59,12 +60,17 @@ public class GetObjectPersonaDB {
         ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
         Repartidor r = null;
         if(rs.next()){
-            r = new Repartidor(rs.getString("nombre"), rs.getString("apellido"), rs.getString("cedula"), 0);
+            r = new Repartidor(obtenerPersona(rs),0);
         }
         bd.cerrarConexion(conn);
         return r;
     }
-     
+    
+    public Usuario obtenerUsuario(ResultSet rs) throws SQLException{
+        return new Usuario(rs.getBoolean("isAdmin"), rs.getString("nombre"),
+                    rs.getString("apellido"), rs.getString("cedula"));
+    }
+    
     public Vendedor obtenerVendedor(String cedula) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
@@ -76,14 +82,13 @@ public class GetObjectPersonaDB {
         ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
         Vendedor v = null;
         if(rs.next()){
-            v = new Vendedor(rs.getBoolean("isAdmin"), rs.getString("nombre"),
-                    rs.getString("apellido"), rs.getString("cedula"));
+            v = new Vendedor(obtenerUsuario(rs));
         }
         bd.cerrarConexion(conn);
         return v;
     }
     
-    public LinkedList<Repartidor> obtenerRepartidores() throws SQLException{
+    public List<Repartidor> obtenerRepartidores() throws SQLException{
         LinkedList<Repartidor> repartidores = new LinkedList<>();
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
@@ -96,7 +101,7 @@ public class GetObjectPersonaDB {
             "	 FROM  Ruta r1  WHERE  r1.Realizado = \"F\");";
         ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
         while(rs.next()){
-            repartidores.add(new Repartidor(rs.getString("nombre"), rs.getString("apellido"), rs.getString("cedula"), 0));
+            repartidores.add(new Repartidor(obtenerPersona(rs), 0));
         }
         bd.cerrarConexion(conn);
         return repartidores;
