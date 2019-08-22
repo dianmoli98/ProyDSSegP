@@ -114,15 +114,6 @@ public class FXMLVistaTProductoController implements Initializable {
         }
      }
     
-    /*
-    try (Statement st = conn.createStatement()) {
-        ResultSet rs = st.executeQuery(query);
-        return rs;
-    } catch (SQLException ex) {
-        throw new SQLException("La base de datos se desconectó inesperadamente.");
-    }
-    */
-    
     private void ocultar(){
         lblprecio.setVisible(false);
         txtprecio.setVisible(false);

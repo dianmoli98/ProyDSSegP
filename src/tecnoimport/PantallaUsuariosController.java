@@ -24,19 +24,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import model.bodega.Ruta;
-import model.local.Gerente;
 import model.local.Persona;
 import model.local.Usuario;
 import model.singleton.ConexionBD;
@@ -95,7 +90,7 @@ public class PantallaUsuariosController implements Initializable {
             Emergentes.mostrarDialogo("Debe seleccionar el usuario que desea habilitar la opción de admin.", "Falta de Selección","Error");
         }else if(Emergentes.comfirm("Estas seguro de asignarlo como administrador")){
             control.asignarAdministrador(p.getId(), true);
-            Stage stage = (Stage) ((Node)(event.getSource())).getScene().getWindow();;
+            Stage stage = (Stage) ((Node)(event.getSource())).getScene().getWindow();
             stage.close();
         }
     }
@@ -107,7 +102,7 @@ public class PantallaUsuariosController implements Initializable {
             Emergentes.mostrarDialogo("Debe seleccionar el usuario que desea deshabilitar la opción de admin.", "Falta de Selección","Error");
         }else if(Emergentes.comfirm("Lo eliminarás de administrador, estas seguro?")){
             control.asignarAdministrador(p.getId(), false);
-            Stage stage = (Stage) ((Node)(event.getSource())).getScene().getWindow();;
+            Stage stage = (Stage) ((Node)(event.getSource())).getScene().getWindow();
             stage.close();
         }
     }
