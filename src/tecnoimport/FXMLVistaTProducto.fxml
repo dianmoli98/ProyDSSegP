@@ -49,7 +49,7 @@
             <Image url="@../recursos/foto.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="insertar" fitHeight="62.0" fitWidth="63.0" layoutX="464.0" layoutY="127.0" onMouseClicked="#Modificar">
+      <ImageView fx:id="insertar" fitHeight="62.0" fitWidth="63.0" layoutX="464.0" layoutY="127.0" onMouseClicked="#modificar">
          <image>
             <Image url="@../recursos/Untitled-1.png" />
          </image>

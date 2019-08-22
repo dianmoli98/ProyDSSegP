@@ -50,7 +50,7 @@ public class FXMLAccesoController implements Initializable {
     }    
 
     @FXML
-    private void Login(ActionEvent event) {
+    private void login(ActionEvent event) {
         
         try {
             String usuarioText=txtusuario.getText();

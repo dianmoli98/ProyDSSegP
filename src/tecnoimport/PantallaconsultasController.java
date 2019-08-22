@@ -18,7 +18,6 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.bodega.JefeBodega;
-import model.local.Gerente;
 import model.local.Usuario;
 import model.local.Vendedor;
 
@@ -30,17 +29,17 @@ import model.local.Vendedor;
 public class PantallaconsultasController implements Initializable {
 
     @FXML
-    private Button Cventa;
+    private Button cVenta;
     @FXML
-    private Button CPedido;
+    private Button cPedido;
     @FXML
-    private Button CCliente;
+    private Button cCliente;
     @FXML
-    private Button CStock;
+    private Button cStock;
     @FXML
-    private Button CUsuario;
+    private Button cUsuario;
     @FXML
-    private Button CProductos;
+    private Button cProductos;
 
     /**
      * Initializes the controller class.
@@ -50,19 +49,19 @@ public class PantallaconsultasController implements Initializable {
         Usuario user = CtrlMaster.getUser();
         
         if(user instanceof JefeBodega){
-            Cventa.setDisable(true);
-            CCliente.setDisable(true);
-            CStock.setDisable(true);
-            CProductos.setDisable(true);
+            cVenta.setDisable(true);
+            cCliente.setDisable(true);
+            cStock.setDisable(true);
+            cProductos.setDisable(true);
             
         }else if(user instanceof Vendedor){
-            CUsuario.setDisable(true);
-            CPedido.setDisable(true);   
+            cUsuario.setDisable(true);
+            cPedido.setDisable(true);   
         }
     }    
 
     @FXML
-    private void ConsultarVentas(MouseEvent event)throws IOException {
+    private void consultarVentas(MouseEvent event)throws IOException {
     Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
         Stage stage= new Stage();
             stage.setScene(new Scene(root));
@@ -70,7 +69,7 @@ public class PantallaconsultasController implements Initializable {
     }
 
     @FXML
-    private void ConsultarPedidos(MouseEvent event)throws IOException {
+    private void consultarPedidos(MouseEvent event)throws IOException {
     Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
         Stage stage= new Stage();
             stage.setScene(new Scene(root));
@@ -78,7 +77,7 @@ public class PantallaconsultasController implements Initializable {
     }
 
     @FXML
-    private void ConsultarClientes(MouseEvent event)throws IOException {
+    private void consultarClientes(MouseEvent event)throws IOException {
     Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
         Stage stage= new Stage();
             stage.setScene(new Scene(root));
@@ -86,7 +85,7 @@ public class PantallaconsultasController implements Initializable {
     }
 
     @FXML
-    private void ConsultarStock(MouseEvent event) throws IOException{
+    private void consultarStock(MouseEvent event) throws IOException{
     Parent root = FXMLLoader.load(getClass().getResource("PantallaStockLocalidad.fxml"));
         Stage stage= new Stage();
             stage.setScene(new Scene(root));
@@ -94,7 +93,7 @@ public class PantallaconsultasController implements Initializable {
     }
 
     @FXML
-    private void ConsultarUsuario(MouseEvent event)throws IOException  {
+    private void consultarUsuario(MouseEvent event)throws IOException  {
         Parent root = FXMLLoader.load(getClass().getResource("PantallaUsuarios.fxml"));
         Stage stage= new Stage();
             stage.setScene(new Scene(root));
@@ -103,7 +102,7 @@ public class PantallaconsultasController implements Initializable {
 
 
     @FXML
-    private void ConsultarProductos(MouseEvent event)throws IOException {
+    private void consultarProductos(MouseEvent event)throws IOException {
     Parent root = FXMLLoader.load(getClass().getResource("FXMLVistaTProducto.fxml"));
         Stage stage= new Stage();
             stage.setScene(new Scene(root));

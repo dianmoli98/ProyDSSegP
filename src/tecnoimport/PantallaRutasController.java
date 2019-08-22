@@ -89,7 +89,7 @@ public class PantallaRutasController implements Initializable {
     }    
 
     @FXML
-    private void CrearRutass(MouseEvent event)throws IOException {
+    private void crearRutass(MouseEvent event)throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("PantallaCrearRutas.fxml"));
         Stage stage= new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
@@ -99,7 +99,7 @@ public class PantallaRutasController implements Initializable {
     }
 
     @FXML
-    private void FinalizarRutas(MouseEvent event)throws IOException {
+    private void finalizarRutas(MouseEvent event)throws IOException {
         if(ruta != null && !ruta.getStatus().equals("Finalizado")){
         Parent root = FXMLLoader.load(getClass().getResource("FinalizaRuta.fxml"));
         Stage stage= new Stage();

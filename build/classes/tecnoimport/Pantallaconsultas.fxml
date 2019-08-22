@@ -20,32 +20,32 @@
             <Font name="System Bold Italic" size="22.0" />
          </font>
       </Label>
-      <Button id="Cventa" fx:id="Cventa" layoutX="75.0" layoutY="102.0" mnemonicParsing="false" onMouseClicked="#ConsultarVentas" prefHeight="40.0" prefWidth="144.0" text="Ventas" textOverrun="CLIP">
+      <Button id="Cventa" fx:id="cventa" layoutX="75.0" layoutY="102.0" mnemonicParsing="false" onMouseClicked="#consultarVentas" prefHeight="40.0" prefWidth="144.0" text="Ventas" textOverrun="CLIP">
          <font>
             <Font name="Bell MT" size="21.0" />
          </font>
       </Button>
-      <Button id="CPedido" fx:id="CPedido" layoutX="308.0" layoutY="102.0" mnemonicParsing="false" onMouseClicked="#ConsultarPedidos" prefHeight="40.0" prefWidth="144.0" text="Pedidos" textOverrun="CLIP">
+      <Button id="CPedido" fx:id="cPedido" layoutX="308.0" layoutY="102.0" mnemonicParsing="false" onMouseClicked="#consultarPedidos" prefHeight="40.0" prefWidth="144.0" text="Pedidos" textOverrun="CLIP">
          <font>
             <Font name="Bell MT" size="21.0" />
          </font>
       </Button>
-      <Button id="CCliente" fx:id="CCliente" layoutX="75.0" layoutY="176.0" mnemonicParsing="false" onMouseClicked="#ConsultarClientes" prefHeight="40.0" prefWidth="144.0" text="Clientes" textOverrun="CLIP">
+      <Button id="CCliente" fx:id="cCliente" layoutX="75.0" layoutY="176.0" mnemonicParsing="false" onMouseClicked="#consultarClientes" prefHeight="40.0" prefWidth="144.0" text="Clientes" textOverrun="CLIP">
          <font>
             <Font name="Bell MT" size="21.0" />
          </font>
       </Button>
-      <Button id="CStock" fx:id="CStock" layoutX="308.0" layoutY="176.0" mnemonicParsing="false" onMouseClicked="#ConsultarStock" prefHeight="40.0" prefWidth="144.0" text="Stock" textOverrun="CLIP">
+      <Button id="CStock" fx:id="cStock" layoutX="308.0" layoutY="176.0" mnemonicParsing="false" onMouseClicked="#consultarStock" prefHeight="40.0" prefWidth="144.0" text="Stock" textOverrun="CLIP">
          <font>
             <Font name="Bell MT" size="21.0" />
          </font>
       </Button>
-      <Button id="CUsuario" fx:id="CUsuario" layoutX="75.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#ConsultarUsuario" prefHeight="40.0" prefWidth="144.0" text="Usuarios" textOverrun="CLIP">
+      <Button id="CUsuario" fx:id="cUsuario" layoutX="75.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#consultarUsuario" prefHeight="40.0" prefWidth="144.0" text="Usuarios" textOverrun="CLIP">
          <font>
             <Font name="Bell MT" size="21.0" />
          </font>
       </Button>
-      <Button id="CProductos" fx:id="CProductos" layoutX="308.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#ConsultarProductos" prefHeight="40.0" prefWidth="144.0" text="Productos" textOverrun="CLIP">
+      <Button id="CProductos" fx:id="cProductos" layoutX="308.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#consultarProductos" prefHeight="40.0" prefWidth="144.0" text="Productos" textOverrun="CLIP">
          <font>
             <Font name="Bell MT" size="21.0" />
          </font>

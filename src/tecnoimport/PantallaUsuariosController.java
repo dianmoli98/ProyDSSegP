@@ -89,7 +89,7 @@ public class PantallaUsuariosController implements Initializable {
     }    
 
     @FXML
-    private void Convertirdmin(MouseEvent event) throws SQLException {
+    private void convertirdmin(MouseEvent event) throws SQLException {
         Persona p=tablaUsuarios.getSelectionModel().getSelectedItem();
         if(p == null){
             Emergentes.mostrarDialogo("Debe seleccionar el usuario que desea habilitar la opción de admin.", "Falta de Selección","Error");
@@ -101,7 +101,7 @@ public class PantallaUsuariosController implements Initializable {
     }
     
     @FXML
-    private void Desabilitar(MouseEvent event) throws SQLException {
+    private void desabilitar(MouseEvent event) throws SQLException {
         Persona p=tablaUsuarios.getSelectionModel().getSelectedItem();
         if(p == null){
             Emergentes.mostrarDialogo("Debe seleccionar el usuario que desea deshabilitar la opción de admin.", "Falta de Selección","Error");

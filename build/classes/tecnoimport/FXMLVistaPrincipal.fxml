@@ -34,32 +34,32 @@
             <Image url="@../recursos/foto.png" />
          </image>
       </ImageView>
-      <Button id="administracion" fx:id="administracion" layoutX="39.0" layoutY="389.0" mnemonicParsing="false" onMouseClicked="#Administrar" prefHeight="40.0" prefWidth="185.0" style="-fx-background-color: lightGray;" text="Administración" textOverrun="CLIP">
+      <Button id="administracion" fx:id="administracion" layoutX="39.0" layoutY="389.0" mnemonicParsing="false" onMouseClicked="#administrar" prefHeight="40.0" prefWidth="185.0" style="-fx-background-color: lightGray;" text="Administración" textOverrun="CLIP">
          <font>
             <Font name="Bell MT" size="21.0" />
          </font>
       </Button>
-      <Button id="Ventas" fx:id="Ventas" layoutX="34.0" layoutY="215.0" mnemonicParsing="false" onMouseClicked="#RealizarVenta" prefHeight="40.0" prefWidth="185.0" style="-fx-background-color: #A2C1F0;" text=" Realizar venta" textOverrun="CLIP">
+      <Button id="Ventas" fx:id="ventas" layoutX="34.0" layoutY="215.0" mnemonicParsing="false" onMouseClicked="#realizarVenta" prefHeight="40.0" prefWidth="185.0" style="-fx-background-color: #A2C1F0;" text=" Realizar venta" textOverrun="CLIP">
          <font>
             <Font name="Bell MT" size="21.0" />
          </font>
       </Button>
-      <Button id="Clientes" fx:id="Clientes" layoutX="35.0" layoutY="271.0" mnemonicParsing="false" onMouseClicked="#AgregarClientes" prefHeight="40.0" prefWidth="186.0" style="-fx-background-color: lightGray;" text="Agregar Clientes" textOverrun="CLIP">
+      <Button id="Clientes" fx:id="clientes" layoutX="35.0" layoutY="271.0" mnemonicParsing="false" onMouseClicked="#agregarClientes" prefHeight="40.0" prefWidth="186.0" style="-fx-background-color: lightGray;" text="Agregar Clientes" textOverrun="CLIP">
          <font>
             <Font name="Bell MT" size="21.0" />
          </font>
       </Button>
-      <Button id="Consultas" fx:id="Consultas" layoutX="40.0" layoutY="333.0" mnemonicParsing="false" onMouseClicked="#RealizarConsultas" prefHeight="40.0" prefWidth="182.0" style="-fx-background-color: #A2C1F0;" text="Consultas" textOverrun="CLIP">
+      <Button id="Consultas" fx:id="consultas" layoutX="40.0" layoutY="333.0" mnemonicParsing="false" onMouseClicked="#realizarConsultas" prefHeight="40.0" prefWidth="182.0" style="-fx-background-color: #A2C1F0;" text="Consultas" textOverrun="CLIP">
          <font>
             <Font name="Bell MT" size="21.0" />
          </font>
       </Button>
-      <Button id="ruta" fx:id="ruta" layoutX="43.0" layoutY="447.0" mnemonicParsing="false" onMouseClicked="#Rutas" prefHeight="40.0" prefWidth="185.0" style="-fx-background-color: #A2C1F0;" text="Rutas" textOverrun="CLIP">
+      <Button id="ruta" fx:id="ruta" layoutX="43.0" layoutY="447.0" mnemonicParsing="false" onMouseClicked="#rutas" prefHeight="40.0" prefWidth="185.0" style="-fx-background-color: #A2C1F0;" text="Rutas" textOverrun="CLIP">
          <font>
             <Font name="Bell MT" size="21.0" />
          </font>
       </Button>
-      <Button id="imprimir" fx:id="imprimir" layoutX="42.0" layoutY="506.0" mnemonicParsing="false" onMouseClicked="#ImprimirDoc" prefHeight="40.0" prefWidth="187.0" style="-fx-background-color: lightGray;" text="Imprimir Doc." textOverrun="CLIP">
+      <Button id="imprimir" fx:id="imprimir" layoutX="42.0" layoutY="506.0" mnemonicParsing="false" onMouseClicked="#imprimirDoc" prefHeight="40.0" prefWidth="187.0" style="-fx-background-color: lightGray;" text="Imprimir Doc." textOverrun="CLIP">
          <font>
             <Font name="Bell MT" size="21.0" />
          </font>

@@ -61,7 +61,7 @@
             <Font name="System Bold Italic" size="13.0" />
          </font>
       </Label>
-      <ImageView fx:id="insertar" fitHeight="42.0" fitWidth="42.0" layoutX="429.0" layoutY="490.0" onMouseClicked="#Modificar">
+      <ImageView fx:id="insertar" fitHeight="42.0" fitWidth="42.0" layoutX="429.0" layoutY="490.0" onMouseClicked="#modificar">
          <image>
             <Image url="@../recursos/Untitled-1.png" />
          </image>

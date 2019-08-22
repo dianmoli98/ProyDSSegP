@@ -73,9 +73,4 @@ public class PantallaDeEsperaController implements Initializable {
         return pantalla;
     }
     
-    @FXML
-    private void btnVolver(MouseEvent event) {
-        
-    }
-    
 }

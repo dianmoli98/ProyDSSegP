@@ -28,12 +28,12 @@
             <Image url="@../recursos/foto.png" />
          </image>
       </ImageView>
-      <Button id="CrearRuta" fx:id="CrearRuta" layoutX="11.0" layoutY="207.0" mnemonicParsing="false" onMouseClicked="#CrearRutass" prefHeight="40.0" prefWidth="154.0" text="Crear Ruta" textOverrun="CLIP">
+      <Button id="CrearRuta" fx:id="CrearRuta" layoutX="11.0" layoutY="207.0" mnemonicParsing="false" onMouseClicked="#crearRutass" prefHeight="40.0" prefWidth="154.0" text="Crear Ruta" textOverrun="CLIP">
          <font>
             <Font name="Bell MT" size="21.0" />
          </font>
       </Button>
-      <Button id="FinRuta" fx:id="FinRuta" layoutX="11.0" layoutY="276.0" mnemonicParsing="false" onMouseClicked="#FinalizarRutas" prefHeight="40.0" prefWidth="154.0" text="Finalizar Ruta" textOverrun="CLIP">
+      <Button id="FinRuta" fx:id="FinRuta" layoutX="11.0" layoutY="276.0" mnemonicParsing="false" onMouseClicked="#finalizarRutas" prefHeight="40.0" prefWidth="154.0" text="Finalizar Ruta" textOverrun="CLIP">
          <font>
             <Font name="Bell MT" size="21.0" />
          </font>

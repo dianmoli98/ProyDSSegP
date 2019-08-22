@@ -214,7 +214,7 @@ public class FXMLVistaTProductoController implements Initializable {
     }
     
      @FXML
-    private void Modificar(MouseEvent event) {
+    private void modificar(MouseEvent event) {
         if(CtrlMaster.getUser().isIsAdmin()){
             try{
                 mostrar();

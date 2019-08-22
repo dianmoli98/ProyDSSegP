@@ -53,11 +53,11 @@ public class FXMLVistaTController implements Initializable {
     @FXML
     private Button administracion;
     @FXML
-    private Button Ventas;
+    private Button ventas;
     @FXML
-    private Button Clientes;
+    private Button clientes;
     @FXML
-    private Button Consultas;
+    private Button consultas;
     @FXML
     private Button ruta;
     @FXML
@@ -85,12 +85,12 @@ public class FXMLVistaTController implements Initializable {
         if(user instanceof Gerente){
             ruta.setDisable(true);
             imprimir.setDisable(true);
-            Ventas.setDisable(true);
-            Clientes.setDisable(true);
+            ventas.setDisable(true);
+            clientes.setDisable(true);
             
         }else if(user instanceof JefeBodega){
-            Ventas.setDisable(true);
-            Clientes.setDisable(true);
+            ventas.setDisable(true);
+            clientes.setDisable(true);
             controlJefe = new CtrlJefeBodega((JefeBodega)CtrlMaster.getUser());
             try {
                 Parent root3 = FXMLLoader.load(getClass().getResource("/tecnoimport/Pantalla de Espera.fxml"));
@@ -110,7 +110,7 @@ public class FXMLVistaTController implements Initializable {
     }
 
     @FXML
-    private void CerrarSesion(MouseEvent event) throws IOException {
+    private void cerrarSesion(MouseEvent event) throws IOException {
         if (Emergentes.comfirm("¿Está seguro que desea cerrar sesión?")){   
             Parent root = FXMLLoader.load(getClass().getResource("PantallaAcceso.fxml"));
             Stage stage= new Stage();
@@ -127,7 +127,7 @@ public class FXMLVistaTController implements Initializable {
     
     
     @FXML
-    private void Administrar(MouseEvent event) throws IOException {
+    private void administrar(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
         Stage stage= new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
@@ -138,7 +138,7 @@ public class FXMLVistaTController implements Initializable {
     }
 
     @FXML
-    private void RealizarVenta(MouseEvent event) throws IOException{
+    private void realizarVenta(MouseEvent event) throws IOException{
         Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
         Stage stage= new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
@@ -149,7 +149,7 @@ public class FXMLVistaTController implements Initializable {
     }
 
     @FXML
-    private void AgregarClientes(MouseEvent event)throws IOException {
+    private void agregarClientes(MouseEvent event)throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
         Stage stage= new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
@@ -160,7 +160,7 @@ public class FXMLVistaTController implements Initializable {
     }
 
     @FXML
-    private void RealizarConsultas(MouseEvent event)throws IOException {
+    private void realizarConsultas(MouseEvent event)throws IOException {
          Parent root = FXMLLoader.load(getClass().getResource("Pantallaconsultas.fxml"));
          Stage stage= new Stage();
          stage.initModality(Modality.WINDOW_MODAL);
@@ -171,7 +171,7 @@ public class FXMLVistaTController implements Initializable {
     }
 
     @FXML
-    private void Rutas(MouseEvent event) throws IOException {
+    private void rutas(MouseEvent event) throws IOException {
          Parent root = FXMLLoader.load(getClass().getResource("PantallaRutas.fxml"));
         Stage stage= new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
@@ -182,7 +182,7 @@ public class FXMLVistaTController implements Initializable {
     }
 
     @FXML
-    private void ImprimirDoc(MouseEvent event) throws IOException {
+    private void imprimirDoc(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
         Stage stage= new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
