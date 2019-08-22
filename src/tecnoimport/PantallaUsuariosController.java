@@ -34,6 +34,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import model.Bodega.Ruta;
 import model.Local.Gerente;
 import model.Local.Persona;
@@ -67,7 +68,7 @@ public class PantallaUsuariosController implements Initializable {
     private Button desabilitar;
     
     private static PantallaUsuariosController controller = null;
-    private static CtrlGerente control = new CtrlGerente((Gerente)CtrlMaster.getUser());
+    private static CtrlGerente control = new CtrlGerente(CtrlMaster.getUser());
     /**
      * Initializes the controller class.
      */
@@ -90,24 +91,25 @@ public class PantallaUsuariosController implements Initializable {
     @FXML
     private void Convertirdmin(MouseEvent event) throws SQLException {
         Persona p=tablaUsuarios.getSelectionModel().getSelectedItem();
-        Alert mensajeExp = new Alert(Alert.AlertType.CONFIRMATION);
-        mensajeExp.setHeaderText("Diálogo de confirmación");
-        mensajeExp.setContentText ("Estas seguro de asignarlo como administrador");
-        mensajeExp.showAndWait();
-        control.AssignarAdministrador(p.getId(), true);
-        ((Node)(event.getSource())).getScene().getWindow().hide();
-                
+        if(p == null){
+            Emergentes.mostrarDialogo("Debe seleccionar el usuario que desea habilitar la opción de admin.", "Falta de Selección","Error");
+        }else if(Emergentes.comfirm("Estas seguro de asignarlo como administrador")){
+            control.AssignarAdministrador(p.getId(), true);
+            Stage stage = (Stage) ((Node)(event.getSource())).getScene().getWindow();;
+            stage.close();
+        }
     }
     
     @FXML
     private void Desabilitar(MouseEvent event) throws SQLException {
         Persona p=tablaUsuarios.getSelectionModel().getSelectedItem();
-        Alert mensajeExp = new Alert(Alert.AlertType.CONFIRMATION);
-        mensajeExp.setHeaderText("Diálogo de confirmación");
-        mensajeExp.setContentText ("Lo eliminaras de administrador, estas seguro?");
-        mensajeExp.showAndWait();
-        control.AssignarAdministrador(p.getId(), false);
-        ((Node)(event.getSource())).getScene().getWindow().hide();
+        if(p == null){
+            Emergentes.mostrarDialogo("Debe seleccionar el usuario que desea deshabilitar la opción de admin.", "Falta de Selección","Error");
+        }else if(Emergentes.comfirm("Lo eliminarás de administrador, estas seguro?")){
+            control.AssignarAdministrador(p.getId(), false);
+            Stage stage = (Stage) ((Node)(event.getSource())).getScene().getWindow();;
+            stage.close();
+        }
     }
     
     public void llenar() throws SQLException{

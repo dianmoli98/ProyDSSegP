@@ -52,7 +52,7 @@ public class FinalizaRutaController implements Initializable {
     @FXML
     private TableColumn<Pedido,String> direccion;
     @FXML
-    private TextField text;
+    private TextField observaciones;
     private static CtrlJefeBodega control = FXMLVistaTController.getControlJefe();
     private Ruta ruta;
 
@@ -104,7 +104,7 @@ public class FinalizaRutaController implements Initializable {
         
         if(Emergentes.comfirm(confirm)){
             try{
-                String texto = text.getText();
+                String texto = observaciones.getText();
                 boolean isFinalizada = (texto.equals("") && !pedidosConfirm.isEmpty()) || (!pedidosCancel.isEmpty() && !texto.equals(""));
                 if(!pedidosCancel.isEmpty() && !texto.equals("")){
                     for(Pedido p : pedidosCancel){
@@ -132,7 +132,7 @@ public class FinalizaRutaController implements Initializable {
     
     private void cancelarPedidoBD(Pedido p) throws SQLException{
         String query = 
-            "UPDATE pedido SET id_ruta = NULL\n" +
+            "UPDATE Pedido SET id_ruta = NULL\n" +
             "WHERE id_pedido = " + p.getId_pedido() + ";";
         
         ConexionBD.getInstance().hacerQuery(query); 
@@ -140,7 +140,7 @@ public class FinalizaRutaController implements Initializable {
     
     private void actualizarObservaciones() throws SQLException{
         String query = 
-            "UPDATE ruta SET observaciones = \""+text.getText()+"\"\n" +
+            "UPDATE Ruta SET observaciones = \""+observaciones.getText()+"\"\n" +
             "WHERE id_ruta = "+ ruta.getId_ruta()+";";
         
         ConexionBD.getInstance().hacerQuery(query); 
@@ -148,7 +148,7 @@ public class FinalizaRutaController implements Initializable {
     
     private void finalizarRuta() throws SQLException{
         String query = 
-            "UPDATE ruta SET Realizado = \"V\"\n" +
+            "UPDATE Ruta SET Realizado = \"V\"\n" +
             "WHERE id_ruta = "+ ruta.getId_ruta()+";";
         
         ConexionBD.getInstance().hacerQuery(query); 

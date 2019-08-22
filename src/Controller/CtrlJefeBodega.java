@@ -7,7 +7,6 @@ package Controller;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -43,8 +42,8 @@ public class CtrlJefeBodega {
     public ResultSet obtenerRSRutas(Connection conn) throws SQLException{
             String query = 
             "Select r.id_ruta, count(p.id_pedido) as \"cantidad\" , r.Realizado, r.id_repartidor " +
-            "from ruta r join repartidor re On r.id_repartidor = re.cedula " +
-            "join pedido p On p.id_ruta = r.id_ruta " +
+            "from Ruta r join Repartidor re On r.id_repartidor = re.cedula " +
+            "join Pedido p On p.id_ruta = r.id_ruta " +
             "where r.id_jefeBodega = \""+jefe.getId()+"\"  and r.Realizado = \"F\"" +
             "group by r.id_ruta;";
             ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
@@ -70,7 +69,7 @@ public class CtrlJefeBodega {
         Connection conn = bd.conectarMySQL();
         String query = 
             "Select r.cedula, p.nombre, p.apellido\n" +
-            "From repartidor r \n" +
+            "From Repartidor r \n" +
             "Join Persona p On r.cedula = p.cedula\n" +
             "Where r.cedula = \"" + cedula + "\" ;";
         ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
@@ -85,7 +84,7 @@ public class CtrlJefeBodega {
     public ResultSet obtenerRSPedidos(Connection conn) throws SQLException{
         String query = 
             "SELECT p.id_pedido, p.id_cliente, p.id_matriz, p.id_vendedor  \n" +
-            "FROM pedido p  \n" +
+            "FROM Pedido p  \n" +
             "Where p.id_ruta is NULL and p.id_jefeBodega = \""+jefe.getId()+"\";";
         ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
         return rs; 
@@ -94,7 +93,7 @@ public class CtrlJefeBodega {
     public ResultSet obtenerRSPedidos(Connection conn, int id_ruta) throws SQLException{
         String query = 
             "SELECT p.id_pedido, p.id_cliente, p.id_matriz, p.id_vendedor  \n" +
-            "FROM pedido p  \n" +
+            "FROM Pedido p  \n" +
             "Where p.id_ruta= "+id_ruta+" and p.id_jefeBodega = \""+jefe.getId()+"\";";
         ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
         return rs; 
@@ -120,8 +119,8 @@ public class CtrlJefeBodega {
         Connection conn = bd.conectarMySQL();
         String query = 
             "SELECT *\n" +
-            "FROM cliente c\n" +
-            "JOIN persona p On p.cedula = c.cedula\n" +
+            "FROM Cliente c\n" +
+            "JOIN Persona p On p.cedula = c.cedula\n" +
             "WHERE p.cedula = \"" + cedula + "\";";
         ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
         Cliente c = null;
@@ -138,7 +137,7 @@ public class CtrlJefeBodega {
         Connection conn = bd.conectarMySQL();
         String query = 
             "SELECT * \n" +
-            "FROM matriz m\n" +
+            "FROM Matriz m\n" +
             "WHERE m.id_matriz = \"" + id + "\";";
         ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
         Matriz m = null;
@@ -154,8 +153,8 @@ public class CtrlJefeBodega {
         Connection conn = bd.conectarMySQL();
         String query = 
             "SELECT * \n" +
-            "FROM usuario u\n" +
-            "JOIN persona p ON p.cedula = u.cedula\n" +
+            "FROM Usuario u\n" +
+            "JOIN Persona p ON p.cedula = u.cedula\n" +
             "WHERE p.cedula = \"" + cedula + "\";";
         ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
         Vendedor v = null;
@@ -205,9 +204,9 @@ public class CtrlJefeBodega {
     
     private void asignarRuta(Ruta r, Pedido p) throws SQLException{
         String query = 
-            "UPDATE  pedido \n" +
+            "UPDATE  Pedido \n" +
             "SET id_ruta = " + r.getId_ruta()+"\n" +
-            "Where pedido.id_pedido = " + p.getId_pedido() + ";";
+            "Where Pedido.id_pedido = " + p.getId_pedido() + ";";
         ConexionBD.getInstance().hacerQuery(query); 
     }
     
@@ -216,7 +215,7 @@ public class CtrlJefeBodega {
         Connection conn = bd.conectarMySQL();
         String query = 
             "SELECT max(r.id_ruta) as \"id\"\n" +
-            "FROM ruta r\n" +
+            "FROM Ruta r\n" +
             "WHERE r.id_jefeBodega = \""+jefe.getId()+"\";";
         ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
         int id = 0;
@@ -234,11 +233,11 @@ public class CtrlJefeBodega {
         Connection conn = bd.conectarMySQL();
         String query = 
             "SELECT * \n" +
-            "FROM repartidor r\n" +
-            "JOIN persona p On r.cedula = p.cedula\n" +
+            "FROM Repartidor r\n" +
+            "JOIN Persona p On r.cedula = p.cedula\n" +
             "WHERE r.cedula NOT IN\n" +
             "	(SELECT r1.id_repartidor\n" +
-            "	 FROM  ruta r1  WHERE  r1.Realizado = \"F\");";
+            "	 FROM  Ruta r1  WHERE  r1.Realizado = \"F\");";
         ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
         repartidores = new LinkedList<>();
         while(rs.next()){

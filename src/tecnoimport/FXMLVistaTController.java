@@ -132,7 +132,14 @@ public class FXMLVistaTController implements Initializable {
     
     
     @FXML
-    private void Administrar(MouseEvent event) {
+    private void Administrar(MouseEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
+        Stage stage= new Stage();
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(label.getScene().getWindow());
+        stage.setResizable(false);
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @FXML
@@ -180,7 +187,14 @@ public class FXMLVistaTController implements Initializable {
     }
 
     @FXML
-    private void ImprimirDoc(MouseEvent event) {
+    private void ImprimirDoc(MouseEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("pantalla_construccion.fxml"));
+         Stage stage= new Stage();
+         stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(label.getScene().getWindow());
+        stage.setResizable(false);
+        stage.setScene(new Scene(root));
+        stage.show();
     }
     
     public static CtrlJefeBodega getControlJefe(){

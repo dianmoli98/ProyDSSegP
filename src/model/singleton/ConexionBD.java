@@ -15,8 +15,10 @@ public class ConexionBD {
     // Librería de MySQL
     private final String DRIVER = "com.mysql.jdbc.Driver";
     // Datos de la BD
-    private final String DB = "tecnoimport";
-    private final String HOST = "localhost";
+    private final String DB = ""
+            + ""
+            + "";
+    private final String HOST = "192.168.49.3";
     //   private static final String HOST = "192.168.43.149";
     private final String PUERTO = "3306";
 
@@ -80,14 +82,6 @@ public class ConexionBD {
         }
         return rs;
     }
-    /*
-   try (Statement st = conn.createStatement()) {
-            ResultSet rs = st.executeQuery(query);
-            return rs;
-        } catch (SQLException ex) {
-            throw new SQLException("La base de datos se desconectó inesperadamente.");
-        }
-    */
 
     public void cerrarConexion(Connection conn) throws SQLException {
         try {

@@ -23,7 +23,7 @@ public class CtrlMaster {
         try{
         conn = bd.conectarMySQL();
         }catch(SQLException ex){
-            throw new SQLException("Sus credenciales son incorrectas.\nIntente nuevamente.");
+            throw new SQLException("Sus credenciales son incorrectas.\nIntente nuevamente." + ex.getMessage());
         }
         return conn;
     }

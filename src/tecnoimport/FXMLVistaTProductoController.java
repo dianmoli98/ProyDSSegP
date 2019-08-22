@@ -95,7 +95,7 @@ public class FXMLVistaTProductoController implements Initializable {
     public void llenar() throws SQLException{
             ConexionBD bd = ConexionBD.getInstance();
             Connection conn = bd.conectarMySQL();
-            String query = "select * from producto";
+            String query = "select * from Producto";
             ResultSet rs = bd.seleccionarDatos(query, conn);
             id_producto.setCellValueFactory(new PropertyValueFactory<>("id_producto"));
             nombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -141,14 +141,14 @@ public class FXMLVistaTProductoController implements Initializable {
                         String stringActual = (String) o2;
                         if (((String) comboxbus.getValue()).equals("Nombre")) {
                              ConexionBD bd = ConexionBD.getInstance();      
-                            stbuscar = "select * from producto where Nombre like " + " \'" + busqueda.getText() + "%\' ;";
+                            stbuscar = "select * from Producto where nombre like " + " \'" + busqueda.getText() + "%\' ;";
                             st = bd.conectarMySQL();
                             rs = bd.seleccionarDatos(stbuscar,st);
                             celdas(st,rs);
 
                         } else if (((String) comboxbus.getValue()).equals("Categoria")) {
                             ConexionBD bd = ConexionBD.getInstance();    
-                            stbuscar = "select * from producto where Categoria like " + " \'" + busqueda.getText() + "%\' ;";
+                            stbuscar = "select * from Producto where categoria like " + " \'" + busqueda.getText() + "%\' ;";
                             st = bd.conectarMySQL();
                             rs = bd.seleccionarDatos(stbuscar,st);
                             celdas(st,rs);
@@ -156,7 +156,7 @@ public class FXMLVistaTProductoController implements Initializable {
                         
                        if(busqueda.getText().equals("")){
                         ConexionBD bd = ConexionBD.getInstance();       
-                        stbuscar = "select * from producto;"; 
+                        stbuscar = "select * from Producto;"; 
                         st = bd.conectarMySQL();
                             rs = bd.seleccionarDatos(stbuscar,st);
                             celdas(st,rs);}
@@ -228,14 +228,14 @@ public class FXMLVistaTProductoController implements Initializable {
         if(CtrlMaster.getUser().isIsAdmin()){
             try{
         Producto p = tablaProductos.getSelectionModel().getSelectedItem();
-        String modify = "update producto set precio= '" + txtprecio.getText() 
+        String modify = "update Producto set precio= '" + txtprecio.getText() 
                 + "' where id_producto= '" + p.getId_producto() + "' ; ";
 ConexionBD bd = ConexionBD.getInstance();
             Connection conn = bd.conectarMySQL();
 Statement st = conn.createStatement();
         st.execute(modify);
                
-        String show = "select * from producto";
+        String show = "select * from Producto";
         Connection connn = bd.conectarMySQL();
         ResultSet rs = bd.seleccionarDatos(show, connn);
         celdas(conn,rs);

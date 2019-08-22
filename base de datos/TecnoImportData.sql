@@ -51,7 +51,7 @@ INSERT INTO Ruta(id_ruta,Realizado,id_repartidor,id_jefeBodega) VALUES
 (default,"F","1304858388","0950165860"),
 (default,"F","0930210399","0950165860");
 
-INSERT INTO pedido(id_pedido, id_matriz, id_cliente, id_vendedor, id_jefeBodega, id_ruta) VALUES
+INSERT INTO Pedido(id_pedido, id_matriz, id_cliente, id_vendedor, id_jefeBodega, id_ruta) VALUES
 (default,NULL, "0946274823" , "0950165811","0950165860",1),
 (default,NULL, "0943083432" , "0950165811","0950165860",2),
 (default,NULL, "0947284555" , "0950165811","0950165860",NULL),
@@ -74,7 +74,7 @@ INSERT INTO Producto(id_producto,precio,nombre,categoria,descripcion) VALUES
 (default,950,"CPU XTRATECH","Computadoras","Intel Core I5"),
 (default,500,"Impresora HP","Impresoras","tinta continua");
 
-INSERT INTO stock(id_stock,id_producto,stock,id_matriz) VALUES
+INSERT INTO Stock(id_stock,id_producto,stock,id_matriz) VALUES
 (default,1,600,"0001"),
 (default,2,26,"0003"),
 (default,3,100,"0002");
@@ -84,7 +84,7 @@ INSERT INTO Producto(id_producto,precio,nombre,categoria,descripcion) VALUES
 (default,950,"Computadora HP","Computadoras","Intel Core I7"),
 (default,670,"Impresora Epson","Impresoras","tinta de cartucho");
 
-INSERT INTO stock(id_stock,id_producto,stock,id_matriz) VALUES
+INSERT INTO Stock(id_stock,id_producto,stock,id_matriz) VALUES
 (default,4,760,"0003"),
 (default,6,126,"0003"),
 (default,5,134,"0001");
@@ -94,7 +94,7 @@ INSERT INTO Matriz(id_matriz,direccion,tipoLocalidad) VALUES
 ("0005","Venezuela y Antepara","Sucursal"),
 ("0006","Km Via a la Costa","Matriz");
 
-INSERT INTO stock(id_stock,id_producto,stock,id_matriz) VALUES
+INSERT INTO Stock(id_stock,id_producto,stock,id_matriz) VALUES
 (default,4,760,"0004"),
 (default,4,126,"0005"),
 (default,6,134,"0006");

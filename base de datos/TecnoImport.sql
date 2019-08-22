@@ -1,21 +1,4 @@
 
-DROP DATABASE IF EXISTS TecnoImport;
-
-CREATE DATABASE TecnoImport;
-
--- Working above Software Design DataBase, this one is 
---  project advancing and have to be approved for all participants
--- ---------------------------------
--- 12.08.2019
-
-use TecnoImport;
--- MySQL dump 10.13  Distrib 5.7.17, for windows10.12 (x86_64)
--- IPv4 Address : 192.168.56.1(Preferred)
--- HostName: DESKTOP-JFAQJ3B    Database: TecnoImport
--- ------------------------------------------------------
--- Server version	5.6.20
-
-
 DROP TABLE IF EXISTS Persona;
 CREATE TABLE Persona(
   `cedula` varchar(11) NOT NULL ,
