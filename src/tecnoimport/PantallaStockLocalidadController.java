@@ -14,7 +14,6 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,7 +58,7 @@ public class PantallaStockLocalidadController implements Initializable {
     @FXML
     private TextField busqueda;
     @FXML
-    private ComboBox<?> ComboLugar;
+    private ComboBox<?> comboLugar;
     @FXML
     private ComboBox idenlocal;
     @FXML
@@ -89,7 +88,6 @@ public class PantallaStockLocalidadController implements Initializable {
         busqueda.setDisable(true);
          insertar.setVisible(false);
          act.setVisible(false);
-        Calendar calendar = GregorianCalendar.getInstance();
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("     dd/MM/yyyy");
         ocultar();
@@ -176,7 +174,7 @@ public class PantallaStockLocalidadController implements Initializable {
         Object[] datos = new Object[registros];
         try {
             conn = bd.conectarMySQL();
-            ResultSet rs = bd.seleccionarDatos("SELECT id_matriz FROM Matriz where tipoLocalidad='"+ComboLugar.getValue().toString()+"'", conn);
+            ResultSet rs = bd.seleccionarDatos("SELECT id_matriz FROM Matriz where tipoLocalidad='"+comboLugar.getValue().toString()+"'", conn);
             int i = 0;
             while (rs.next()) {
                 datos[i] = rs.getObject(nombrecol);
@@ -243,7 +241,7 @@ public class PantallaStockLocalidadController implements Initializable {
                         + "from Producto  p\n"
                         + "join Stock s on p.id_producto=s.id_producto\n"
                         + "join Matriz m on m.id_matriz=s.id_matriz\n"
-                        + "where m.tipoLocalidad='"+ ComboLugar.getValue().toString()+"' and  m.id_matriz='" + numlocal + "';";
+                        + "where m.tipoLocalidad='"+ comboLugar.getValue().toString()+"' and  m.id_matriz='" + numlocal + "';";
                 try {
                     rs = bd.seleccionarDatos(query, conn);
                 } catch (SQLException ex) {
@@ -273,7 +271,7 @@ public class PantallaStockLocalidadController implements Initializable {
                             + "from Producto  p\n"
                             + "join Stock s on p.id_producto=s.id_producto\n"
                             + "join Matriz m on m.id_matriz=s.id_matriz \n"
-                            + "where m.tipoLocalidad='"+ ComboLugar.getValue().toString()+"' and m.id_matriz='"+ idenlocal.getValue().toString()+"' and p.nombre like " + " \'" + busqueda.getText() + "%\' ;";
+                            + "where m.tipoLocalidad='"+ comboLugar.getValue().toString()+"' and m.id_matriz='"+ idenlocal.getValue().toString()+"' and p.nombre like " + " \'" + busqueda.getText() + "%\' ;";
                     try {
                         rss = bd.seleccionarDatos(stbuscar, conn);
                     } catch (SQLException ex) {
@@ -289,14 +287,14 @@ public class PantallaStockLocalidadController implements Initializable {
     public void setCenter() {
         busqueda.setPromptText("Ingrese su búsqueda");
         ObservableList ob = FXCollections.observableArrayList("Matriz", "Sucursal", "Bodega");
-        ComboLugar.setItems(ob);
-        ComboLugar.setPromptText("Filtrar");
-        ComboLugar.setOnAction((l) -> {
+        comboLugar.setItems(ob);
+        comboLugar.setPromptText("Filtrar");
+        comboLugar.setOnAction((l) -> {
             Connection st = null;
             ResultSet rs = null;
             String stbuscar = "";
             idenlocal.getItems().clear();
-            if (ComboLugar.getValue().equals("Matriz")) {
+            if (comboLugar.getValue().equals("Matriz")) {
                 busqueda.setPromptText("Matriz");
                 try {
                     llenarMa();
@@ -304,7 +302,7 @@ public class PantallaStockLocalidadController implements Initializable {
                     Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 com();
-            } else if (ComboLugar.getValue().equals("Sucursal")) {
+            } else if (comboLugar.getValue().equals("Sucursal")) {
                 busqueda.setPromptText("Sucursal");
                 try {
                     llenarSu();
@@ -312,7 +310,7 @@ public class PantallaStockLocalidadController implements Initializable {
                     Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 com();
-            } else if (ComboLugar.getValue().equals("Bodega")) {
+            } else if (comboLugar.getValue().equals("Bodega")) {
                 busqueda.setPromptText("Bodega");
                 try {
                     llenarBo();
@@ -366,7 +364,7 @@ public class PantallaStockLocalidadController implements Initializable {
             Dpro p = tablaStock.getSelectionModel().getSelectedItem();
             if(p == null){
                 emergentes.Emergentes.mostrarDialogo("Debe seleccionar un producto en el que cambiará el stock.", "Falta Selección", "Error");
-            }else if (ComboLugar.getValue() != null&& idenlocal.getValue() != null){
+            }else if (comboLugar.getValue() != null&& idenlocal.getValue() != null){
                 String modify= "update Stock set stock= '" + txtstock.getText() 
                         + "' where id_producto= '" + p.getIdProducto() + "' and id_matriz='"+p.getIdMatriz()+"' ; ";
                 bd = ConexionBD.getInstance();
@@ -381,7 +379,7 @@ public class PantallaStockLocalidadController implements Initializable {
                         + "from Producto  p\n"
                         + "join Stock s on p.id_producto=s.id_producto\n"
                         + "join Matriz m on m.id_matriz=s.id_matriz\n"
-                        + "where m.tipoLocalidad='"+ComboLugar.getValue().toString()+"' and m.id_matriz='"+ idenlocal.getValue().toString()+"' ;";
+                        + "where m.tipoLocalidad='"+comboLugar.getValue().toString()+"' and m.id_matriz='"+ idenlocal.getValue().toString()+"' ;";
                 ResultSet rs = bd.seleccionarDatos(show, conn);
                 celdas(conn,rs);
                 ocultar();

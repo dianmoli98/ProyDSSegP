@@ -93,7 +93,7 @@ public class PantallaUsuariosController implements Initializable {
                     + "habilitar la opción de admin.", "Falta de Selección","Error");
         }else if(Emergentes.comfirm("Estas seguro de asignarlo como administrador")){
             control.asignarAdministrador(p.getId(), true);
-            Stage stage = (Stage) ((Node)(event.getSource())).getScene().getWindow();;
+            Stage stage = (Stage) ((Node)(event.getSource())).getScene().getWindow();
             stage.close();
         }
     }
@@ -105,7 +105,7 @@ public class PantallaUsuariosController implements Initializable {
             Emergentes.mostrarDialogo("Debe seleccionar el usuario que desea deshabilitar la opción de admin.", "Falta de Selección","Error");
         }else if(Emergentes.comfirm("Lo eliminarás de administrador, estas seguro?")){
             control.asignarAdministrador(p.getId(), false);
-            Stage stage = (Stage) ((Node)(event.getSource())).getScene().getWindow();;
+            Stage stage = (Stage) ((Node)(event.getSource())).getScene().getWindow();
             stage.close();
         }
     }
