@@ -84,7 +84,7 @@ public class CtrlJefeBodegaIT {
         System.out.println("Asignacion de rutas");
         Ruta r=new Ruta(instance.obtenerLastRuta(),new JefeBodega(true,"Julio","Raios","0974827488"),new Repartidor("Andres","Murillo","0950637588",3),"F",3);
         Pedido p= new PedidoCliente(4,new Cliente("Juvencio","Amarl","8572758433","Floresta 2","9846756733"),new Vendedor(true,"Juvencio","Muric","763482432"));
-        int result = instance.obtenerLastRuta();
+        int result = instance.obtenerLastRuta(); 
         assertTrue(instance.asignarRuta(r, p));
     }
 

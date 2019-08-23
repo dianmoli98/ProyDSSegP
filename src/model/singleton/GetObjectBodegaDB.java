@@ -85,16 +85,16 @@ public class GetObjectBodegaDB {
         return pedido;
     } 
     
-    private Matriz obtenerMatriz(String id) throws SQLException{
+    public Matriz obtenerMatriz(String id) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
         String query = 
-            "SELECT * \n" +
+            "SELECT * " +
             "FROM Matriz m\n" +
             "WHERE m.id_matriz = \"" + id + "\";";
         try (Statement st = conn.createStatement()) {
             try(ResultSet rs = st.executeQuery(query)){
-                Matriz m = null;
+                Matriz m=null;
                 if(rs.next()){
                     m = new Matriz(rs.getString("id_matriz"),rs.getString("direccion"),rs.getString("tipoLocalidad"));
                 }
