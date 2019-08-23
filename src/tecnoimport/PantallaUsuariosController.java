@@ -12,6 +12,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -114,27 +115,39 @@ public class PantallaUsuariosController implements Initializable {
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
         
-        String query1 = "SELECT * FROM Usuario JOIN Persona ON Usuario.cedula= Persona.cedula Where usuario =\""+bd.getUser()+"\";";
-
-        ResultSet result = bd.seleccionarDatos(query1, conn);
-
-        if (result == null || result.isClosed() || !result.next()) {
-            throw new SQLException("Usuario no encontrado.\nInténtelo más tarde. ");
-        }
-        
-        String query = "SELECT Persona.cedula,Persona.nombre,Persona.apellido "
-                + "FROM Usuario JOIN Persona On Persona.cedula=Usuario.cedula "
-                + " Where Usuario.matriz_id= \""+result.getString("matriz_id")+"\"";
-        
-        
-        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        if (rs == null || rs.isClosed() || !rs.next()) {
-            throw new SQLException("Usuario no encontrado.\nInténtelo más tarde. ");
-        }
-        
         nombre.setCellValueFactory(new PropertyValueFactory<>("Nombre"));
         apellido.setCellValueFactory(new PropertyValueFactory<>("Apellido"));
-        celdas(conn,rs);
+        
+        String matriz = getMatriz("SELECT * FROM Usuario "
+                + "JOIN Persona ON Usuario.cedula= Persona.cedula "
+                + "Where usuario =\""+bd.getUser()+"\";");
+        
+        if (matriz == null) {
+            throw new SQLException("Usuario no encontrado.\nInténtelo más tarde. ");
+        }
+        String query = "SELECT Persona.cedula,Persona.nombre,Persona.apellido "
+                + "FROM Usuario JOIN Persona On Persona.cedula=Usuario.cedula "
+                + " Where Usuario.matriz_id= \""+matriz+"\"";
+        try(Statement st = conn.createStatement()){
+            try(ResultSet rs = st.executeQuery(query)){
+                celdas(conn,rs);
+            }
+        }finally{
+            bd.cerrarConexion(conn);
+        }
+    }
+    
+    private String getMatriz(String query) throws SQLException{
+        ConexionBD bd = ConexionBD.getInstance();
+        Connection conn = bd.conectarMySQL();
+        try(Statement st = conn.createStatement()){
+            try(ResultSet rs = st.executeQuery(query)){
+                rs.next();
+                return rs.getString("matriz_id");
+            }
+        }finally{
+            bd.cerrarConexion(conn);
+        }
     }
     
     private void celdas(Connection st,ResultSet rs) throws SQLException{

@@ -44,7 +44,6 @@ import model.singleton.ConexionBD;
 public class PantallaStockLocalidadController implements Initializable {
     ConexionBD bd = ConexionBD.getInstance();
     Connection conn = null;
-    String query;
     @FXML
     private Label fechaactual;
     @FXML
@@ -86,8 +85,8 @@ public class PantallaStockLocalidadController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         busqueda.setDisable(true);
-         insertar.setVisible(false);
-         act.setVisible(false);
+        insertar.setVisible(false);
+        act.setVisible(false);
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("     dd/MM/yyyy");
         ocultar();
@@ -102,98 +101,104 @@ public class PantallaStockLocalidadController implements Initializable {
         empleado.setText(user.getNombre() + " " + user.getApellido());
     }
 
-        private void ocultar(){
-    
-         lblstock.setVisible(false);
+    private void ocultar(){
+        lblstock.setVisible(false);
         txtstock.setVisible(false);
-
     }
         
-         private void mostrar(){
-
-         lblstock.setVisible(true);
+    private void mostrar(){
+        lblstock.setVisible(true);
         txtstock.setVisible(true);
-        
     }
+    
     public void llenar() throws SQLException {
-        conn = bd.conectarMySQL();
-        String query = "select p.id_producto,p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
+        llenarTablas("select p.id_producto,p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
                 + "from Producto  p\n"
                 + "join Stock s on p.id_producto=s.id_producto\n"
-                + "join Matriz m on m.id_matriz=s.id_matriz ;";
-        ResultSet rs = bd.seleccionarDatos(query, conn);
-        llenartable(conn, rs);
+                + "join Matriz m on m.id_matriz=s.id_matriz ;");
     }
 
     public void llenarMa() throws SQLException {
-        conn = bd.conectarMySQL();
-        String query = "select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
+        llenarTablas("select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
                 + "from Producto  p\n"
                 + "join Stock s on p.id_producto=s.id_producto\n"
                 + "join Matriz m on m.id_matriz=s.id_matriz\n"
-                + "where tipoLocalidad=\"Matriz\";";
-        ResultSet rs = bd.seleccionarDatos(query, conn);
-        llenartable(conn, rs);
+                + "where tipoLocalidad=\"Matriz\";");
     }
 
     public void llenarSu() throws SQLException {
-        conn = bd.conectarMySQL();
-        String query = "select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
+        llenarTablas("select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
                 + "from Producto  p\n"
                 + "join Stock s on p.id_producto=s.id_producto\n"
                 + "join Matriz m on m.id_matriz=s.id_matriz\n"
-                + "where tipoLocalidad=\"Sucursal\";";
-        ResultSet rs = bd.seleccionarDatos(query, conn);
-        llenartable(conn, rs);
+                + "where tipoLocalidad=\"Sucursal\";");
     }
 
     public void llenarBo() throws SQLException {
-        conn = bd.conectarMySQL();
-        String query = "select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
+        llenarTablas("select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
                 + "from Producto  p\n"
                 + "join Stock s on p.id_producto=s.id_producto\n"
                 + "join Matriz m on m.id_matriz=s.id_matriz\n"
-                + "where tipoLocalidad=\"Bodega\";";
-        ResultSet rs = bd.seleccionarDatos(query, conn);
-        llenartable(conn, rs);
+                + "where tipoLocalidad=\"Bodega\";");
     }
-
-    public Object[] poblar_combox(String tabla, String nombrecol) {
-        int registros = 0;
-        try {
-            conn = bd.conectarMySQL();
-            String sql = "SELECT count(*) as total FROM " + tabla;
-            ResultSet rs = bd.seleccionarDatos(sql, conn);
-            rs.next();
-            registros = rs.getInt("total");
-            rs.close();
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-
-        Object[] datos = new Object[registros];
-        try {
-            conn = bd.conectarMySQL();
-            ResultSet rs = bd.seleccionarDatos("SELECT id_matriz FROM Matriz where tipoLocalidad='"+comboLugar.getValue().toString()+"'", conn);
-            int i = 0;
-            while (rs.next()) {
-                datos[i] = rs.getObject(nombrecol);
-                i++;
+    
+    private void llenarTablas(String query) throws SQLException{
+        conn = bd.conectarMySQL();
+        try (Statement st = conn.createStatement()) {
+            try(ResultSet rs = st.executeQuery(query)){
+                llenartable(conn, rs);
             }
-            rs.close();
-        } catch (SQLException e) {
-            System.out.println(e);
+        } catch (SQLException ex) {
+            ConexionBD.lanzarException();
+        }
+        bd.cerrarConexion(conn);
+    }
+    
+    public Object[] poblarCombox(String tabla, String nombrecol) throws SQLException {
+        int registros = poblarComboxCount(tabla);
+        Object[] datos = new Object[registros];
+        String query = "SELECT id_matriz FROM Matriz where tipoLocalidad='"+comboLugar.getValue().toString()+"'";
+        conn = bd.conectarMySQL();
+        try (Statement st = conn.createStatement()) {
+            try(ResultSet rs = st.executeQuery(query)){
+                int i = 0;
+                while (rs.next()) {
+                    datos[i] = rs.getObject(nombrecol);
+                    i++;
+                }
+            }
+        } catch (SQLException ex) {
+            ConexionBD.lanzarException();
+        }finally{
+            bd.cerrarConexion(conn);
         }
         return datos;
     }
-
+    
+    private int poblarComboxCount(String tabla) throws SQLException{
+        conn = bd.conectarMySQL();
+        int registros = 0;
+        String query = "SELECT count(*) as total FROM " + tabla;
+        try (Statement st = conn.createStatement()) {
+            try(ResultSet rs = st.executeQuery(query)){
+                rs.next();
+                return rs.getInt("total");
+            }
+        } catch (SQLException ex) {
+            ConexionBD.lanzarException();
+        }finally{
+            bd.cerrarConexion(conn);
+        }
+        return 0;
+    }
+    
     public void llenartable(Connection conn, ResultSet rs) {
         nombrePro.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
         idlocal.setCellValueFactory(new PropertyValueFactory<>("tipoLocalidad"));
         direccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
-        lugar.setCellValueFactory(new PropertyValueFactory<>("id_matriz"));
-        idpro.setCellValueFactory(new PropertyValueFactory<>("id_producto"));
+        lugar.setCellValueFactory(new PropertyValueFactory<>("idMatriz"));
+        idpro.setCellValueFactory(new PropertyValueFactory<>("idProducto"));
         tablaStock.setVisible(true);
         celdas(conn, rs);
     }
@@ -221,122 +226,105 @@ public class PantallaStockLocalidadController implements Initializable {
         }
     }
 
-    public void setCentercopy() throws SQLException {
-        
-        idenlocal.setOnAction((l) -> {
-            insertar.setVisible(true);
-            act.setVisible(true);
-            busqueda.setDisable(false);
-            Object o = idenlocal.getValue();
-            if(o != null){
-            String numlocal = o.toString();
-            ResultSet rs = null;
-            if (numlocal != null && !numlocal.equals("") && !numlocal.equals(" ")) {
-                try {
-                    conn = bd.conectarMySQL();
-                } catch (SQLException ex) {
-                    Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                query = "select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
-                        + "from Producto  p\n"
-                        + "join Stock s on p.id_producto=s.id_producto\n"
-                        + "join Matriz m on m.id_matriz=s.id_matriz\n"
-                        + "where m.tipoLocalidad='"+ comboLugar.getValue().toString()+"' and  m.id_matriz='" + numlocal + "';";
-                try {
-                    rs = bd.seleccionarDatos(query, conn);
-                } catch (SQLException ex) {
-                    Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                llenartable(conn, rs);
-            }
-            }
-
-        });
+    public void setCentercopy() throws SQLException { 
+        idenlocal.setOnAction(l -> {
+            try {
+                actionidLocal();
+            } catch (SQLException ex) {
+                Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
+            }});
 
         busqueda.textProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue args0, Object o1, Object o2) {
-                String comboText = (String) idenlocal.getValue();
-                if (comboText != null && !comboText.equals("") && !comboText.equals(" ")) {
-                    String stringActual = (String) o2;
-                    String numlocal = idenlocal.getValue().toString();
-                    String stbuscar = "";
-                    ResultSet rss = null;
-                    try {
-                        conn = bd.conectarMySQL();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    stbuscar = "select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
-                            + "from Producto  p\n"
-                            + "join Stock s on p.id_producto=s.id_producto\n"
-                            + "join Matriz m on m.id_matriz=s.id_matriz \n"
-                            + "where m.tipoLocalidad='"+ comboLugar.getValue().toString()+"' and m.id_matriz='"+ idenlocal.getValue().toString()+"' and p.nombre like " + " \'" + busqueda.getText() + "%\' ;";
-                    try {
-                        rss = bd.seleccionarDatos(stbuscar, conn);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    llenartable(conn, rss);
-                }
-
+                busquedaChanged();
             }
         });
     }
 
+    private void busquedaChanged(){
+        String comboText = (String) idenlocal.getValue();
+        if (comboText != null && !comboText.equals("") && !comboText.equals(" ")) {
+            try {
+                conn = bd.conectarMySQL();
+                llenarTablas("select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
+                    + "from Producto  p\n"
+                    + "join Stock s on p.id_producto=s.id_producto\n"
+                    + "join Matriz m on m.id_matriz=s.id_matriz \n"
+                    + "where m.tipoLocalidad='"+ comboLugar.getValue().toString()
+                    +"' and m.id_matriz='"+ idenlocal.getValue().toString()
+                    +"' and p.nombre like " + " \'" + busqueda.getText() + "%\' ;");
+            } catch (SQLException ex) {
+                Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    private void actionidLocal() throws SQLException {
+        insertar.setVisible(true);
+        act.setVisible(true);
+        busqueda.setDisable(false);
+        Object o = idenlocal.getValue();
+        String numlocal = "";
+        if(o !=null){
+            numlocal = o.toString();
+        }else{
+            throw new SQLException("No se tiene el número de local.");
+        }
+        if (numlocal != null && !numlocal.equals("") && !numlocal.equals(" ")) {
+            conn = bd.conectarMySQL();
+            llenarTablas("select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
+                    + "from Producto  p\n"
+                    + "join Stock s on p.id_producto=s.id_producto\n"
+                    + "join Matriz m on m.id_matriz=s.id_matriz\n"
+                    + "where m.tipoLocalidad='"+ comboLugar.getValue().toString()+"' and  m.id_matriz='" + numlocal + "';");
+        }    
+    }
+    
     public void setCenter() {
         busqueda.setPromptText("Ingrese su búsqueda");
         ObservableList ob = FXCollections.observableArrayList("Matriz", "Sucursal", "Bodega");
         comboLugar.setItems(ob);
         comboLugar.setPromptText("Filtrar");
-        comboLugar.setOnAction((l) -> {
-            Connection st = null;
-            ResultSet rs = null;
-            String stbuscar = "";
-            idenlocal.getItems().clear();
-            if (comboLugar.getValue().equals("Matriz")) {
-                busqueda.setPromptText("Matriz");
-                try {
-                    llenarMa();
-                } catch (SQLException ex) {
-                    Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                com();
-            } else if (comboLugar.getValue().equals("Sucursal")) {
-                busqueda.setPromptText("Sucursal");
-                try {
-                    llenarSu();
-                } catch (SQLException ex) {
-                    Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                com();
-            } else if (comboLugar.getValue().equals("Bodega")) {
-                busqueda.setPromptText("Bodega");
-                try {
-                    llenarBo();
-                } catch (SQLException ex) {
-                    Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                com();}
-                 else {
-                busqueda.setPromptText("Ingrese su búsqueda");
+        comboLugar.setOnAction(l ->{
+            try{
+                actionCombo();
+            } catch (SQLException ex) {
+                Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
             }
-    });}
-
-    public void com(){
-        Object[] idarticulo = poblar_combox("Matriz", "id_matriz");
-                for (int i = 0; i < idarticulo.length; i++) {
-                    idenlocal.getItems().add(idarticulo[i]);
-                }
-                try {
-                    setCentercopy();
-                } catch (SQLException ex) {
-                    Logger.getLogger(PantallaStockLocalidadController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+        });
+    }
+    
+    private void actionCombo() throws SQLException{
+        idenlocal.getItems().clear();
+        if (comboLugar.getValue().equals("Matriz")) {
+            busqueda.setPromptText("Matriz");
+            llenarMa();
+            com();
+        } else if (comboLugar.getValue().equals("Sucursal")) {
+            busqueda.setPromptText("Sucursal");
+            llenarSu();
+            com();
+        } else if (comboLugar.getValue().equals("Bodega")) {
+            busqueda.setPromptText("Bodega");
+            llenarBo();
+            com();
+        }else {
+            busqueda.setPromptText("Ingrese su búsqueda");
+        }
+    }
+    
+    public void com() throws SQLException{
+        Object[] idarticulo = poblarCombox("Matriz", "id_matriz");
+        for (int i = 0; i < idarticulo.length; i++) {
+            idenlocal.getItems().add(idarticulo[i]);
+        }
+        setCentercopy();
+    }
   
     @FXML
     private void regreso(MouseEvent event) {
+        //no habilitado
     }
 
     @FXML
@@ -356,37 +344,50 @@ public class PantallaStockLocalidadController implements Initializable {
         }
         
     }
-
     
-      @FXML
+    @FXML
     private void actualizar(MouseEvent event) throws SQLException {
         if(CtrlMaster.getUser().isIsAdmin()){
             Dpro p = tablaStock.getSelectionModel().getSelectedItem();
             if(p == null){
-                emergentes.Emergentes.mostrarDialogo("Debe seleccionar un producto en el que cambiará el stock.", "Falta Selección", "Error");
+                emergentes.Emergentes.mostrarDialogo("Debe seleccionar un producto"
+                    + " en el que cambiará el stock.", "Falta Selección", "Error");
+                
             }else if (comboLugar.getValue() != null&& idenlocal.getValue() != null){
-                String modify= "update Stock set stock= '" + txtstock.getText() 
-                        + "' where id_producto= '" + p.getIdProducto() + "' and id_matriz='"+p.getIdMatriz()+"' ; ";
-                bd = ConexionBD.getInstance();
-                conn = bd.conectarMySQL();
-                try (Statement st = conn.createStatement()) {
-                    st.execute(modify);
-                } catch (SQLException ex) {
-                    throw new SQLException("La base de datos se desconectó inesperadamente.");
-                }
-                    
-                String show = "select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
-                        + "from Producto  p\n"
-                        + "join Stock s on p.id_producto=s.id_producto\n"
-                        + "join Matriz m on m.id_matriz=s.id_matriz\n"
-                        + "where m.tipoLocalidad='"+comboLugar.getValue().toString()+"' and m.id_matriz='"+ idenlocal.getValue().toString()+"' ;";
-                ResultSet rs = bd.seleccionarDatos(show, conn);
-                celdas(conn,rs);
-                ocultar();
-                bd.cerrarConexion(conn);
+                actualizarCombo(p);
             }else{
-                emergentes.Emergentes.mostrarDialogo("Debe seleccionar el código de la instalación que se desee modificar.", "Falta Selección", "Error");
+                emergentes.Emergentes.mostrarDialogo("Debe seleccionar el código "
+                    + "de la instalación que se desee modificar.", "Falta Selección", "Error");
             }
         }
+    }
+    
+    private void actualizarCombo(Dpro p) throws SQLException{
+        bd = ConexionBD.getInstance();
+        conn = bd.conectarMySQL();
+        String modify= "update Stock set stock= '" + txtstock.getText() 
+                + "' where id_producto= '" + p.getIdProducto() 
+                + "' and id_matriz='"+p.getIdMatriz()+"' ; ";
+        try (Statement st = conn.createStatement()) {
+            st.execute(modify);
+        } catch (SQLException ex) {
+            throw new SQLException("La base de datos se desconectó inesperadamente.");
+        }
+
+        String show = "select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
+                + "from Producto  p\n"
+                + "join Stock s on p.id_producto=s.id_producto\n"
+                + "join Matriz m on m.id_matriz=s.id_matriz\n"
+                + "where m.tipoLocalidad='"+comboLugar.getValue().toString()
+                +"' and m.id_matriz='"+ idenlocal.getValue().toString()+"' ;";
+        try (Statement st = conn.createStatement()) {
+            try(ResultSet rs = st.executeQuery(show)){
+                celdas(conn,rs);
+                ocultar();
+            }
+        } catch (SQLException ex) {
+            throw new SQLException("La base de datos se desconectó inesperadamente.");
+        }
+        bd.cerrarConexion(conn);
     }
 }

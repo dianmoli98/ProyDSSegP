@@ -29,6 +29,7 @@ import javafx.scene.input.MouseEvent;
 import model.inventario.Producto;
 import model.local.Usuario;
 import model.singleton.ConexionBD;
+import static model.singleton.ConexionBD.lanzarException;
 
 /**
  * FXML Controller class
@@ -70,6 +71,8 @@ public class FXMLVistaTProductoController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -109,7 +112,7 @@ public class FXMLVistaTProductoController implements Initializable {
                 celdas(conn,rs);
             }
         } catch (SQLException ex) {
-            throw new SQLException("La base de datos se desconectó inesperadamente.");
+            lanzarException();
         }
      }
     
@@ -233,26 +236,27 @@ public class FXMLVistaTProductoController implements Initializable {
             try (Statement st = conn.createStatement()) {
                 st.execute(modify);
             } catch (SQLException ex) {
-                throw new SQLException("La base de datos se desconectó inesperadamente.");
+                lanzarException();
             }
             obtenerProductos();
             bd.cerrarConexion(conn);
         }
     }
-    
+       
     private void obtenerProductos() throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
-        try{
-                String show = "select * from Producto";
-                Connection connn = bd.conectarMySQL();
-                ResultSet rs = bd.seleccionarDatos(show, connn);
+        
+        String query = "select * from Producto";
+        try (Statement st = conn.createStatement()) {
+            try(ResultSet rs = st.executeQuery(query)){
                 celdas(conn,rs);
                 ocultar();
-            }catch (SQLException e) {
-                ocultar();
-                mostrarEmergente();
             }
+        } catch (SQLException ex) {
+             ocultar();
+            mostrarEmergente();
+        }
     }
     
     private void mostrarEmergente(){

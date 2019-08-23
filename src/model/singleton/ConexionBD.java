@@ -3,9 +3,7 @@ package model.singleton;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 /**
  *
  * @author Jocellyn Luna
@@ -15,8 +13,8 @@ public class ConexionBD {
     // Librería de MySQL
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     // Datos de la BD
-    private static final String DB = "tecnoimport";
-    private static final String HOST = "localhost";
+    private static final String DB = "TecnoImport";
+    private static final String HOST = "127.0.0.1";
     private static final String PUERTO = "3306";
 
     private static final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + DB
@@ -53,35 +51,8 @@ public class ConexionBD {
         }
     }
     
-    /*
-try (Statement st = conn.createStatement()) {
-    ResultSet rs = st.executeQuery(query);
-    return rs;
-} catch (SQLException ex) {
-    throw new SQLException("La base de datos se desconectó inesperadamente.");
-}
-    */
-    
-    public ResultSet seleccionarDatos(String query, Connection conn) throws SQLException {
-        if (conn == null) {
-            throw new SQLException("Conexión con la base de datos fallida.\n Compruebe autentificación o"
-                    + "Driver de conexión.");
-        }
-        //create the java statement
-        Statement st = null;
-        ResultSet rs = null;
-        try {
-            st = conn.createStatement();
-        } catch (SQLException ex) {
-            throw new SQLException("La base de datos se desconectó inesperadamente.");
-        }
-
-        try {
-            rs = st.executeQuery(query);
-        } catch (SQLException ex) {
-            throw new SQLException("la Consulta no fue exitosa.\nInténtelo más tarde. " + ex.getMessage());
-        }
-        return rs;
+    public static void lanzarException() throws SQLException{
+        throw new SQLException("La base de datos se desconectó inesperadamente.");
     }
 
     public void cerrarConexion(Connection conn) throws SQLException {
