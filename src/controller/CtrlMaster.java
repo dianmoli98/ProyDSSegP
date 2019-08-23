@@ -3,6 +3,10 @@ package controller;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import javafx.scene.control.Label;
 import model.bodega.JefeBodega;
 import model.local.Gerente;
 import model.local.Usuario;
@@ -85,5 +89,12 @@ public class CtrlMaster {
         if (rs == null || rs.isClosed() || !rs.next()) {
             throw new SQLException("Usuario no encontrado.\nInténtelo más tarde. ");
         }
+    }
+    public static void callCalender(Label fecha,Label empleado){
+        Date date=Calendar.getInstance().getTime();
+        SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+        fecha.setText(sdf.format(date));
+        user = CtrlMaster.getUser();
+        empleado.setText(user.getNombre() + " " + user.getApellido());
     }
 }

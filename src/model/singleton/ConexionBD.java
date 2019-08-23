@@ -15,8 +15,8 @@ public class ConexionBD {
     // Librería de MySQL
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     // Datos de la BD
-    private static final String DB = "TecnoImport";
-    private static final String HOST = "127.0.0.1";
+    private static final String DB = "tecnoimport";
+    private static final String HOST = "localhost";
     private static final String PUERTO = "3306";
 
     private static final String CONEXION = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + DB

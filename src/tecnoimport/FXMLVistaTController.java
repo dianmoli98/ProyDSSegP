@@ -64,46 +64,24 @@ public class FXMLVistaTController implements Initializable {
     
     private static CtrlGerente controlGerente = null;
     private static CtrlJefeBodega controlJefe = null;
+    private Usuario user = CtrlMaster.getUser();
+    private AuxiliarVistaT auxiliar=new AuxiliarVistaT();
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Date date=Calendar.getInstance().getTime();
-        SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
-        fechaactual.setText(sdf.format(date));
-        
-        Usuario user = CtrlMaster.getUser();
-        empleado.setText(user.getNombre() + " " + user.getApellido());
-        if(user instanceof Gerente){
-            ruta.setDisable(true);
-            imprimir.setDisable(true);
-            ventas.setDisable(true);
-            clientes.setDisable(true);
-            
-        }else if(user instanceof JefeBodega){
+        CtrlMaster.callCalender(fechaactual, empleado);
+        if(!user.isIsAdmin()){
+            administracion.setDisable(true);
+        }
+        asignarUsuario();
+        if(user instanceof JefeBodega){
             ventas.setDisable(true);
             clientes.setDisable(true);
             setJefe();
-            try {
-                Parent root3 = FXMLLoader.load(getClass().getResource("/tecnoimport/Pantalla de Espera.fxml"));
-                Scene scene3 = new Scene(root3);
-                ventsegunda.setScene(scene3);
-                ventsegunda.show();
-            } catch (IOException ex) {
-                Logger.getLogger(FXMLVistaTController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-        }else if(user instanceof Vendedor){
-            ruta.setDisable(true);
-            
-        }if(!user.isIsAdmin()){
-            administracion.setDisable(true);
+            auxiliar.crearPantallaEspera(); 
         }
-    }
-
-    private static void setJefe(){
-        controlJefe = new CtrlJefeBodega((JefeBodega)CtrlMaster.getUser());
     }
     
     @FXML
@@ -122,17 +100,17 @@ public class FXMLVistaTController implements Initializable {
 
     @FXML
     private void administrar(MouseEvent event) throws IOException {
-        mostrarPantallaConstruccion();
+        auxiliar.mostrarPantallaConstruccion(label);
     }
 
     @FXML
     private void realizarVenta(MouseEvent event) throws IOException{
-        mostrarPantallaConstruccion();
+        auxiliar.mostrarPantallaConstruccion(label);
     }
 
     @FXML
     private void agregarClientes(MouseEvent event)throws IOException {
-        mostrarPantallaConstruccion();
+        auxiliar.mostrarPantallaConstruccion(label);
     }
 
     @FXML
@@ -159,25 +137,30 @@ public class FXMLVistaTController implements Initializable {
 
     @FXML
     private void imprimirDoc(MouseEvent event) throws IOException {
-        mostrarPantallaConstruccion();
+        auxiliar.mostrarPantallaConstruccion(label);
     }
     
-    private void mostrarPantallaConstruccion() throws IOException{
-        Parent root = FXMLLoader.load(getClass().getResource(PantallaConstruccionController.PCONSTRUCCION));
-        Stage stage= new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(label.getScene().getWindow());
-        stage.setResizable(false);
-        stage.setScene(new Scene(root));
-        stage.show();
+    private void asignarUsuario() {
+        if (user instanceof Vendedor) {
+            ruta.setDisable(true);
+        } else {
+            ventas.setDisable(true);
+            clientes.setDisable(true);
+            if (user instanceof Gerente) {
+                ruta.setDisable(true);
+                imprimir.setDisable(true);
+            }
+        }
     }
-    
     public static CtrlJefeBodega getControlJefe(){
         return controlJefe;
-    }
+        }
     
     public static CtrlGerente getControlGerente(){
         return controlGerente;
     }
     
+    private static void setJefe(){
+        controlJefe = new CtrlJefeBodega((JefeBodega)CtrlMaster.getUser());
+    }
 }
