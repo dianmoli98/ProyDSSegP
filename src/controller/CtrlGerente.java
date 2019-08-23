@@ -27,27 +27,19 @@ public class CtrlGerente {
     public void asignarAdministrador(String cedula,boolean asignar) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
-        Statement st = conn.createStatement();
-        if(asignar){
-        String query="update Usuario set Usuario.isAdmin="+asignar+" WHERE (Usuario.cedula=\""+cedula+"\") ";
-        st.execute(query);
+        try(Statement st = conn.createStatement()){
+            String query;
+            if(asignar){
+                query = "update Usuario set Usuario.isAdmin='1' WHERE (Usuario.cedula=\""+cedula+"\") ";
+            }else{
+                query = "update Usuario set Usuario.isAdmin='0'WHERE (Usuario.cedula=\""+cedula+"\") ";
+            }
+            st.execute(query);
         }
     }
     
-    public  ResultSet usuarioByLocalidad() throws SQLException{
-        ConexionBD bd = ConexionBD.getInstance();
-        Connection conn = bd.conectarMySQL();
-        ResultSet resul=CtrlMaster.buscarTipoUsuario();
-        String query = "SELECT Persona.cedula,Persona.nombre,Persona.apellido "
-                + "FROM Usuario JOIN Persona On Persona.cedula=Usuario.cedula "
-                + " Where Usuario.matriz_id= \""+resul.getString("matriz_id")+"\"";
-        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        CtrlMaster.validarResult(rs);
-        return rs;
-    }
-    
      public Persona obtenerPersona(ResultSet rs) throws SQLException{
-         Persona persona=null;
+        Persona persona=null;
         if (!rs.getString("cedula").equalsIgnoreCase("0")) {
         String nombre = rs.getString("nombre");
         String apellido = rs.getString("apellido");

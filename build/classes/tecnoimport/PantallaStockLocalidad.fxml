@@ -43,7 +43,7 @@
             <Image url="@../recursos/search.png" />
          </image>
       </ImageView>
-      <ComboBox id="ComboLugar" fx:id="ComboLugar" layoutX="107.0" layoutY="166.0" prefHeight="35.0" prefWidth="124.0" promptText="Lugar" />
+      <ComboBox id="ComboLugar" fx:id="comboLugar" layoutX="107.0" layoutY="166.0" prefHeight="35.0" prefWidth="124.0" promptText="Lugar" />
       <TableView id="tablaStock" fx:id="tablaStock" layoutX="21.0" layoutY="220.0" prefHeight="269.0" prefWidth="608.0">
         <columns>
             <TableColumn fx:id="idpro" prefWidth="47.0" text="Id_Pro" />

@@ -7,7 +7,7 @@ package model.local.compras;
 
 import model.local.Cliente;
 import java.util.Date;
-import java.util.LinkedList;
+import java.util.List;
 import model.strategy.FormaPago;
 /**
  *
@@ -16,7 +16,7 @@ import model.strategy.FormaPago;
 public class Compra {
     private String numeracion;
     private Cliente cliente;
-    private LinkedList<DetalleProducto> productos;
+    private List<DetalleProducto> productos;
     private double total;
     private FormaPago formaPago;
     private Date fecha;
@@ -25,48 +25,24 @@ public class Compra {
         return numeracion;
     }
 
-    public void setNumeracion(String numeracion) {
-        this.numeracion = numeracion;
-    }
-
     public Cliente getCliente() {
         return cliente;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public LinkedList<DetalleProducto> getProductos() {
+    public List<DetalleProducto> getProductos() {
         return productos;
-    }
-
-    public void setProductos(LinkedList<DetalleProducto> productos) {
-        this.productos = productos;
     }
 
     public double getTotal() {
         return total;
     }
 
-    public void setTotal(double total) {
-        this.total = total;
-    }
-
     public FormaPago getFormaPago() {
         return formaPago;
     }
 
-    public void setFormaPago(FormaPago formaPago) {
-        this.formaPago = formaPago;
-    }
-
     public Date getFecha() {
         return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
     }
 
     

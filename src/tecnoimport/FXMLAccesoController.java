@@ -46,6 +46,7 @@ public class FXMLAccesoController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //No se inicializan variables de FXML
     }    
 
     @FXML

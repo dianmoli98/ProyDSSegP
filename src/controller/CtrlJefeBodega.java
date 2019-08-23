@@ -8,6 +8,7 @@ package controller;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.Queue;
 import javafx.collections.ObservableList;
@@ -85,15 +86,20 @@ public class CtrlJefeBodega extends GetObjectBodegaDB {
             "SELECT max(r.id_ruta) as \"id\"\n" +
             "FROM Ruta r\n" +
             "WHERE r.id_jefeBodega = \""+jefe.getId()+"\";";
-        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
         int id = 0;
-        if(rs.next()){
-            id =  rs.getInt("id");
-        }else{
-            throw new SQLException("Hubo un problema al guardar la Ruta");
+        try (Statement st = conn.createStatement()) {
+            try(ResultSet rs = st.executeQuery(query)){
+                if(rs.next()){
+                    id =  rs.getInt("id");
+                }else{
+                    throw new SQLException("Hubo un problema al guardar la Ruta");
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException("La base de datos se desconectó inesperadamente.");
         }
         bd.cerrarConexion(conn);
-        return id;  
+        return id; 
     }
     
     private Repartidor obtenerRepartidor(){

@@ -8,6 +8,7 @@ package model.singleton;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import model.bodega.JefeBodega;
 import model.bodega.Repartidor;
 import model.bodega.Ruta;
@@ -28,14 +29,14 @@ public class GetObjectBodegaDB {
         this.jefe = jefe;
     }
     
-    public ResultSet obtenerRSRutas(Connection conn) throws SQLException{
-            String query = 
-            "Select r.id_ruta, count(p.id_pedido) as \"cantidad\" , r.Realizado, r.id_repartidor " +
-            "from Ruta r join Repartidor re On r.id_repartidor = re.cedula " +
-            "join Pedido p On p.id_ruta = r.id_ruta " +
-            "where r.id_jefeBodega = \""+jefe.getId()+"\"  and r.Realizado = \"F\"" +
-            "group by r.id_ruta;";
-            return ConexionBD.getInstance().seleccionarDatos(query, conn);
+    public ResultSet obtenerRSRutas(Statement st) throws SQLException{
+        String query = 
+        "Select r.id_ruta, count(p.id_pedido) as \"cantidad\" , r.Realizado, r.id_repartidor " +
+        "from Ruta r join Repartidor re On r.id_repartidor = re.cedula " +
+        "join Pedido p On p.id_ruta = r.id_ruta " +
+        "where r.id_jefeBodega = \""+jefe.getId()+"\"  and r.Realizado = \"F\"" +
+        "group by r.id_ruta;";
+        return st.executeQuery(query);
     }
     
     public Ruta obtenerRuta(ResultSet rs) throws SQLException{
@@ -52,20 +53,20 @@ public class GetObjectBodegaDB {
         return new Ruta(idruta, jefe, r, realizado, cantidad);
     }
     
-    public ResultSet obtenerRSPedidos(Connection conn) throws SQLException{
+    public ResultSet obtenerRSPedidos(Statement st) throws SQLException{
         String query = 
             "SELECT p.id_pedido, p.id_cliente, p.id_matriz, p.id_vendedor  \n" +
             "FROM Pedido p  \n" +
             "Where p.id_ruta is NULL and p.id_jefeBodega = \""+jefe.getId()+"\";";
-        return ConexionBD.getInstance().seleccionarDatos(query, conn); 
+        return st.executeQuery(query); 
     }
     
-    public ResultSet obtenerRSPedidos(Connection conn, int idRuta) throws SQLException{
+    public ResultSet obtenerRSPedidos(Statement st, int idRuta) throws SQLException{
         String query = 
             "SELECT p.id_pedido, p.id_cliente, p.id_matriz, p.id_vendedor  \n" +
             "FROM Pedido p  \n" +
             "Where p.id_ruta= "+idRuta+" and p.id_jefeBodega = \""+jefe.getId()+"\";";
-        return ConexionBD.getInstance().seleccionarDatos(query, conn); 
+        return st.executeQuery(query);
     }
     
     public Pedido obtenerPedido(ResultSet rs) throws SQLException{
@@ -91,12 +92,17 @@ public class GetObjectBodegaDB {
             "SELECT * \n" +
             "FROM Matriz m\n" +
             "WHERE m.id_matriz = \"" + id + "\";";
-        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        Matriz m = null;
-        if(rs.next()){
-            m = new Matriz(rs.getString("id_matriz"),rs.getString("direccion"),rs.getString("tipoLocalidad"));
+        try (Statement st = conn.createStatement()) {
+            try(ResultSet rs = st.executeQuery(query)){
+                Matriz m = null;
+                if(rs.next()){
+                    m = new Matriz(rs.getString("id_matriz"),rs.getString("direccion"),rs.getString("tipoLocalidad"));
+                }
+                bd.cerrarConexion(conn);
+                return m;
+            }
+        } catch (SQLException ex) {
+            throw new SQLException("La base de datos se desconectó inesperadamente.");
         }
-        bd.cerrarConexion(conn);
-        return m;
     }
 }

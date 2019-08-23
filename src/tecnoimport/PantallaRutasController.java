@@ -11,6 +11,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -116,14 +117,15 @@ public class PantallaRutasController implements Initializable {
     public void llenar() throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
-        ResultSet rs = control.obtenerRSRutas(conn);
         
-        IdRuta.setCellValueFactory(new PropertyValueFactory<>("id_ruta"));
+        try(Statement st = conn.createStatement()){
+            celdas(conn,control.obtenerRSRutas(st));
+        }
+        IdRuta.setCellValueFactory(new PropertyValueFactory<>("idRuta"));
         repartidor.setCellValueFactory(new PropertyValueFactory<>("repartidor"));
         pedido.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
-        
-        celdas(conn,rs);
+
     }
     
     private void celdas(Connection st,ResultSet rs) throws SQLException{
