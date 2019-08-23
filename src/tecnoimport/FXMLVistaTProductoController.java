@@ -1,3 +1,6 @@
+
+
+
 package tecnoimport;
 
 import controller.CtrlMaster;
@@ -18,6 +21,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -67,17 +71,16 @@ public class FXMLVistaTProductoController implements Initializable {
     private ImageView insertar;
     @FXML
     private ImageView act;
-
+    
+    private Connection conn;
+    
+    private ConexionBD bd;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Date date = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf=new SimpleDateFormat("     dd/MM/yyyy");
-        fecha.setText(sdf.format(date));
-        Usuario user = CtrlMaster.getUser();
-        nomE.setText(user.getNombre() + " " + user.getApellido());
+        CtrlMaster.callCalender(fecha, nomE);
         ocultar();
         setCenter();
         try {
@@ -99,81 +102,44 @@ public class FXMLVistaTProductoController implements Initializable {
     public void llenar() throws SQLException{
         generarFactories();
         tablaProductos.setVisible(true);    
-        
-        ConexionBD bd = ConexionBD.getInstance();
-        Connection conn = bd.conectarMySQL();
+        bd = ConexionBD.getInstance();
+        conn = bd.conectarMySQL();
         String query = "select * from Producto";  
-
-        try (Statement st = conn.createStatement()) {
-            try(ResultSet rs = st.executeQuery(query)){
-                celdas(conn,rs);
-            }
-        } catch (SQLException ex) {
-            throw new SQLException("La base de datos se desconectó inesperadamente.");
-        }
-     }
+        celdas(query);
+    }
     
     private void ocultar(){
         lblprecio.setVisible(false);
         txtprecio.setVisible(false);
     }
     
-    public void setCenter(){
-        busqueda.setPromptText("Ingrese su búsqueda");
-        ObservableList ob=FXCollections.observableArrayList("Nombre","Categoria");
-        comboxbus.setItems(ob);
-        comboxbus.setPromptText("Filtrar");
-        comboxbus.setOnAction( action ->{
-            if(comboxbus.getValue().equals("Nombre")){
-                busqueda.setPromptText("Nombre");
-            }else if(comboxbus.getValue().equals("Categoria")){
-                busqueda.setPromptText("Categoria");
-            }else{
-                busqueda.setPromptText("Ingrese su búsqueda"); 
-            }
-        });
-        
-        busqueda.textProperty().addListener(new ChangeListener(){
+    public void setCenter() {
+        opcionesBotones();
+        busqueda.textProperty().addListener(new ChangeListener() {
             @Override
-            public void changed(ObservableValue args0,Object o1,Object o2){
-                try {
-                    actionChange();
-                } catch (SQLException ex) {
-                    Logger.getLogger(FXMLVistaTProductoController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
-    
-    private void actionChange() throws SQLException{
-        String comboText=(String)comboxbus.getValue();
-        if (comboText != null && !comboText.equals("") && !comboText.equals(" ")) {
-            ConexionBD bd = ConexionBD.getInstance(); 
-            Connection conn = bd.conectarMySQL(); 
-            String stbuscar = " ";
-            if (comboxbus.getValue().equals("Nombre")) {
-                stbuscar = "select * from Producto where nombre like " + " \'" + busqueda.getText() + "%\' ;";
-            }else if (comboxbus.getValue().equals("Categoria")) {
-                stbuscar = "select * from Producto where categoria like " + " \'" + busqueda.getText() + "%\' ;";
-            }
-            
-            try (Statement st = conn.createStatement()) {
-                try(ResultSet rs = st.executeQuery(stbuscar)){
-                    celdas(conn,rs); 
-                }
-                if(busqueda.getText().equals("")){ 
-                    stbuscar = "select * from Producto;";
-                    try(ResultSet rs = st.executeQuery(stbuscar)){
-                        celdas(conn,rs);
+            public void changed(ObservableValue args0, Object o1, Object o2) {
+                String comboText = comboxbus.getValue().toString();
+                final boolean variable = (comboText == null || comboText.equals("") || comboText.equals(" "));
+                if (!variable) {
+                    ocultar();
+                    try {
+                        sentenciasIf(comboText, busqueda.getText());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(FXMLVistaTProductoController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-            } catch (SQLException ex) {
-                throw new SQLException("La base de datos se desconectó inesperadamente.");
             }
-        }
+        });
     }
-      
-    private void celdas(Connection st,ResultSet rs){
+    private void sentenciasIf(String eleccion, String dato) throws SQLException {
+        String stbuscar;
+        if(eleccion=="") stbuscar = "select * from Producto;";
+        else stbuscar = "select * from Producto where " + eleccion.toLowerCase() + " like " + " \'" + dato + "%\' ;";
+        celdas(stbuscar);
+    }
+    
+    private void celdas(String sentence) throws SQLException{
+        ResultSet rs= bd.seleccionarDatos(sentence,conn);
         tablaProductos.setVisible(true);
         try {
             ObservableList<Producto> datos = FXCollections.observableArrayList();
@@ -185,11 +151,10 @@ public class FXMLVistaTProductoController implements Initializable {
                     String precio1 = rs.getString("precio");
                     String categoria1 = rs.getString("categoria");
                     Producto p1 = new Producto(Integer.parseInt(id_producto1),
-                            nombre1,descri,Double.parseDouble(precio1),categoria1);
+                    nombre1,descri,Double.parseDouble(precio1),categoria1);
                     datos.add(p1);
                 }
             }
-            
             tablaProductos.setItems(datos);
             tablaProductos.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         } catch (SQLException ex) {
@@ -222,14 +187,12 @@ public class FXMLVistaTProductoController implements Initializable {
     
       @FXML
     private void actualizar(MouseEvent event) throws SQLException {
+        ConexionBD bd = ConexionBD.getInstance();
+        Connection conn = bd.conectarMySQL();
         Producto p = tablaProductos.getSelectionModel().getSelectedItem();
         if(CtrlMaster.getUser().isIsAdmin() && p != null){
             String modify = "update Producto set precio= '" + txtprecio.getText() 
                     + "' where id_producto= '" + p.getIdProducto() + "' ; ";
-
-            ConexionBD bd = ConexionBD.getInstance();
-            Connection conn = bd.conectarMySQL();
-            
             try (Statement st = conn.createStatement()) {
                 st.execute(modify);
             } catch (SQLException ex) {
@@ -241,13 +204,9 @@ public class FXMLVistaTProductoController implements Initializable {
     }
     
     private void obtenerProductos() throws SQLException{
-        ConexionBD bd = ConexionBD.getInstance();
-        Connection conn = bd.conectarMySQL();
         try{
                 String show = "select * from Producto";
-                Connection connn = bd.conectarMySQL();
-                ResultSet rs = bd.seleccionarDatos(show, connn);
-                celdas(conn,rs);
+                celdas(show);
                 ocultar();
             }catch (SQLException e) {
                 ocultar();
@@ -262,6 +221,21 @@ public class FXMLVistaTProductoController implements Initializable {
     
     @FXML
     private void regreso(MouseEvent event) {
-        //no habilitado
+    }
+    
+    private void opcionesBotones(){
+        busqueda.setPromptText("Ingrese su búsqueda");
+        ObservableList ob=FXCollections.observableArrayList("Nombre","Categoria");
+        comboxbus.setItems(ob);
+        comboxbus.setPromptText("Filtrar");
+        comboxbus.setOnAction((action)->{
+            if(comboxbus.getValue().equals("Nombre")){
+                busqueda.setPromptText("Nombre");
+            }else if(comboxbus.getValue().equals("Categoria")){
+                busqueda.setPromptText("Categoria");
+            }else{
+                busqueda.setPromptText("Ingrese su búsqueda"); 
+            }
+        });
     }
 }
