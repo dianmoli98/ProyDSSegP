@@ -8,6 +8,7 @@ package model.singleton;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 import model.bodega.Repartidor;
@@ -31,15 +32,21 @@ public class GetObjectPersonaDB {
     public Cliente obtenerCliente(String cedula) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
+        Cliente c = null;
         String query = 
             "SELECT *\n" +
             "FROM Cliente c\n" +
             "JOIN Persona p On p.cedula = c.cedula\n" +
             "WHERE p.cedula = \"" + cedula + "\";";
-        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        Cliente c = null;
-        if(rs.next()){
-            c = new Cliente(obtenerPersona(rs), rs.getString("direccion"), rs.getString("telefono"));
+        
+        try (Statement st = conn.createStatement()) {
+            try(ResultSet rs = st.executeQuery(query)){
+                if(rs.next()){
+                    c = new Cliente(obtenerPersona(rs), rs.getString("direccion"), rs.getString("telefono"));
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException("La base de datos se desconectó inesperadamente.");
         }
         bd.cerrarConexion(conn);
         return c;
@@ -52,15 +59,20 @@ public class GetObjectPersonaDB {
     public Repartidor obtenerRepartidor(String cedula) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
+        Repartidor r = null;
         String query = 
             "Select r.cedula, p.nombre, p.apellido\n" +
             "From Repartidor r \n" +
             "Join Persona p On r.cedula = p.cedula\n" +
             "Where r.cedula = \"" + cedula + "\" ;";
-        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        Repartidor r = null;
-        if(rs.next()){
-            r = new Repartidor(obtenerPersona(rs),0);
+        try (Statement st = conn.createStatement()) {
+            try(ResultSet rs = st.executeQuery(query)){
+                if(rs.next()){
+                     r = new Repartidor(obtenerPersona(rs),0);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException("La base de datos se desconectó inesperadamente.");
         }
         bd.cerrarConexion(conn);
         return r;
@@ -74,15 +86,20 @@ public class GetObjectPersonaDB {
     public Vendedor obtenerVendedor(String cedula) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
+        Vendedor v = null;
         String query = 
             "SELECT * \n" +
             "FROM Usuario u\n" +
             "JOIN Persona p ON p.cedula = u.cedula\n" +
             "WHERE p.cedula = \"" + cedula + "\";";
-        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        Vendedor v = null;
-        if(rs.next()){
-            v = new Vendedor(obtenerUsuario(rs));
+        try (Statement st = conn.createStatement()) {
+            try(ResultSet rs = st.executeQuery(query)){
+                if(rs.next()){
+                    v = new Vendedor(obtenerUsuario(rs));
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException("La base de datos se desconectó inesperadamente.");
         }
         bd.cerrarConexion(conn);
         return v;
@@ -99,10 +116,16 @@ public class GetObjectPersonaDB {
             "WHERE r.cedula NOT IN\n" +
             "	(SELECT r1.id_repartidor\n" +
             "	 FROM  Ruta r1  WHERE  r1.Realizado = \"F\");";
-        ResultSet rs = ConexionBD.getInstance().seleccionarDatos(query, conn);
-        while(rs.next()){
-            repartidores.add(new Repartidor(obtenerPersona(rs), 0));
+        try (Statement st = conn.createStatement()) {
+            try(ResultSet rs = st.executeQuery(query)){
+                while(rs.next()){
+                    repartidores.add(new Repartidor(obtenerPersona(rs), 0));
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException("La base de datos se desconectó inesperadamente.");
         }
+
         bd.cerrarConexion(conn);
         return repartidores;
     }

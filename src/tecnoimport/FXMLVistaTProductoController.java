@@ -9,9 +9,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +18,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -31,8 +27,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import model.inventario.Producto;
-import model.local.Usuario;
 import model.singleton.ConexionBD;
+import static model.singleton.ConexionBD.lanzarException;
 
 /**
  * FXML Controller class
@@ -77,6 +73,8 @@ public class FXMLVistaTProductoController implements Initializable {
     private ConexionBD bd;
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -106,7 +104,7 @@ public class FXMLVistaTProductoController implements Initializable {
         conn = bd.conectarMySQL();
         String query = "select * from Producto";  
         celdas(query);
-    }
+     }
     
     private void ocultar(){
         lblprecio.setVisible(false);
@@ -139,7 +137,8 @@ public class FXMLVistaTProductoController implements Initializable {
     }
     
     private void celdas(String sentence) throws SQLException{
-        ResultSet rs= bd.seleccionarDatos(sentence,conn);
+        try(Statement st = conn.createStatement()){
+            ResultSet rs = st.executeQuery(sentence);
         tablaProductos.setVisible(true);
         try {
             ObservableList<Producto> datos = FXCollections.observableArrayList();
@@ -155,12 +154,14 @@ public class FXMLVistaTProductoController implements Initializable {
                     datos.add(p1);
                 }
             }
+            bd.cerrarConexion(conn); 
             tablaProductos.setItems(datos);
             tablaProductos.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         } catch (SQLException ex) {
             Logger.getLogger(FXMLVistaTProductoController.class.getName()).log(Level.SEVERE, null, ex);
         }
-     }  
+     }
+    }
         
     @FXML
     private void Inicio(MouseEvent event) {
@@ -196,22 +197,29 @@ public class FXMLVistaTProductoController implements Initializable {
             try (Statement st = conn.createStatement()) {
                 st.execute(modify);
             } catch (SQLException ex) {
-                throw new SQLException("La base de datos se desconectó inesperadamente.");
+                lanzarException();
             }
             obtenerProductos();
             bd.cerrarConexion(conn);
         }
     }
-    
+       
     private void obtenerProductos() throws SQLException{
         try{
                 String show = "select * from Producto";
                 celdas(show);
+        ConexionBD bd = ConexionBD.getInstance();
+        Connection conn = bd.conectarMySQL();
+        
+        String query = "select * from Producto";
+        
+                celdas(query);
                 ocultar();
-            }catch (SQLException e) {
-                ocultar();
-                mostrarEmergente();
-            }
+            
+        } catch (SQLException ex) {
+             ocultar();
+            mostrarEmergente();
+        }
     }
     
     private void mostrarEmergente(){
@@ -221,7 +229,7 @@ public class FXMLVistaTProductoController implements Initializable {
     
     @FXML
     private void regreso(MouseEvent event) {
-    }
+}
     
     private void opcionesBotones(){
         busqueda.setPromptText("Ingrese su búsqueda");
