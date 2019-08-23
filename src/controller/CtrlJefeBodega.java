@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import model.bodega.JefeBodega;
 import model.bodega.Repartidor;
 import model.bodega.Ruta;
+import model.local.Usuario;
 import model.pedido.Pedido;
 import model.singleton.ConexionBD;
 import model.singleton.GetObjectBodegaDB;
@@ -25,7 +26,7 @@ import model.singleton.GetObjectPersonaDB;
  */
 public class CtrlJefeBodega extends GetObjectBodegaDB {
     
-    private final JefeBodega jefe;
+    private JefeBodega jefe;
     private Queue<Repartidor> repartidores;
     private GetObjectPersonaDB obP = GetObjectPersonaDB.getInstance();
     
@@ -39,11 +40,12 @@ public class CtrlJefeBodega extends GetObjectBodegaDB {
         this.jefe = jefe;
     }
 
-    public void agregarRepartidor(Repartidor r){
-        repartidores.add(r);
+    public boolean agregarRepartidor(Repartidor r){
+        if(repartidores.add(r)) return true;
+        return false;
     }
     
-    private Ruta crearRuta(ObservableList<Pedido> pedidos) throws SQLException{
+    public  Ruta crearRuta(ObservableList<Pedido> pedidos) throws SQLException{
         Repartidor repart = obtenerRepartidor();
         if(repart == null){
             throw new SQLException("No hay repartidores Disponible");
@@ -71,15 +73,15 @@ public class CtrlJefeBodega extends GetObjectBodegaDB {
         ConexionBD.getInstance().hacerQuery(query); 
     }
     
-    private void asignarRuta(Ruta r, Pedido p) throws SQLException{
+    public boolean asignarRuta(Ruta r, Pedido p) throws SQLException{
         String query = 
             "UPDATE  Pedido \n" +
             "SET id_ruta = " + r.getIdRuta()+"\n" +
             "Where Pedido.id_pedido = " + p.getIdpedido() + ";";
-        ConexionBD.getInstance().hacerQuery(query); 
+        return ConexionBD.getInstance().hacerQuery(query); 
     }
     
-    private int obtenerLastRuta() throws SQLException{
+    public int obtenerLastRuta() throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
         String query = 
@@ -109,4 +111,13 @@ public class CtrlJefeBodega extends GetObjectBodegaDB {
     public final void actualizarRepartidores() throws SQLException{
         repartidores = (LinkedList<Repartidor>) obP.obtenerRepartidores();
     }
+
+    public JefeBodega getJefe() {
+        return jefe;
+    }
+
+    public void setJefe(JefeBodega jefe) {
+        this.jefe = jefe;
+    }
+    
 }

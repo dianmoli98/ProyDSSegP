@@ -13,8 +13,8 @@ public class ConexionBD {
     // Librería de MySQL
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     // Datos de la BD
-    private static final String DB = "TecnoImport";
-    private static final String HOST = "127.0.0.1";
+    private static final String DB = "tecnoimport";
+    private static final String HOST = "localhost";
     private static final String PUERTO = "3306";
 
     private static final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + DB
@@ -51,6 +51,17 @@ public class ConexionBD {
         }
     }
     
+    public Connection conectarMySQLTest() throws SQLException{
+        Connection conn;
+        try {
+            Class.forName(DRIVER);
+            conn = DriverManager.getConnection(URL, "pbmoral","pbmoral");
+            return conn;
+        } catch (ClassNotFoundException ex) {
+            throw new SQLException("Error de Base de Datos.\nNo conectada");
+        }
+    }
+    
     public static void lanzarException() throws SQLException{
         throw new SQLException("La base de datos se desconectó inesperadamente.");
     }
@@ -71,7 +82,7 @@ public class ConexionBD {
         return pass;
     }
     
-    public void hacerQuery(String query) throws SQLException{
+    public boolean hacerQuery(String query) throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         try(Connection conn = bd.conectarMySQL()){
             try(CallableStatement cl = conn.prepareCall(query)) {
@@ -81,5 +92,6 @@ public class ConexionBD {
         } catch (SQLException ex) {
             throw new SQLException("No se pudo realizar la acción");
         }
+        return true;
     }
 }

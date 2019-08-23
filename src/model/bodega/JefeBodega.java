@@ -26,6 +26,14 @@ public class JefeBodega extends Usuario {
         super(u.isIsAdmin(),u.getNombre() ,u.getApellido(), u.getId());
         pedidos = new LinkedList<>();
     }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
     
     
     

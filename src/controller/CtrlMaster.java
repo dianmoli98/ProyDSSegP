@@ -49,9 +49,7 @@ public class CtrlMaster {
                     + "Usuario.cedula= Persona.cedula Where usuario =\""+bd.getUser()+"\";";
         
             try(ResultSet rs = st.executeQuery(query)){
-                if (rs == null || rs.isClosed() || !rs.next()) {
-                    throw new SQLException("Usuario no encontrado.\nInténtelo más tarde. ");
-                }
+                validarResult(rs);
                 setUser(rs);
             }          
         } catch (SQLException ex) {
