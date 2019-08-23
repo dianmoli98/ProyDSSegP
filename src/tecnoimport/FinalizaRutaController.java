@@ -11,6 +11,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -73,8 +74,10 @@ public class FinalizaRutaController implements Initializable {
     private void llenar() throws SQLException{
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
-        ResultSet rs = control.obtenerRSPedidos(conn, ruta.getIdRuta());
-        celdas(conn,rs);
+        
+        try(Statement st = conn.createStatement()){
+            celdas(conn,control.obtenerRSPedidos(st, ruta.getIdRuta()));
+        }
     }
     
     private void celdas(Connection st,ResultSet rs) throws SQLException{

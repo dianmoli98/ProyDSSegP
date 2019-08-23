@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import javafx.scene.control.Label;
+import java.sql.Statement;
 import model.bodega.JefeBodega;
 import model.local.Gerente;
 import model.local.Usuario;
@@ -36,12 +37,32 @@ public class CtrlMaster {
     }
     
     public static void buscarUsuario(String username,String password) throws SQLException{
-        
         if(validarLogin(username,password)==null){
            throw new SQLException("El usuario o contraseña es incorrecto.");
         }
-        ResultSet rs=buscarTipoUsuario();
-        Usuario u = new Usuario(rs.getBoolean("isAdmin"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("cedula"));
+        
+        ConexionBD bd = ConexionBD.getInstance();
+        Connection conn = bd.conectarMySQL();
+
+        try (Statement st = conn.createStatement()) {
+            String query = "SELECT * FROM Usuario JOIN Persona ON "
+                    + "Usuario.cedula= Persona.cedula Where usuario =\""+bd.getUser()+"\";";
+        
+            try(ResultSet rs = st.executeQuery(query)){
+                if (rs == null || rs.isClosed() || !rs.next()) {
+                    throw new SQLException("Usuario no encontrado.\nInténtelo más tarde. ");
+                }
+                setUser(rs);
+            }          
+        } catch (SQLException ex) {
+            throw new SQLException("La base de datos se desconectó inesperadamente.");
+        }
+    }
+    
+    private static void setUser(ResultSet rs) throws SQLException{
+        Usuario u = new Usuario(rs.getBoolean("isAdmin"),rs.getString("nombre"),
+                 rs.getString("apellido"),rs.getString("cedula"));
+        
         int tipo = rs.getInt("TipoUsuario");
         
         switch(tipo){
@@ -59,26 +80,9 @@ public class CtrlMaster {
         }
     }
     
-    public static ResultSet buscarTipoUsuario() throws SQLException {
-        ConexionBD bd = ConexionBD.getInstance();
-        Connection conn = bd.conectarMySQL();
-        String query = "SELECT * FROM Usuario JOIN Persona ON Usuario.cedula= Persona.cedula Where usuario =\""+bd.getUser()+"\";";
-
-        ResultSet rs = bd.seleccionarDatos(query, conn);
-        validarResult(rs);
-        return rs;
-    }
     
     public static Usuario getUser(){
         return user;
-    }
-
-    
-    public static ResultSet llenarTablaProductos() throws SQLException {
-        ConexionBD bd = ConexionBD.getInstance();
-        Connection conn = bd.conectarMySQL();
-        String query = "select * from producto";
-        return bd.seleccionarDatos(query, conn);
     }
     
     public static String cambiarPantalla(){
@@ -98,3 +102,4 @@ public class CtrlMaster {
         empleado.setText(user.getNombre() + " " + user.getApellido());
     }
 }
+

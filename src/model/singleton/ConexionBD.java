@@ -19,7 +19,7 @@ public class ConexionBD {
     private static final String HOST = "localhost";
     private static final String PUERTO = "3306";
 
-    private static final String CONEXION = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + DB
+    private static final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + DB
             + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     
     private String user;
@@ -46,12 +46,21 @@ public class ConexionBD {
         Connection conn;
         try {
             Class.forName(DRIVER);
-            conn = DriverManager.getConnection(CONEXION, user,pass);
+            conn = DriverManager.getConnection(URL, user,pass);
             return conn;
         } catch (ClassNotFoundException ex) {
             throw new SQLException("Error de Base de Datos.\nNo conectada");
         }
     }
+    
+    /*
+try (Statement st = conn.createStatement()) {
+    ResultSet rs = st.executeQuery(query);
+    return rs;
+} catch (SQLException ex) {
+    throw new SQLException("La base de datos se desconectó inesperadamente.");
+}
+    */
     
     public ResultSet seleccionarDatos(String query, Connection conn) throws SQLException {
         if (conn == null) {

@@ -20,10 +20,7 @@ public class PantallaConstruccionController implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {}
-
-    public String getName(){
-        return "pantallaConstruccion.fxml";
+    public void initialize(URL url, ResourceBundle rb) {
+        //Solo es una pantalla de aviso
     }
-
 }

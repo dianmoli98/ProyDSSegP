@@ -10,6 +10,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,11 +61,14 @@ public class PantallaDeEsperaController implements Initializable {
         CodRuta.getItems().clear();
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
-        ResultSet rs = control.obtenerRSRutas(conn);
+        
+        try(Statement st = conn.createStatement()){
+            ResultSet rs = control.obtenerRSRutas(st);
         while(rs.next()){
             Ruta r = control.obtenerRuta(rs);
             CodRepartidor.getItems().add(r.getRepartidor().getId());
             CodRuta.getItems().add(r.getIdRuta());
+        }
         }
     }
     
