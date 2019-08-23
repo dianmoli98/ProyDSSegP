@@ -21,9 +21,9 @@
         <columns>
           <TableColumn fx:id="nombre" prefWidth="120.0" text="Nombre" />
             <TableColumn fx:id="descripcion" prefWidth="67.0" text="Descrip." />
-            <TableColumn fx:id="precio_Venta" text="Precio_Venta" />
+            <TableColumn fx:id="precioVenta" text="Precio_Venta" />
             <TableColumn fx:id="ccategoria" prefWidth="84.0" text="CategoriaID" />
-          <TableColumn fx:id="id_producto" prefWidth="77.0" text="Producto_ID" />
+          <TableColumn fx:id="idProducto" prefWidth="77.0" text="Producto_ID" />
         </columns>
       </TableView>
       <TextField fx:id="busqueda" layoutX="226.0" layoutY="140.0" prefHeight="35.0" prefWidth="220.0" />
@@ -32,7 +32,7 @@
             <Image url="@../recursos/search.png" />
          </image>
       </ImageView>
-      <ComboBox fx:id="comboxbus" layoutX="96.0" layoutY="140.0" onMouseClicked="#Inicio" prefHeight="35.0" prefWidth="124.0" />
+      <ComboBox fx:id="comboxbus" layoutX="96.0" layoutY="140.0" onMouseClicked="#inicio" prefHeight="35.0" prefWidth="124.0" />
       <TextField fx:id="txtprecio" layoutX="292.0" layoutY="499.0" prefHeight="25.0" prefWidth="113.0" promptText="Precio_Venta" />
       <Label fx:id="fecha" alignment="TOP_RIGHT" layoutX="481.0" layoutY="42.0" prefHeight="17.0" prefWidth="143.0">
          <font>

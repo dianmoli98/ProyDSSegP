@@ -46,8 +46,8 @@ public class Dpro {
         return stock;
     }
 
-    public void setStock(int Stock) {
-        this.stock = Stock;
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     public String getDireccion() {

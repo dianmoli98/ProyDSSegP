@@ -13,7 +13,6 @@ public class Pagoefectivo implements FormaPago{
     protected int cambio;
     @Override
     public boolean pagar() {
-        //todo
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

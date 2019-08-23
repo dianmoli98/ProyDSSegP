@@ -32,9 +32,9 @@ public class PantallaDeEsperaController implements Initializable {
     @FXML
     private GridPane gridd;
     @FXML
-    private ListView<String> CodRepartidor;
+    private ListView<String> codRepartidor;
     @FXML
-    private ListView<Integer> CodRuta;
+    private ListView<Integer> codRuta;
     @FXML
     private ImageView imagenc;
     
@@ -47,18 +47,22 @@ public class PantallaDeEsperaController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        pantalla = this;
+        setPantalla(this);
         control = FXMLVistaTController.getControlJefe();
         try {
             llenar();
         } catch (SQLException ex) {
             Logger.getLogger(PantallaDeEsperaController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
+    }  
+    
+    public static void setPantalla(PantallaDeEsperaController p){
+        pantalla = p;
+    }
     
     public void llenar() throws SQLException{
-        CodRepartidor.getItems().clear();
-        CodRuta.getItems().clear();
+        codRepartidor.getItems().clear();
+        codRuta.getItems().clear();
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
         
@@ -66,8 +70,8 @@ public class PantallaDeEsperaController implements Initializable {
             ResultSet rs = control.obtenerRSRutas(st);
         while(rs.next()){
             Ruta r = control.obtenerRuta(rs);
-            CodRepartidor.getItems().add(r.getRepartidor().getId());
-            CodRuta.getItems().add(r.getIdRuta());
+            codRepartidor.getItems().add(r.getRepartidor().getId());
+            codRuta.getItems().add(r.getIdRuta());
         }
         }
     }

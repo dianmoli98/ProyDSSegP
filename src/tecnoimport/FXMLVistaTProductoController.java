@@ -41,13 +41,13 @@ public class FXMLVistaTProductoController implements Initializable {
     @FXML
     private TableView<Producto> tablaProductos;
     @FXML
-    private TableColumn<Producto,String> id_producto;
+    private TableColumn<Producto,String> idProducto;
     @FXML
      private TableColumn<Producto,String> nombre;
     @FXML
      private TableColumn<Producto,String> descripcion;
     @FXML
-     private TableColumn<Producto,String>precio_Venta;
+     private TableColumn<Producto,String>precioVenta;
     @FXML
      private TableColumn<Producto,String> ccategoria;
     @FXML
@@ -68,7 +68,10 @@ public class FXMLVistaTProductoController implements Initializable {
     private ImageView insertar;
     @FXML
     private ImageView act;
-
+    
+    private static final String NOM = "Nombre";
+    private static final String IDPROD = "id_producto";
+    private static final String CAT = "Categoria";
     /**
      * Initializes the controller class.
      * @param url
@@ -77,7 +80,7 @@ public class FXMLVistaTProductoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Date date = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf=new SimpleDateFormat("     dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("     dd/MM/yyyy");
         fecha.setText(sdf.format(date));
         Usuario user = CtrlMaster.getUser();
         nomE.setText(user.getNombre() + " " + user.getApellido());
@@ -91,10 +94,10 @@ public class FXMLVistaTProductoController implements Initializable {
     }
     
     private void  generarFactories(){
-        id_producto.setCellValueFactory(new PropertyValueFactory<>("id_producto"));
+        idProducto.setCellValueFactory(new PropertyValueFactory<>("idProducto"));
         nombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         descripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-        precio_Venta.setCellValueFactory(new PropertyValueFactory<>("precio"));
+        precioVenta.setCellValueFactory(new PropertyValueFactory<>("precio"));
         ccategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
         
     }
@@ -109,7 +112,7 @@ public class FXMLVistaTProductoController implements Initializable {
 
         try (Statement st = conn.createStatement()) {
             try(ResultSet rs = st.executeQuery(query)){
-                celdas(conn,rs);
+                celdas(rs);
             }
         } catch (SQLException ex) {
             lanzarException();
@@ -123,14 +126,14 @@ public class FXMLVistaTProductoController implements Initializable {
     
     public void setCenter(){
         busqueda.setPromptText("Ingrese su búsqueda");
-        ObservableList ob=FXCollections.observableArrayList("Nombre","Categoria");
+        ObservableList ob = FXCollections.observableArrayList(NOM,CAT);
         comboxbus.setItems(ob);
         comboxbus.setPromptText("Filtrar");
         comboxbus.setOnAction( action ->{
-            if(comboxbus.getValue().equals("Nombre")){
-                busqueda.setPromptText("Nombre");
-            }else if(comboxbus.getValue().equals("Categoria")){
-                busqueda.setPromptText("Categoria");
+            if(comboxbus.getValue().equals(NOM)){
+                busqueda.setPromptText(NOM);
+            }else if(comboxbus.getValue().equals(CAT)){
+                busqueda.setPromptText(CAT);
             }else{
                 busqueda.setPromptText("Ingrese su búsqueda"); 
             }
@@ -154,20 +157,20 @@ public class FXMLVistaTProductoController implements Initializable {
             ConexionBD bd = ConexionBD.getInstance(); 
             Connection conn = bd.conectarMySQL(); 
             String stbuscar = " ";
-            if (comboxbus.getValue().equals("Nombre")) {
+            if (comboxbus.getValue().equals(NOM)) {
                 stbuscar = "select * from Producto where nombre like " + " \'" + busqueda.getText() + "%\' ;";
-            }else if (comboxbus.getValue().equals("Categoria")) {
+            }else if (comboxbus.getValue().equals(CAT)) {
                 stbuscar = "select * from Producto where categoria like " + " \'" + busqueda.getText() + "%\' ;";
             }
             
             try (Statement st = conn.createStatement()) {
                 try(ResultSet rs = st.executeQuery(stbuscar)){
-                    celdas(conn,rs); 
+                    celdas(rs); 
                 }
                 if(busqueda.getText().equals("")){ 
                     stbuscar = "select * from Producto;";
                     try(ResultSet rs = st.executeQuery(stbuscar)){
-                        celdas(conn,rs);
+                        celdas(rs);
                     }
                 }
             } catch (SQLException ex) {
@@ -176,18 +179,18 @@ public class FXMLVistaTProductoController implements Initializable {
         }
     }
       
-    private void celdas(Connection st,ResultSet rs){
+    private void celdas(ResultSet rs){
         tablaProductos.setVisible(true);
         try {
             ObservableList<Producto> datos = FXCollections.observableArrayList();
             while (rs.next()) {
-                if (!rs.getString("id_producto").equalsIgnoreCase("0")) {
-                    String id_producto1 = rs.getString("id_producto");
+                if (!rs.getString(IDPROD).equalsIgnoreCase("0")) {
+                    String idProducto1 = rs.getString(IDPROD);
                     String nombre1 = rs.getString("nombre");
                     String descri = rs.getString("descripcion");
                     String precio1 = rs.getString("precio");
                     String categoria1 = rs.getString("categoria");
-                    Producto p1 = new Producto(Integer.parseInt(id_producto1),
+                    Producto p1 = new Producto(Integer.parseInt(idProducto1),
                             nombre1,descri,Double.parseDouble(precio1),categoria1);
                     datos.add(p1);
                 }
@@ -201,7 +204,8 @@ public class FXMLVistaTProductoController implements Initializable {
      }  
         
     @FXML
-    private void Inicio(MouseEvent event) {
+    private void inicio(MouseEvent event) {
+        //no se usa el boton
     }
     
      @FXML
@@ -250,7 +254,7 @@ public class FXMLVistaTProductoController implements Initializable {
         String query = "select * from Producto";
         try (Statement st = conn.createStatement()) {
             try(ResultSet rs = st.executeQuery(query)){
-                celdas(conn,rs);
+                celdas(rs);
                 ocultar();
             }
         } catch (SQLException ex) {

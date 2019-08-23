@@ -44,7 +44,7 @@ public class PantallaRutasController implements Initializable {
     
     private TableView<Ruta> tablaRutas;
     @FXML
-    private TableColumn<Ruta, Integer> IdRuta;
+    private TableColumn<Ruta, Integer> idRuta;
     @FXML
     private TableColumn<Ruta, Repartidor> repartidor;
     @FXML
@@ -52,9 +52,9 @@ public class PantallaRutasController implements Initializable {
     @FXML
     private TableColumn<Ruta, String> status;
     @FXML
-    private Button CrearRuta;
+    private Button crearRuta;
     @FXML
-    private Button FinRuta;
+    private Button finRuta;
     
     private static PantallaRutasController controller = null;
     private static Ruta ruta = null;
@@ -67,8 +67,8 @@ public class PantallaRutasController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         control = FXMLVistaTController.getControlJefe();
-        controller = this;
-        tablaRutas =IdRuta.getTableView();
+        setController(this);
+        tablaRutas =idRuta.getTableView();
         try {
             llenar();
         } catch (SQLException ex) {
@@ -80,15 +80,16 @@ public class PantallaRutasController implements Initializable {
             row.setOnMouseClicked(event -> {
                 if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY 
                      && event.getClickCount() == 1) {
-
-                    Ruta clickedRow = row.getItem();
-                    ruta = clickedRow;
+                    setRuta(row.getItem());
                 }
             });
             return row ;
         });
     }    
-
+    
+    public static void setController(PantallaRutasController p){
+        controller = p;
+    }
     @FXML
     private void crearRutass(MouseEvent event)throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("PantallaCrearRutas.fxml"));
@@ -121,7 +122,7 @@ public class PantallaRutasController implements Initializable {
         try(Statement st = conn.createStatement()){
             celdas(conn,control.obtenerRSRutas(st));
         }
-        IdRuta.setCellValueFactory(new PropertyValueFactory<>("idRuta"));
+        idRuta.setCellValueFactory(new PropertyValueFactory<>("idRuta"));
         repartidor.setCellValueFactory(new PropertyValueFactory<>("repartidor"));
         pedido.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));

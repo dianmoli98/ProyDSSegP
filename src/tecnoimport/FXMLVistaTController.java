@@ -11,12 +11,7 @@ import controller.CtrlMaster;
 import emergentes.Emergentes;
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -115,9 +110,9 @@ public class FXMLVistaTController implements Initializable {
 
     @FXML
     private void realizarConsultas(MouseEvent event)throws IOException {
-         Parent root = FXMLLoader.load(getClass().getResource("Pantallaconsultas.fxml"));
-         Stage stage= new Stage();
-         stage.initModality(Modality.WINDOW_MODAL);
+        Parent root = FXMLLoader.load(getClass().getResource("Pantallaconsultas.fxml"));
+        Stage stage= new Stage();
+        stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(label.getScene().getWindow());
         stage.setResizable(false);
         stage.setScene(new Scene(root));
@@ -126,7 +121,7 @@ public class FXMLVistaTController implements Initializable {
 
     @FXML
     private void rutas(MouseEvent event) throws IOException {
-         Parent root = FXMLLoader.load(getClass().getResource("PantallaRutas.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("PantallaRutas.fxml"));
         Stage stage= new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(label.getScene().getWindow());

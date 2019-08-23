@@ -48,8 +48,6 @@ public class PantallaCrearRutasController implements Initializable {
     @FXML
     private TableColumn<Pedido, String> direccion;
     
-    private ObservableList<String> data;
-    
     private static CtrlJefeBodega control = FXMLVistaTController.getControlJefe();
     
     /**
@@ -89,9 +87,9 @@ public class PantallaCrearRutasController implements Initializable {
      } 
     
     private void agregarColumasRuta(){
-        idped.setCellValueFactory(new PropertyValueFactory<>("id_pedido"));
+        idped.setCellValueFactory(new PropertyValueFactory<>("idpedido"));
         dir.setCellValueFactory(new PropertyValueFactory<>("direccion"));
-        idpedido.setCellValueFactory(new PropertyValueFactory<>("id_pedido"));
+        idpedido.setCellValueFactory(new PropertyValueFactory<>("idpedido"));
         direccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
     }
     
@@ -113,6 +111,7 @@ public class PantallaCrearRutasController implements Initializable {
     
     @FXML
     private void regreso(MouseEvent event) {
+        //no se usa
     }
     
      @FXML
@@ -124,7 +123,6 @@ public class PantallaCrearRutasController implements Initializable {
         }else if(Emergentes.comfirm("¿Desea guardar los cambios?")){
             try {
                 control.guardarRuta(pedidos);
-                //TODO: datos del repartidor
                 Emergentes.mostrarDialogo("", "Se ha guardado correctamente", "Aviso");
                 Stage stage = (Stage) tablaRutasAsignadas.getScene().getWindow();
                 PantallaRutasController.getController().llenar();

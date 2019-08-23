@@ -28,8 +28,8 @@
             <RowConstraints maxHeight="33.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <ListView fx:id="CodRepartidor" prefHeight="130.0" prefWidth="117.0" GridPane.rowIndex="1" />
-            <ListView fx:id="CodRuta" prefHeight="200.0" prefWidth="119.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ListView fx:id="codRepartidor" prefHeight="130.0" prefWidth="117.0" GridPane.rowIndex="1" />
+            <ListView fx:id="codRuta" prefHeight="200.0" prefWidth="119.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label prefHeight="19.0" prefWidth="120.0" style="-fx-background-color: azure;" text="  Cod_Repartidor">
                <font>
                   <Font name="System Bold" size="13.0" />

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tecnoimport;
 
 import controller.CtrlJefeBodega;
@@ -94,7 +89,7 @@ public class FinalizaRutaController implements Initializable {
     
     @FXML
     private void regreso(MouseEvent event) {
-        
+        //no se usa
     }
 
     @FXML
@@ -105,29 +100,33 @@ public class FinalizaRutaController implements Initializable {
         
         if(Emergentes.comfirm(confirm)){
             try{
-                String texto = observaciones.getText();
-                boolean isFinalizada = (texto.equals("") && !pedidosConfirm.isEmpty()) || (!pedidosCancel.isEmpty() && !texto.equals(""));
-                if(!pedidosCancel.isEmpty() && !texto.equals("")){
-                    for(Pedido p : pedidosCancel){
-                    cancelarPedidoBD(p);
-                    }
-                    actualizarObservaciones();
-                }if(isFinalizada){
-                    finalizarRuta();
-                    control.actualizarRepartidores();
-                    PantallaRutasController.setRuta(null);
-                    PantallaRutasController.getController().llenar();
-                    if(PantallaDeEsperaController.getPantalla() != null)
-                        PantallaDeEsperaController.getPantalla().llenar();
-                    Stage stage = (Stage) tablaRutasAsignadas.getScene().getWindow();
-                    stage.close();
-                }else{
-                    Emergentes.mostrarDialogo("Si hubieron inconvenientes con los pedidos deben ser escritos en observaciones.",
-                                "", "Faltan Campos por llenar");
-                }
+                actionGuardar(pedidosConfirm, pedidosCancel);
             } catch (SQLException ex) {
                 Emergentes.mostrarDialogo("No se pudo guardar los cambios.","Error de guardado", "Error");
             }
+        }
+    }
+    
+    private void actionGuardar(ObservableList<Pedido> pedidosConfirm, ObservableList<Pedido> pedidosCancel ) throws SQLException{
+        String texto = observaciones.getText();
+        boolean isFinalizada = (texto.equals("") && !pedidosConfirm.isEmpty()) || (!pedidosCancel.isEmpty() && !texto.equals(""));
+        if(!pedidosCancel.isEmpty() && !texto.equals("")){
+            for(Pedido p : pedidosCancel){
+            cancelarPedidoBD(p);
+            }
+            actualizarObservaciones();
+        }if(isFinalizada){
+            finalizarRuta();
+            control.actualizarRepartidores();
+            PantallaRutasController.setRuta(null);
+            PantallaRutasController.getController().llenar();
+            if(PantallaDeEsperaController.getPantalla() != null)
+                PantallaDeEsperaController.getPantalla().llenar();
+            Stage stage = (Stage) tablaRutasAsignadas.getScene().getWindow();
+            stage.close();
+        }else{
+            Emergentes.mostrarDialogo("Si hubieron inconvenientes con los pedidos deben ser escritos en observaciones.",
+                        "", "Faltan Campos por llenar");
         }
     }
     
@@ -163,9 +162,9 @@ public class FinalizaRutaController implements Initializable {
     }
     
     private void agregarColumasRuta(){
-        idped.setCellValueFactory(new PropertyValueFactory<>("id_pedido"));
+        idped.setCellValueFactory(new PropertyValueFactory<>("idpedido"));
         dir.setCellValueFactory(new PropertyValueFactory<>("direccion"));
-        idpedido.setCellValueFactory(new PropertyValueFactory<>("id_pedido"));
+        idpedido.setCellValueFactory(new PropertyValueFactory<>("idpedido"));
         direccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
     }
 }

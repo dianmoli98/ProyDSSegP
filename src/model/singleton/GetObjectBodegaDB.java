@@ -102,7 +102,8 @@ public class GetObjectBodegaDB {
                 return m;
             }
         } catch (SQLException ex) {
-            throw new SQLException("La base de datos se desconectó inesperadamente.");
+            ConexionBD.lanzarException();
         }
+        return null;
     }
 }

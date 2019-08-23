@@ -14,8 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.local.Gerente;
-import model.local.Vendedor;
 import static tecnoimport.TecnoImport.ventsegunda;
 
 /**
@@ -24,7 +22,9 @@ import static tecnoimport.TecnoImport.ventsegunda;
  */
 public class AuxiliarVistaT {
     
-    public AuxiliarVistaT(){}
+    public AuxiliarVistaT(){
+        //no se requiere
+    }
     
     protected void crearPantallaEspera(){
         try {

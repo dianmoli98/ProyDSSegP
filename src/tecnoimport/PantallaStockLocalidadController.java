@@ -78,6 +78,16 @@ public class PantallaStockLocalidadController implements Initializable {
     private Label lblstock;
     @FXML
     private TextField txtstock;
+    
+    private static final String NOMB = "nombre";
+    private static final String BODEGA = "Bodega";
+    private static final String SUC = "Sucursal";
+    private static final String MATRIZ = "Matriz";
+    
+    private static final String QUERYIN = "select p.id_producto,p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
+                + "from Producto  p\n"
+                + "join Stock s on p.id_producto=s.id_producto\n"
+                + "join Matriz m on m.id_matriz=s.id_matriz ";
 
     /**
      * Initializes the controller class.
@@ -112,33 +122,21 @@ public class PantallaStockLocalidadController implements Initializable {
     }
     
     public void llenar() throws SQLException {
-        llenarTablas("select p.id_producto,p.nombre,s.Stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
-                + "from Producto  p\n"
-                + "join Stock s on p.id_producto=s.id_producto\n"
-                + "join Matriz m on m.id_matriz=s.id_matriz ;");
+        llenarTablas(QUERYIN);
     }
 
     public void llenarMa() throws SQLException {
-        llenarTablas("select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
-                + "from Producto  p\n"
-                + "join Stock s on p.id_producto=s.id_producto\n"
-                + "join Matriz m on m.id_matriz=s.id_matriz\n"
+        llenarTablas(QUERYIN
                 + "where tipoLocalidad=\"Matriz\";");
     }
 
     public void llenarSu() throws SQLException {
-        llenarTablas("select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
-                + "from Producto  p\n"
-                + "join Stock s on p.id_producto=s.id_producto\n"
-                + "join Matriz m on m.id_matriz=s.id_matriz\n"
+        llenarTablas(QUERYIN
                 + "where tipoLocalidad=\"Sucursal\";");
     }
 
     public void llenarBo() throws SQLException {
-        llenarTablas("select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
-                + "from Producto  p\n"
-                + "join Stock s on p.id_producto=s.id_producto\n"
-                + "join Matriz m on m.id_matriz=s.id_matriz\n"
+        llenarTablas(QUERYIN
                 + "where tipoLocalidad=\"Bodega\";");
     }
     
@@ -177,7 +175,6 @@ public class PantallaStockLocalidadController implements Initializable {
     
     private int poblarComboxCount(String tabla) throws SQLException{
         conn = bd.conectarMySQL();
-        int registros = 0;
         String query = "SELECT count(*) as total FROM " + tabla;
         try (Statement st = conn.createStatement()) {
             try(ResultSet rs = st.executeQuery(query)){
@@ -193,23 +190,23 @@ public class PantallaStockLocalidadController implements Initializable {
     }
     
     public void llenartable(Connection conn, ResultSet rs) {
-        nombrePro.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        nombrePro.setCellValueFactory(new PropertyValueFactory<>(NOMB));
         stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
         idlocal.setCellValueFactory(new PropertyValueFactory<>("tipoLocalidad"));
         direccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
         lugar.setCellValueFactory(new PropertyValueFactory<>("idMatriz"));
         idpro.setCellValueFactory(new PropertyValueFactory<>("idProducto"));
         tablaStock.setVisible(true);
-        celdas(conn, rs);
+        celdas(rs);
     }
 
-    private void celdas(Connection st, ResultSet rs) {
+    private void celdas(ResultSet rs) {
         tablaStock.setVisible(true);
         try {
             ObservableList<Dpro> datos = FXCollections.observableArrayList();
             while (rs.next()) {
-                if (!rs.getString("nombre").equalsIgnoreCase("0")) {
-                    String nom = rs.getString("nombre");
+                if (!rs.getString(NOMB).equalsIgnoreCase("0")) {
+                    String nom = rs.getString(NOMB);
                     String sto = rs.getString("stock");
                     String tloc = rs.getString("tipoLocalidad");
                     String dir = rs.getString("direccion");
@@ -247,10 +244,7 @@ public class PantallaStockLocalidadController implements Initializable {
         if (comboText != null && !comboText.equals("") && !comboText.equals(" ")) {
             try {
                 conn = bd.conectarMySQL();
-                llenarTablas("select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
-                    + "from Producto  p\n"
-                    + "join Stock s on p.id_producto=s.id_producto\n"
-                    + "join Matriz m on m.id_matriz=s.id_matriz \n"
+                llenarTablas(QUERYIN
                     + "where m.tipoLocalidad='"+ comboLugar.getValue().toString()
                     +"' and m.id_matriz='"+ idenlocal.getValue().toString()
                     +"' and p.nombre like " + " \'" + busqueda.getText() + "%\' ;");
@@ -273,17 +267,14 @@ public class PantallaStockLocalidadController implements Initializable {
         }
         if (numlocal != null && !numlocal.equals("") && !numlocal.equals(" ")) {
             conn = bd.conectarMySQL();
-            llenarTablas("select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
-                    + "from Producto  p\n"
-                    + "join Stock s on p.id_producto=s.id_producto\n"
-                    + "join Matriz m on m.id_matriz=s.id_matriz\n"
+            llenarTablas(QUERYIN
                     + "where m.tipoLocalidad='"+ comboLugar.getValue().toString()+"' and  m.id_matriz='" + numlocal + "';");
         }    
     }
     
     public void setCenter() {
         busqueda.setPromptText("Ingrese su búsqueda");
-        ObservableList ob = FXCollections.observableArrayList("Matriz", "Sucursal", "Bodega");
+        ObservableList ob = FXCollections.observableArrayList(MATRIZ,SUC,BODEGA);
         comboLugar.setItems(ob);
         comboLugar.setPromptText("Filtrar");
         comboLugar.setOnAction(l ->{
@@ -297,16 +288,16 @@ public class PantallaStockLocalidadController implements Initializable {
     
     private void actionCombo() throws SQLException{
         idenlocal.getItems().clear();
-        if (comboLugar.getValue().equals("Matriz")) {
-            busqueda.setPromptText("Matriz");
+        if (comboLugar.getValue().equals(MATRIZ)) {
+            busqueda.setPromptText(MATRIZ);
             llenarMa();
             com();
-        } else if (comboLugar.getValue().equals("Sucursal")) {
-            busqueda.setPromptText("Sucursal");
+        } else if (comboLugar.getValue().equals(SUC)) {
+            busqueda.setPromptText(SUC);
             llenarSu();
             com();
-        } else if (comboLugar.getValue().equals("Bodega")) {
-            busqueda.setPromptText("Bodega");
+        } else if (comboLugar.getValue().equals(BODEGA)) {
+            busqueda.setPromptText(BODEGA);
             llenarBo();
             com();
         }else {
@@ -315,7 +306,7 @@ public class PantallaStockLocalidadController implements Initializable {
     }
     
     public void com() throws SQLException{
-        Object[] idarticulo = poblarCombox("Matriz", "id_matriz");
+        Object[] idarticulo = poblarCombox(MATRIZ, "id_matriz");
         for (int i = 0; i < idarticulo.length; i++) {
             idenlocal.getItems().add(idarticulo[i]);
         }
@@ -374,15 +365,12 @@ public class PantallaStockLocalidadController implements Initializable {
             throw new SQLException("La base de datos se desconectó inesperadamente.");
         }
 
-        String show = "select p.id_producto,p.nombre,s.stock,m.tipoLocalidad,m.direccion,m.id_matriz\n"
-                + "from Producto  p\n"
-                + "join Stock s on p.id_producto=s.id_producto\n"
-                + "join Matriz m on m.id_matriz=s.id_matriz\n"
+        String show = QUERYIN
                 + "where m.tipoLocalidad='"+comboLugar.getValue().toString()
                 +"' and m.id_matriz='"+ idenlocal.getValue().toString()+"' ;";
         try (Statement st = conn.createStatement()) {
             try(ResultSet rs = st.executeQuery(show)){
-                celdas(conn,rs);
+                celdas(rs);
                 ocultar();
             }
         } catch (SQLException ex) {

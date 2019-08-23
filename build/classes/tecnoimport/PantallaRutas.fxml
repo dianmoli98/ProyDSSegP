@@ -17,7 +17,7 @@
       </ImageView>
       <TableView id="tablaRutas" layoutX="176.0" layoutY="122.0" prefHeight="278.0" prefWidth="410.0">
         <columns>
-          <TableColumn id="IdRuta" fx:id="IdRuta" prefWidth="66.0" text="ID_RUTA" />
+          <TableColumn id="IdRuta" fx:id="idRuta" prefWidth="66.0" text="ID_RUTA" />
           <TableColumn id="repartidor" fx:id="repartidor" prefWidth="137.0" text="REPARTIDOR" />
             <TableColumn id="pedido" fx:id="pedido" prefWidth="98.0" text="# DE PEDIDO" />
             <TableColumn id="status" fx:id="status" prefWidth="108.0" text="ESTADO" />
@@ -28,12 +28,12 @@
             <Image url="@../recursos/foto.png" />
          </image>
       </ImageView>
-      <Button id="CrearRuta" fx:id="CrearRuta" layoutX="11.0" layoutY="207.0" mnemonicParsing="false" onMouseClicked="#crearRutass" prefHeight="40.0" prefWidth="154.0" text="Crear Ruta" textOverrun="CLIP">
+      <Button id="CrearRuta" fx:id="crearRuta" layoutX="11.0" layoutY="207.0" mnemonicParsing="false" onMouseClicked="#crearRutass" prefHeight="40.0" prefWidth="154.0" text="Crear Ruta" textOverrun="CLIP">
          <font>
             <Font name="Bell MT" size="21.0" />
          </font>
       </Button>
-      <Button id="FinRuta" fx:id="FinRuta" layoutX="11.0" layoutY="276.0" mnemonicParsing="false" onMouseClicked="#finalizarRutas" prefHeight="40.0" prefWidth="154.0" text="Finalizar Ruta" textOverrun="CLIP">
+      <Button id="FinRuta" fx:id="finRuta" layoutX="11.0" layoutY="276.0" mnemonicParsing="false" onMouseClicked="#finalizarRutas" prefHeight="40.0" prefWidth="154.0" text="Finalizar Ruta" textOverrun="CLIP">
          <font>
             <Font name="Bell MT" size="21.0" />
          </font>

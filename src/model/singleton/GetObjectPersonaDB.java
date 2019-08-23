@@ -46,7 +46,7 @@ public class GetObjectPersonaDB {
                 }
             }
         } catch (SQLException ex) {
-            throw new SQLException("La base de datos se desconectó inesperadamente.");
+            ConexionBD.lanzarException();
         }
         bd.cerrarConexion(conn);
         return c;
@@ -72,7 +72,7 @@ public class GetObjectPersonaDB {
                 }
             }
         } catch (SQLException ex) {
-            throw new SQLException("La base de datos se desconectó inesperadamente.");
+            ConexionBD.lanzarException();
         }
         bd.cerrarConexion(conn);
         return r;
@@ -99,7 +99,7 @@ public class GetObjectPersonaDB {
                 }
             }
         } catch (SQLException ex) {
-            throw new SQLException("La base de datos se desconectó inesperadamente.");
+            ConexionBD.lanzarException();
         }
         bd.cerrarConexion(conn);
         return v;
@@ -123,7 +123,7 @@ public class GetObjectPersonaDB {
                 }
             }
         } catch (SQLException ex) {
-            throw new SQLException("La base de datos se desconectó inesperadamente.");
+            ConexionBD.lanzarException();
         }
 
         bd.cerrarConexion(conn);
