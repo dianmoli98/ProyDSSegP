@@ -142,12 +142,12 @@ public class FXMLVistaTProductoController implements Initializable {
         busqueda.textProperty().addListener(new ChangeListener(){
             @Override
             public void changed(ObservableValue args0,Object o1,Object o2){
-                try {
+                    try {
                     actionChange();
-                } catch (SQLException ex) {
-                    Logger.getLogger(FXMLVistaTProductoController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(FXMLVistaTProductoController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            }
         });
     }
     
@@ -201,8 +201,8 @@ public class FXMLVistaTProductoController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(FXMLVistaTProductoController.class.getName()).log(Level.SEVERE, null, ex);
         }
-     }  
-        
+    }
+           
     @FXML
     private void inicio(MouseEvent event) {
         //no se usa el boton
@@ -247,7 +247,7 @@ public class FXMLVistaTProductoController implements Initializable {
         }
     }
        
-    private void obtenerProductos() throws SQLException{
+    private void obtenerProductos() throws SQLException{        
         ConexionBD bd = ConexionBD.getInstance();
         Connection conn = bd.conectarMySQL();
         
@@ -260,7 +260,7 @@ public class FXMLVistaTProductoController implements Initializable {
         } catch (SQLException ex) {
              ocultar();
             mostrarEmergente();
-        }
+            }
     }
     
     private void mostrarEmergente(){
