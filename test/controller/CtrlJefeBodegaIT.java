@@ -55,7 +55,7 @@ public class CtrlJefeBodegaIT {
         System.out.println("Obtener el maximo numero de rutas a cargo");
         int expResult=2;
         int result = instance.obtenerLastRuta();
-        assertSame("Maximo de ruta debe ser 4: ",expResult,result);
+        assertSame("Maximo de ruta debe ser 2: ",expResult,result);
     }
     /**
     * Este metodo determina si la asignacion de rutas dentro de la base de datos fue realizada con exito, es por esto que cuando queremos crear una ruta 

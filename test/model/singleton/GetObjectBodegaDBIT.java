@@ -15,13 +15,15 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.bodega.JefeBodega;
+import model.bodega.Ruta;
 import model.inventario.Matriz;
+import model.pedido.Pedido;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 /**
  *
@@ -36,6 +38,7 @@ public class GetObjectBodegaDBIT {
         bd=ConexionBD.getInstance();
         CtrlMaster.buscarUsuario("pbmoral", "pbmoral");
         instance=new CtrlJefeBodega((JefeBodega)CtrlMaster.getUser());
+        
         try {
            conn=bd.conectarMySQLTest();
        } catch (SQLException ex) {
@@ -43,22 +46,8 @@ public class GetObjectBodegaDBIT {
        }
     }
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
 
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
+    
    /**
      *Verifica que la matriz donde el jefe de bodega trabaja, de tal manera que verifica en la base de datos su existencia, se usa el assertEquals 
      * para saber si esos dos objetos son iguales de tal manera que se pueda verificar si el nombre y la direccion del lugar del trabajo 
@@ -87,5 +76,42 @@ public class GetObjectBodegaDBIT {
         }finally{
             bd.cerrarConexion(conn);
         }
+    }
+
+    /**
+     * Verifica que hayan rutas en proceso y que necesita ser validada por el jefe de usuario, 
+     * debe ingresar la confirmacion de su entrega en la base de datos, para que deje de aparecer en esta
+     * lista de busqueda.
+     */
+    @Test
+    public void testObtenerRSRutas() throws Exception {
+        System.out.println("obtenerRSRutas");
+        Statement st = conn.createStatement();
+        ResultSet result = instance.obtenerRSRutas(st);
+        assertNotNull(result);
+    }
+
+    /**
+     * Este test nos permite conocer que no exista un pedido de abastecimiento de parte del gerente del una localidad
+     * dado que como jefe de bodega tiene muchos pedidos, este tendra una lista de pedidos pero aquellos 
+     * que tengan null en el id de la matriz se considera como pedido hecho por un cliente.
+     */
+    @Test
+    public void testObtenerPedido() throws Exception {
+        System.out.println("obtenerPedido");
+        String id_matriz="0002";
+        String query="select * from pedido Where Pedido.id_matriz=\""+id_matriz+"\";";
+        try(Statement st = conn.createStatement()){
+            try(ResultSet rs = st.executeQuery(query)){
+                rs.next();
+                Pedido result = instance.obtenerPedido(rs);
+                assertNull(result);
+            }
+        }finally{
+            bd.cerrarConexion(conn);
+        }
+        
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 }

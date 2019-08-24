@@ -131,8 +131,8 @@ public class GetObjectPersonaDBIT {
                 + "Where Persona.cedula =\"" + CtrlMaster.getUser().getId() + "\";";
         try (Statement st = conn.createStatement()) {
             try (ResultSet rs = st.executeQuery(query)) {
+                rs.next();
                 Persona result=null;
-                if(rs!=null) System.out.println("hola");
                 result = instance.obtenerPersona(rs);
                 Persona expResult = CtrlMaster.getUser();
                 assertSame(expResult, result);
@@ -144,22 +144,7 @@ public class GetObjectPersonaDBIT {
     }
 
     /**
-     * Test of obtenerRepartidor method, of class GetObjectPersonaDB.
-     
-    @Test
-    public void testObtenerRepartidor() throws Exception {
-        System.out.println("obtenerRepartidor");
-        String cedula = "";
-        GetObjectPersonaDB instance = null;
-        Repartidor expResult = null;
-        Repartidor result = instance.obtenerRepartidor(cedula);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of obtenerRepartidores method, of class GetObjectPersonaDB.
+     *Este test valida que haya repartidores disponible en la cola de espera y poderle asignarle una nueva ruta de espera.
      */
     @Test
     public void testObtenerRepartidores() throws Exception {
