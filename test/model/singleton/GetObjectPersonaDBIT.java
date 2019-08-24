@@ -35,22 +35,19 @@ public class GetObjectPersonaDBIT {
     private ConexionBD bd;
     private Connection conn;
     GetObjectPersonaDB instance;
+    
     public GetObjectPersonaDBIT() {
         bd=ConexionBD.getInstance();
+        String user="pbmoral";
+        String password="pbmoral";
         try {
+            instance=GetObjectPersonaDB.getInstance();
+             CtrlMaster.buscarUsuario(user, password);
             conn=bd.conectarMySQLTest();
         } catch (SQLException ex) {
             Logger.getLogger(GetObjectPersonaDBIT.class.getName()).log(Level.SEVERE, null, ex);
         }
-        instance=GetObjectPersonaDB.getInstance();
-        String user="jfmorale";
-        String password="0950165811";
-        try {
-            CtrlMaster.buscarUsuario(user, password);
-           
-        } catch (SQLException ex) {
-            Logger.getLogger(GetObjectPersonaDBIT.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
 
     @BeforeClass
@@ -110,8 +107,6 @@ public class GetObjectPersonaDBIT {
             try(ResultSet rs = st.executeQuery(query)){
                 if(rs!=null) return true;
             }
-        }finally{
-            bd.cerrarConexion(conn);
         }
         return false;
     }
@@ -126,20 +121,17 @@ public class GetObjectPersonaDBIT {
     @Test
     public void testObtenerPersona() throws Exception {
         System.out.println("Obtener Persona");
-        String query = "SELECT * FROM Usuario "
-                + "JOIN Persona ON Usuario.cedula= Persona.cedula "
+        String query = "SELECT * FROM Persona "
+                + "JOIN Usuario ON Usuario.cedula= Persona.cedula "
                 + "Where Persona.cedula =\"" + CtrlMaster.getUser().getId() + "\";";
         try (Statement st = conn.createStatement()) {
             try (ResultSet rs = st.executeQuery(query)) {
-                rs.next();
-                Persona result=null;
-                result = instance.obtenerPersona(rs);
+                rs.first();
+                Persona result = instance.obtenerPersona(rs);
                 Persona expResult = CtrlMaster.getUser();
                 assertSame(expResult, result);
             }
-        } finally {
-            bd.cerrarConexion(conn);
-        }
+        } 
 
     }
 
