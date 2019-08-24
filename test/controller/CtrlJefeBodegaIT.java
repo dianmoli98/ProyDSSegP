@@ -7,7 +7,6 @@ package controller;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.bodega.JefeBodega;
@@ -46,23 +45,6 @@ public class CtrlJefeBodegaIT {
        }
     }
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
     /**
      * Este metodo es util para obtener el maximo de rutas a cargo del jefe de bodega en cuestion a la cantidad de pedido
      * dado que para poder registrar una nueva ruta necesitamos conocer la cantidad de pedido que ha sido seleccionado 
@@ -71,7 +53,7 @@ public class CtrlJefeBodegaIT {
     @Test
     public void testObtenerLastRuta() throws Exception {
         System.out.println("Obtener el maximo numero de rutas a cargo");
-        int expResult=4;
+        int expResult=2;
         int result = instance.obtenerLastRuta();
         assertSame("Maximo de ruta debe ser 4: ",expResult,result);
     }

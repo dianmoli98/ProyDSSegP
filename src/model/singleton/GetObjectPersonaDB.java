@@ -52,8 +52,13 @@ public class GetObjectPersonaDB {
         return c;
     }
     
-    public Persona obtenerPersona(ResultSet rs) throws SQLException{
-        return new Persona(rs.getString("nombre"),  rs.getString("apellido"), rs.getString("cedula"));
+    public Persona obtenerPersona(ResultSet rs) throws SQLException {
+        Persona persona = null;
+        while (rs.next()) {
+            persona = new Persona(rs.getString("nombre"), rs.getString("apellido"), rs.getString("cedula"));
+            return persona;
+        }
+        return persona;
     }
     
     public Repartidor obtenerRepartidor(String cedula) throws SQLException{

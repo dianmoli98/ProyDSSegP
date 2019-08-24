@@ -15,9 +15,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.bodega.JefeBodega;
-import model.bodega.Ruta;
 import model.inventario.Matriz;
-import model.pedido.Pedido;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -61,7 +59,11 @@ public class GetObjectBodegaDBIT {
     public void tearDown() throws Exception {
     }
 
-   
+   /**
+     *Verifica que la matriz donde el jefe de bodega trabaja, de tal manera que verifica en la base de datos su existencia, se usa el assertEquals 
+     * para saber si esos dos objetos son iguales de tal manera que se pueda verificar si el nombre y la direccion del lugar del trabajo 
+     * del empleado es igual a la que se encuentra registrada en la base de datos.
+     */
     
     @Test
     public void testObtenerMatriz() throws Exception {
@@ -69,7 +71,7 @@ public class GetObjectBodegaDBIT {
         String matriz = getMatriz("SELECT * FROM Usuario "
                 + "JOIN Persona ON Usuario.cedula= Persona.cedula "
                 + "Where usuario =\""+bd.getUser()+"\";");
-        Matriz expResult = new Matriz("0002","Av. Francisco de Orellana y Calle Sexta","Sucursal");
+        Matriz expResult = new Matriz(matriz,"Av. Francisco de Orellana y Calle Sexta","Sucursal");
         Matriz result = instance.obtenerMatriz(matriz);
         assertEquals(expResult, result);
     }

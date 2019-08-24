@@ -48,11 +48,12 @@ public class CtrlGerenteIT {
     @Test
     public void testObtenerPersona() throws Exception {
         System.out.println("Obtener Persona");
+        String cedula="0950165811";
         ResultSet rs = null;
         try (Statement st = conn.createStatement()) {
             String query = "SELECT Persona.cedula,Persona.nombre,Persona.apellido "
                     + "FROM Usuario JOIN Persona On Persona.cedula=Usuario.cedula "
-                    + " Where Usuario.cedula= '0950165811'";
+                    + " Where Usuario.cedula= '"+cedula+"'";
             rs = st.executeQuery(query);
             CtrlMaster.validarResult(rs);
             Persona exp = instance.obtenerPersona(rs);
